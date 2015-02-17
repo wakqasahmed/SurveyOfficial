@@ -1,0 +1,160 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'locations/views/partials/location.client.header.html'"></div>
+
+<div class="container">
+
+			<div class="row row-offcanvas row-offcanvas-right">
+
+				<section name="sidebar" ng-include="'locations/views/partials/validation.client.sidebar.html'">
+				</section>
+
+				<div class="col-xs-12 col-sm-9">
+					<p class="pull-right visible-xs">
+						<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+					</p>
+
+					<div class="row">
+
+						<!-- The location view -->
+						<section data-ng-controller="LocationsController" data-ng-init="findOne()">
+							<!-- The new location form -->
+							<form data-ng-submit="create()" novalidate>
+
+							<div class="container">
+									<div class="col-md-9">
+											<div class="row">
+													<h3 class="dark-grey">New Validation</h3>
+													<!--<h5 class="dark-grey">Location Status: <span>{{location.status}}</span></h5>-->
+
+													<hr>
+
+													<h3 class="dark-grey">Name and Contact</h3>
+													<h5 class="dark-grey">Location</h5>
+											</div>
+
+											<div class="row">
+												<!--
+												<div class="form-group col-lg-12">
+													<label>Location ID</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{location._id}}">
+												</div>
+												-->
+
+												<div class="form-group col-lg-6">
+													<label>Account Name</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{location.account[0].name}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Location Name</label>
+													<input type="text" name="name" class="form-control" id="name" type="text" data-ng-model="name" placeholder="Name" required>
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Country</label>
+													<input type="text" name="country" class="form-control" id="country" disabled value="{{location.account[0].country}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>POBox</label>
+													<input type="text" name="postalCode" class="form-control" id="postalCode" data-ng-model="location.postalCode">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Emirate</label>
+													<input type="" name="" class="form-control" id="" data-ng-model="location.state">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Sales Order No</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{location.account[0].name}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Timezone</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{location.timezone}}">
+												</div>
+
+
+												<div class="form-group col-lg-6">
+													<label>Manager Phone Number</label>
+													<input type="number" name="phoneManager" class="form-control" id="phoneManager" data-ng-model="location.phoneManager">
+												</div>
+
+												<div class="form-group col-lg-12">
+													<label>Account Structure Name</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{location.account[0].name}}">
+												</div>
+
+											</div>
+
+											<div class="row">
+												<h5 class="dark-grey">GPS Coordinates</h5>
+
+												<div class="form-group col-lg-6">
+													<label>Latitude</label>
+													<input type="" name="" class="form-control" id="" data-ng-model="location.coords_latitude">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Longitude</label>
+													<input type="" name="" class="form-control" id="" data-ng-model="location.coords_longitude">
+												</div>
+
+											</div>
+
+											<hr>
+
+											<div class="row">
+												<h5 class="dark-grey">Contact Person</h5>
+
+												<div class="form-group col-lg-6">
+													<label>Name</label>
+													<input type="" name="" class="form-control" id="" data-ng-model="location.contactPerson_name">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Email</label>
+													<input type="" name="" class="form-control" id="" data-ng-model="location.contactPerson_email">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Office phone</label>
+													<input type="number" name="" class="form-control" id="" data-ng-model="location.contactPerson_phoneOffice">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Mobile phone</label>
+													<input type="number" name="" class="form-control" id="" data-ng-model="location.contactPerson_phoneCell">
+												</div>
+											</div>
+
+											<div class="row">
+												<div>
+													<button type="submit" class="btn btn-primary">Submit</button>
+												</div>
+											</div>
+
+											<div class="row">
+												<!-- The error message element -->
+												<div data-ng-show="error">
+													<strong data-ng-bind="error"></strong>
+												</div>
+											</div>
+
+										</div>
+
+									</div>
+						</section>
+
+					</div><!--/row-->
+				</div><!--/.col-xs-12.col-sm-9-->
+
+			</div><!--/row-->
+
+			<div ng-include="'../../layout/footer.html'"></div>
+
+		</div>
+
+
+</section>

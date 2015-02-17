@@ -1,0 +1,19 @@
+<!-- The list surveys view -->
+<section data-ng-controller="SurveysController" data-ng-init="find()">
+	<h1>Surveys</h1>
+	<ul>
+		<!-- The list of survey -->
+		<li data-ng-repeat="survey in surveys">
+			<a data-ng-href="#!/surveys/{{survey._id}}" data-ng-bind="survey.title"></a>
+			<br>
+			<small data-ng-bind="survey.created | date:'medium'"></small>
+			<small>/</small>
+			<small data-ng-bind="survey.creator.fullName"></small>
+			<p data-ng-bind="survey.content"></p>
+		</li>
+	</ul>
+	<!-- If there are no surveys in the list, suggest the user's create a new survey -->
+	<div data-ng-hide="!surveys || surveys.length">
+		No surveys yet, why don't you <a href="/#!/surveys/create">create one</a>?
+	</div>
+</section>

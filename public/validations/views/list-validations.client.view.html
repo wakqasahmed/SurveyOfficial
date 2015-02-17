@@ -1,0 +1,54 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+
+<div class="container">
+
+			<div class="row row-offcanvas row-offcanvas-right">
+
+				<section name="sidebar" ng-include="'validations/views/partials/validation.client.sidebar.html'">
+				</section>
+
+				<div class="col-xs-12 col-sm-9">
+					<p class="pull-right visible-xs">
+						<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+					</p>
+
+					<div class="row">
+						<!-- The list validations view -->
+						<section data-ng-controller="ValidationsController" data-ng-init="find('StaffID')">
+
+							<h3 class="dark-grey">Validations List</h3>
+
+							<!-- The list of validation -->
+							<kendo-grid options="validations">
+							</kendo-grid>
+
+							<!-- The list of validation without kendo -->
+							<!--
+							<ul>
+								<li data-ng-repeat="validation in validations">
+									<a data-ng-href="#!/validations/{{validation._id}}" data-ng-bind="validation.name"></a>
+									<br>
+									<small data-ng-bind="validation.created | date:'medium'"></small>
+									<small>/</small>
+									<small data-ng-bind="validation.creator.fullName"></small>
+									<p data-ng-bind="validation.content"></p>
+								</li>
+							</ul> -->
+							<!-- If there are no validations in the list, suggest the user's create a new validation -->
+							<div data-ng-hide="!validations || validations.length">
+								No validations yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/validations/create">create one</a>?</span>
+							</div>
+						</section>
+
+					</div><!--/row-->
+				</div><!--/.col-xs-12.col-sm-9-->
+
+			</div><!--/row-->
+
+			<hr>
+
+			<footer>
+				<!--<p>© Trixcorp 2014</p>-->
+			</footer>
+
+		</div>

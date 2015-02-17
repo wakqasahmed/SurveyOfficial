@@ -1,0 +1,183 @@
+db.locations.update(
+   { "name": "Zafran" },
+   {
+      name: "Zafran",
+      rating: 1,
+      score: 1
+   },
+   { upsert: true }
+)
+
+db.locations.update(
+   { "name": "Zafran" },
+   { $set: { "brand": {
+"_id": "54d8987e5a12f2fe6eb35092",
+"name": "Zafran",
+"account": {
+"_id": "54d79d045a12f2fe6eb3508b",
+"accountNo": "35",
+"name": "Foodmark",
+"country": "UnitedArabEmirates",
+"postalCode": "25030",
+"state": "Dubai",
+"createdOn": "5/27/2014",
+"lastModified": "5/27/2015",
+"status": "active",
+"_status#": "active|inactive|finalized",
+"dealer": "trix",
+"sales_order_no": "0",
+"contactDetails": [
+{
+"phoneCell": "0505544547",
+"phoneOffice": "045014675",
+"email": "duncan.muir@cplmg.com",
+"name": "Duncan Muir"
+}
+]
+},
+"state": "Dubai",
+"phoneManager": "971501234567",
+"contactPerson": [
+{
+"phoneCell": "0505544547",
+"phoneOffice": "045014675",
+"email": "duncan.muir@cplmg.com",
+"name": "Duncan Muir"
+}
+],
+"bgImage": "http://www.dothetrix.com/surveymark/upload/images/brands/zafran.jpg",
+"modifiedOn": "2015-02-17T08:44:56.184Z"
+}
+
+
+
+    } },
+   { multi: true }
+);
+
+db.locations.update(
+   { "name": "Carluccios Mirdif" },
+   { $set: { "validations": [{
+       "_id":"123456789",
+       "name": "StaffID",
+       "data": [{
+         "text":"Waqas Ahmed",
+         "value":"Waqas Ahmed",
+         "status":"active"
+       },
+       {
+         "text":"John Doe",
+         "value":"John Doe",
+         "status":"active"
+       },
+       {
+         "text":"Bruce Wayne",
+         "value":"Bruce Wayne",
+         "status":"active"
+       },
+       {
+         "text":"Peter Parker",
+         "value":"Peter Parker",
+         "status":"active"
+       }]
+     },
+    {
+      "_id":"987654321",
+      "name": "DriverID",
+      "data": [{
+        "text":"Waqas Ahmed",
+        "value":"Waqas Ahmed",
+        "status":"active"
+      },
+      {
+        "text":"John Doe",
+        "value":"John Doe",
+        "status":"active"
+      },
+      {
+        "text":"Bruce Wayne",
+        "value":"Bruce Wayne",
+        "status":"active"
+      },
+      {
+        "text":"Peter Parker",
+        "value":"Peter Parker",
+        "status":"active"
+      }]
+}]
+    } },
+   { multi: true }
+);
+
+
+
+[{
+  "_id":"123456789",
+  "name": "StaffID",
+  "data": [{
+    "text":"Waqas Ahmed",
+    "value":"Waqas Ahmed",
+    "status":"active"
+  },
+  {
+    "text":"John Doe",
+    "value":"John Doe",
+    "status":"active"
+  },
+  {
+    "text":"Bruce Wayne",
+    "value":"Bruce Wayne",
+    "status":"active"
+  },
+  {
+    "text":"Peter Parker",
+    "value":"Peter Parker",
+    "status":"active"
+  }]
+},
+{
+  "name": "DriverID",
+  "data": [{
+    "text":"Waqas Ahmed",
+    "value":"Waqas Ahmed",
+    "status":"active"
+  },
+  {
+    "text":"John Doe",
+    "value":"John Doe",
+    "status":"active"
+  },
+  {
+    "text":"Bruce Wayne",
+    "value":"Bruce Wayne",
+    "status":"active"
+  },
+  {
+    "text":"Peter Parker",
+    "value":"Peter Parker",
+    "status":"active"
+  }]
+},
+{
+  "name": "TableNo",
+  "data": [{
+    "text":"1",
+    "value":"1",
+    "status":"active"
+  },
+  {
+    "text":"2",
+    "value":"2",
+    "status":"active"
+  },
+  {
+    "text":"3",
+    "value":"3",
+    "status":"active"
+  },
+  {
+    "text":"4",
+    "value":"4",
+    "status":"active"
+  }]
+}]

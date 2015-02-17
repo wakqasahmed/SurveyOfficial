@@ -1,0 +1,111 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'accounts/views/partials/account.client.header.html'"></div>
+
+<div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <section name="sidebar" ng-include="'accounts/views/partials/account.client.sidebar.html'">
+        </section>
+
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+
+          <div class="row">
+
+            <!-- The account view -->
+            <section data-ng-controller="AccountsController" data-ng-init="findOne()">
+              <div class="container">
+              		<div class="col-md-9">
+                      <div class="row">
+                  				<h3 class="dark-grey">Main Account Data</h3>
+                          <h5 class="dark-grey">Account Status: <span>{{account.status}}</span></h5>
+
+                          <hr>
+
+                          <h3 class="dark-grey">Name and Contact</h3>
+                          <h5 class="dark-grey">Account</h5>
+                      </div>
+
+                      <div class="row">
+                				<div class="form-group col-lg-12">
+                					<label>Account ID</label>
+                					<input type="" name="" class="form-control" id="" disabled value="{{account._id}}">
+                				</div>
+
+                				<div class="form-group col-lg-6">
+                					<label>Account No</label>
+                					<input type="" name="" class="form-control" id="" disabled value="{{account.accountNo}}">
+                				</div>
+
+                				<div class="form-group col-lg-6">
+                					<label>Name</label>
+                					<input type="" name="" class="form-control" id="" disabled value="{{account.name}}">
+                				</div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Country</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.country}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>POBox</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.postalCode}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Emirate</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.state}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Sales Order No</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.sales_order_no}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Dealer</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.dealer}}">
+                        </div>
+                      </div>
+
+                      <hr>
+
+                      <div class="row">
+                        <h5 class="dark-grey">Contact Person</h5>
+
+                        <div class="form-group col-lg-6">
+                          <label>Name</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.contactDetails[0].name}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Email</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.contactDetails[0].name}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Office phone</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.contactDetails[0].phoneOffice}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Mobile phone</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{account.contactDetails[0].phoneCell}}">
+                        </div>
+                      </div>
+              			</div>
+
+                  </div>
+            </section>
+
+          </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+      </div><!--/row-->
+
+      <div ng-include="'../../layout/footer.html'"></div>
+
+    </div>

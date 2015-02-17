@@ -1,0 +1,29 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'brands/views/partials/brand.client.header.html'"></div>
+
+<!-- The create brand view -->
+<section data-ng-controller="BrandsController">
+	<h1>New Brand</h1>
+	<!-- The new brand form -->
+	<form data-ng-submit="create()" novalidate>
+		<div>
+			<label for="name">Name</label>
+			<div>
+				<input type="text" data-ng-model="name" id="name" placeholder="Brand Name" required>
+			</div>
+		</div>
+		<div>
+			<label for="bgImage">Background Image</label>
+			<div>
+				<input data-ng-model="bgImage" id="bgImage" type="file" />
+			</div>
+		</div>
+		<div>
+			<input type="submit">
+		</div>
+		<!-- The error message element -->
+		<div data-ng-show="error">
+			<strong data-ng-bind="error"></strong>
+		</div>
+	</form>
+</section>

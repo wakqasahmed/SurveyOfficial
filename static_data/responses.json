@@ -1,0 +1,57 @@
+[
+  {
+  "surveyId": 1,
+  "responseId": 1,
+  "dateTaken": "12/23/2014",
+  "totalTimeTaken": "05:15:30",
+  "status": "complete",
+  "sourceOS": "android v4.4.2",
+  "responses": [{
+      "prompt": [{
+          "questionId": "guid1", //staffID
+          "timeTaken": "",
+          "value": "Waqas Ahmed"
+        },
+        {
+          "questionId": "guid2", //tableNumber
+          "timeTaken": "",
+          "value": "21"
+        },
+        {
+          "questionId": "guid3", //Number of guests in party
+          "timeTaken": "",
+          "value": "5"
+        }],
+
+        "en":[{
+          "questionId":1, //How do you rate our services?
+          "timeTaken": "00:02:20",
+          "value": "EXCELLENT"
+        },
+        {
+        "questionId":2,
+        "timeTaken": "00:03:50",
+        "value": "NO"
+        }]
+  },
+  {
+  "surveyId": 1,
+  "responseId": 2,
+  "dateTaken": "12/23/2014",
+  "totalTimeTaken": "05:15:30",
+  "status": "complete",
+  "sourceOS": "android v4.4.2",
+  "responses": [{
+    "qId":1,
+    "timeTaken": "00:02:20",
+    "value": "YES"
+    },
+    {
+    "qId":2,
+    "timeTaken": "00:03:50",
+    "value": "NO"
+    }]
+  }
+
+
+]

@@ -1,0 +1,148 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'locations/views/partials/location.client.header.html'"></div>
+
+<div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <section name="sidebar" ng-include="'locations/views/partials/location.client.sidebar.html'">
+        </section>
+
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+
+          <div class="row">
+
+            <!-- The location view -->
+            <section data-ng-controller="LocationsController" data-ng-init="findOne()">
+              <div class="container">
+                  <div class="col-md-9">
+                      <div class="row">
+                          <h3 class="dark-grey">Main Location Data</h3>
+                          <h5 class="dark-grey">Location Status: <span>{{location.status}}</span></h5>
+
+                          <!-- Show the editing buttons to the article creator -->
+                          <!--<div data-ng-show="authentication.user._id == article.creator._id">-->
+                          <div>
+                            <a class="btn btn-primary" href="/#!/locations/{{location._id}}/edit">Edit</a>
+                            <a class="btn btn-danger" href="/#!/locations/{{location._id}}" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?')">Delete</a>
+                          </div>
+
+                          <hr>
+
+                          <h3 class="dark-grey">Name and Contact</h3>
+                          <h5 class="dark-grey">Location</h5>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group col-lg-12">
+                          <label>Location ID</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location._id}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Account Name</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.account[0].name}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Location Name</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.name}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Country</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.country}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>POBox</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.postalCode}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Emirate</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.state}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Sales Order No</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.sales_order_no}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Timezone</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.timezone}}">
+                        </div>
+
+
+                        <div class="form-group col-lg-6">
+                          <label>Manager Phone Number</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.phoneManager}}">
+                        </div>
+
+                        <div class="form-group col-lg-12">
+                          <label>Account Structure Name</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.account[0].name}}">
+                        </div>
+
+                      </div>
+
+                      <div class="row">
+                        <h5 class="dark-grey">GPS Coordinates</h5>
+
+                        <div class="form-group col-lg-6">
+                          <label>Latitude</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.coords[1]}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Longitude</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.coords[0]}}">
+                        </div>
+
+                      </div>
+
+                      <hr>
+
+                      <div class="row">
+                        <h5 class="dark-grey">Contact Person</h5>
+
+                        <div class="form-group col-lg-6">
+                          <label>Name</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.contactPerson[0].name}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Email</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.contactPerson[0].name}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Office phone</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.contactPerson[0].phoneOffice}}">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Mobile phone</label>
+                          <input type="" name="" class="form-control" id="" disabled value="{{location.contactPerson[0].phoneCell}}">
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+            </section>
+
+          </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+      </div><!--/row-->
+
+      <div ng-include="'../../layout/footer.html'"></div>
+
+    </div>
+
+
+</section>

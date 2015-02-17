@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Use the 'title' property to render a page title  -->
+	<title><%= title %></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1411/styles/kendo.common-bootstrap.min.css" />
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1411/styles/kendo.bootstrap.min.css" />
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1411/styles/kendo.dataviz.min.css" />
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1411/styles/kendo.dataviz.bootstrap.min.css" />
+
+  <script src="/lib/jquery/dist/jquery.min.js"></script>
+	<script src="http://cdn.kendostatic.com/2014.3.1411/js/angular.min.js"></script>
+  <script src="http://cdn.kendostatic.com/2014.3.1411/js/kendo.all.min.js"></script>
+  <script src="http://cdn.kendostatic.com/2014.3.1411/js/kendo.timezones.min.js"></script>
+	<!--Pulling Awesome Font -->
+	<link rel="stylesheet" href="/lib/components-font-awesome/css/font-awesome.min.css">
+
+	<style>
+		@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+		body {
+		  background-color:#fff;
+		  -webkit-font-smoothing: antialiased;
+		  font: normal 14px Roboto,arial,sans-serif;
+		}
+
+		.container {
+		    padding: 25px;
+		    position: fixed;
+		}
+
+		.form-login {
+		    background-color: #EDEDED;
+		    padding-top: 10px;
+		    padding-bottom: 20px;
+		    padding-left: 20px;
+		    padding-right: 20px;
+		    border-radius: 15px;
+		    border-color:#d2d2d2;
+		    border-width: 5px;
+		    box-shadow:0 1px 0 #cfcfcf;
+		}
+
+		h4 {
+		 border:0 solid #fff;
+		 border-bottom-width:1px;
+		 padding-bottom:10px;
+		 text-align: center;
+		}
+
+		.form-control {
+		    border-radius: 10px;
+		}
+
+		.wrapper {
+		    text-align: center;
+		}
+	</style>
+
+</head>
+<body>
+  	<!-- Display flash messages  -->
+	<% for(var i in messages) { %>
+	   <div class="flash"><%= messages[i] %></div>
+	<% } %>
+
+<div class="container">
+		<div class="row">
+				<div class="col-md-offset-5 col-md-3">
+					<div class="form-login">
+						<h4>Welcome back.</h4>
+						<!-- Render the signin form  -->
+						<form action="/signin" method="post" kendo-validator class="login">
+          		<input name="username" class="form-control input-sm chat-input" placeholder="Login Username" required validationMessage="Please enter {0}" />
+							<br />
+          		<input name="password" type="password" class="form-control input-sm chat-input" placeholder="Login Password" required validationMessage="Please enter {0}" />
+							<br />
+							<div class="wrapper">
+							<span class="group-btn">
+									<button class="btn btn-primary btn-md">login <i class="fa fa-sign-in"></i></button>
+							</span>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+</div>
+
+	<!-- Render the OAuth authentication links  -->
+	<!--
+	<a href="/oauth/facebook">Sign in with Facebook</a>
+	<a href="/oauth/twitter">Sign in with Twitter</a>
+	<a href="/oauth/google">Sign in with Google</a>
+	-->
+</body>
+</html>

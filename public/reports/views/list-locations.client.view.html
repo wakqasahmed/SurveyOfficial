@@ -1,0 +1,54 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+
+<div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <section name="sidebar" ng-include="'locations/views/partials/location.client.sidebar.html'">
+        </section>
+
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+
+          <div class="row">
+            <!-- The list locations view -->
+            <section data-ng-controller="LocationsController" data-ng-init="find()">
+
+              <h3 class="dark-grey">Locations List</h3>
+
+              <!-- The list of location -->
+              <kendo-grid options="locations">
+              </kendo-grid>
+
+              <!-- The list of location without kendo -->
+              <!--
+              <ul>
+                <li data-ng-repeat="location in locations">
+                  <a data-ng-href="#!/locations/{{location._id}}" data-ng-bind="location.name"></a>
+                  <br>
+                  <small data-ng-bind="location.created | date:'medium'"></small>
+                  <small>/</small>
+                  <small data-ng-bind="location.creator.fullName"></small>
+                  <p data-ng-bind="location.content"></p>
+                </li>
+              </ul> -->
+              <!-- If there are no locations in the list, suggest the user's create a new location -->
+              <div data-ng-hide="!locations || locations.length">
+                No locations yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/locations/create">create one</a>?</span>
+              </div>
+            </section>
+
+          </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <!--<p>© Trixcorp 2014</p>-->
+      </footer>
+
+    </div>

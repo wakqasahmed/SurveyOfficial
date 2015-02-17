@@ -1,0 +1,133 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'locations/views/partials/location.client.header.html'"></div>
+
+<div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <section name="sidebar" ng-include="'locations/views/partials/location.client.sidebar.html'">
+        </section>
+
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+
+          <div class="row">
+
+            <!-- The location view -->
+            <section data-ng-controller="knownItemsController" data-ng-init="findOneValidation()">
+              <div class="container">
+                  <div class="col-md-9">
+                      <div class="row">
+                          <h3 class="dark-grey">Validation Data</h3>
+                          <h5 class="dark-grey">Location Name: <span>{{location.name}}</span></h5>
+
+                          <div>
+                            <a class="btn btn-primary" href="/#!/locations/{{location._id}}/edit">Edit</a>
+                            <a class="btn btn-danger" href="/#!/locations/{{location._id}}" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?')">Delete</a>
+                          </div>
+
+                          <hr>
+
+                          <h3 class="dark-grey">Name and Contact</h3>
+                          <h5 class="dark-grey">Location</h5>
+                      </div>
+
+                      <hr>
+
+                      <div class="row">
+
+                        <!--AngularJS SPA CRUD table-->
+                        <table class="table table-condensed table-hover table-striped" ng-hide="loading">
+                            <!-- Header-->
+                            <tr class="panel-title">
+                                <!--Buttons column-->
+                                <th style="width: 100px;">
+                                    <!--Add + Cancel-->
+                                    <div class="btn-toolbar"><i class="btn glyphicon glyphicon-plus" ng-click="toggleAddMode()" title="Add" ng-hide="addMode"></i></div>
+                                    <div class="btn-toolbar"><i class="btn glyphicon glyphicon-minus" ng-click="toggleAddMode()" title="Cancel" ng-show="addMode"></i></div>
+                                </th>
+
+                                <!-- Content columns-->
+                                <th style="vertical-align:middle">Name</th>
+                            </tr>
+
+                            <!--Row with the new item-->
+                            <tr ng-show="addMode" style="background: rgb(251, 244, 222)">
+                                <!--Buttons column-->
+                                <td>
+                                    <div class="btn-toolbar">
+                                        <!--Create + Cancel-->
+                                        <div class="btn-group">
+                                            <i class="btn glyphicon glyphicon-floppy-disk" ng-click="createItem()" title="Create" ng-disabled="addForm.$invalid"></i>
+                                            <i class="btn glyphicon glyphicon-remove" ng-click="toggleAddMode()" title="Cancel"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!-- Content columns-->
+                                <td>
+                                    <form name="addForm">
+                                        <input type="text" ng-model="newItem.name" class="form-control" required placeholder="new item..." ng-keydown="saveOnEnter(knownItem, $event)" required />
+                                    </form>
+                                </td>
+                            </tr>
+
+                            <!--Content-->
+                            <p> {{validationDoc | json}}</p>
+                            <tr ng-repeat="knownItem in validationDoc">
+                                <!--Buttons column-->
+                                <td>
+                                    <!--Edit + Delete-->
+                                    <div class="btn-toolbar" ng-show="knownItem.editMode == null || knownItem.editMode == false">
+                                        <div class="btn-group">
+                                            <i class="btn glyphicon glyphicon-edit" ng-click="toggleEditMode(knownItem)" title="Edit"></i>
+                                            <i class="btn glyphicon glyphicon-trash" ng-click="deleteItem(knownItem)" title="Delete" data-toggle="modal"></i>
+                                        </div>
+                                    </div>
+
+                                    <!--Save + Cancel-->
+                                    <div class="btn-toolbar" ng-show="knownItem.editMode">
+                                        <div class="btn-group">
+                                            <i class="btn glyphicon glyphicon-floppy-disk" ng-click="updateItem(knownItem)" title="Save" ng-disabled="editForm.$invalid"></i>
+                                            <i class="btn glyphicon glyphicon-remove" ng-click="toggleEditMode(knownItem)" title="Cancel"></i>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Content columns-->
+                                <td style="vertical-align:middle">
+                                    <!--Name read mode-->
+                                    <span ng-show="knownItem.editMode == null || knownItem.editMode == false" ng-dblclick="toggleEditMode(knownItem)">
+                                        <a data-ng-href="#!/locations/{{knownItems._id}}/{{knownItem._id}}">{{knownItem.text}}</a>
+                                    </span>
+                                    <!--Name edit mode-->
+                                    <form name="editForm">
+                                        <input ng-model="knownItem.name" ng-show="knownItem.editMode" required ng-keydown="updateOnEnter(knownItem, $event)" class="form-control" />
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!--Loading indicator-->
+                        <img src="../images/loading.gif" ng-show="loading" class="center-block" title="Loading..." />
+
+                    </div>
+
+
+                    </div>
+
+                  </div>
+            </section>
+
+          </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+      </div><!--/row-->
+
+      <div ng-include="'../../layout/footer.html'"></div>
+
+    </div>
+
+
+</section>

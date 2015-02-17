@@ -1,0 +1,102 @@
+<div class="container" id="dashboard">
+
+  <div class="row">
+
+    <!-- side column -->
+    <div kendo-sortable class="col-sm-4 placeholder" id="side"
+         k-connect-with="'#main'"
+         k-placeholder="placeholder"
+         k-hint="hint"
+         k-filter="'.widget'"
+         k-on-change="dropped(kendoEvent)">
+<!--
+      <div class="widget">
+        <div kendo-panel-bar>
+          <li class="k-state-active">
+            <span class="k-link k-state-selected">Sleep</span>
+            <div>
+              <h4>Hours Spent Per Day</h4>
+              <div kendo-linear-gauge class="chart" k-theme="'bootstrap'" k-pointer="{ value: 16 }" k-scale="{ max: 24, vertical: false }"></div>
+            </div>
+          </li>
+        </div>
+      </div>
+-->
+
+      <div class="widget">
+        <ul kendo-panel-bar>
+          <li class="k-state-active">
+            <span class="k-link k-state-selected">Number of surveys registered</span>
+            <div>
+              <h4>Number Of Surveys (Millions)</h4>
+              <div kendo-linear-gauge class="chart" k-theme="'bootstrap'" k-pointer="{ value: 473 }" k-scale="{ max: 1000, vertical: false }"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    <!-- end side column -->
+    </div>
+
+    <!-- main column -->
+    <div kendo-sortable class="col-sm-8 placeholder" id="main"
+         k-connect-with="'#side'"
+         k-placeholder="placeholder"
+         k-hint="hint"
+         k-filter="'.widget'"
+         k-on-change="dropped(kendoEvent)">
+
+      <div class="widget">
+        <ul kendo-panel-bar>
+          <li class="k-state-active">
+            <span class="k-link k-state-selected">Surveys Picture </span>
+            <div class="widget-centered">
+             <center><img src="http://www.surveyfunnel.com/wdp/wp-content/uploads/2014/04/survey2.gif"/></center>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="widget">
+        <ul kendo-panel-bar>
+          <li class="k-state-active">
+            <span class="k-link k-state-selected">Ownership By Brand</span>
+            <div>
+              <div kendo-chart class="chart"
+                  k-theme="'bootstrap'"
+                  k-series-defaults="{ type: 'column' }"
+                  k-series="[{ field: 'value', tooltip: { visible: true, format: '000,' } }]"
+                  k-value-axis="{ labels: { template: '#: data.value/1000000 # M' } }"
+
+                  k-data-source="country"
+                  k-category-axis="{ field: 'country', majorGridLines: false }"
+                  k-title="'Owernship By Brand'" ></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="widget">
+        <ul kendo-panel-bar>
+          <li class="k-state-active">
+            <span class="k-link k-state-selected">Kinds of Survey</span>
+            <div>
+              <div kendo-chart
+                  k-theme="'bootstrap'"
+                  k-data-source="pct"
+                  k-series-defaults="{ type: 'pie' }"
+                  k-series="[{ field: 'value', categoryField: 'type', tooltip: { visible: true, template: '#: category # #: value #' } }]"
+                  k-title="'Survey Kind Ownership'"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    <!-- end main column -->
+    </div>
+
+  <!-- end row -->
+  </div>
+
+<!-- end container -->
+</div>

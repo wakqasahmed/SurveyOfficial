@@ -1,0 +1,69 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.widget {
+  margin-bottom: 10px;
+}
+
+.widget .k-panelbar .k-content {
+  padding: 10px;
+}
+
+.placeholder {
+  min-height: 100px;
+}
+
+.widget.placeholder {
+  opacity: 0.4;
+  border: 1px dashed #a6a6a6;
+}
+
+.widget-centered > img {
+  margin: auto;
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  z-index: 1024;
+  width: 100%;
+}
+
+#dashboard {
+  margin-top: 60px;
+}
+
+.km-navbar {
+  background: #428bca;
+  color: white;
+}
+
+.list-group-item.active a {color: #fff}
+
+.form-fields .accordion-group{
+  border: 1px solid #AAAAAA;
+}
+
+.form-fields .accordion-heading{
+  background-color: #E2E2E2;
+}
+
+.accordion-edit div, .field div{
+  line-height: 35px;
+}
+
+.form-properties .row {
+  line-height: 35px;
+}
+
+.form-field-label {
+  display: inline;
+}
+
+.required-error {
+  color:red;
+  font-size: smaller;
+}

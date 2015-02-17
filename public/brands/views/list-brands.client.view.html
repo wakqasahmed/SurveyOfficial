@@ -1,0 +1,54 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+
+<div class="container">
+
+			<div class="row row-offcanvas row-offcanvas-right">
+
+				<section name="sidebar" ng-include="'brands/views/partials/brand.client.sidebar.html'">
+				</section>
+
+				<div class="col-xs-12 col-sm-9">
+					<p class="pull-right visible-xs">
+						<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+					</p>
+
+					<div class="row">
+						<!-- The list brands view -->
+						<section data-ng-controller="BrandsController" data-ng-init="find()">
+
+							<h3 class="dark-grey">Brands List</h3>
+
+							<!-- The list of brand -->
+							<kendo-grid options="brands">
+							</kendo-grid>
+
+							<!-- The list of brand without kendo -->
+							<!--
+							<ul>
+								<li data-ng-repeat="brand in brands">
+									<a data-ng-href="#!/brands/{{brand._id}}" data-ng-bind="brand.name"></a>
+									<br>
+									<small data-ng-bind="brand.created | date:'medium'"></small>
+									<small>/</small>
+									<small data-ng-bind="brand.creator.fullName"></small>
+									<p data-ng-bind="brand.content"></p>
+								</li>
+							</ul> -->
+							<!-- If there are no brands in the list, suggest the user's create a new brand -->
+							<div data-ng-hide="!brands || brands.length">
+								No brands yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/brands/create">create one</a>?</span>
+							</div>
+						</section>
+
+					</div><!--/row-->
+				</div><!--/.col-xs-12.col-sm-9-->
+
+			</div><!--/row-->
+
+			<hr>
+
+			<footer>
+				<!--<p>© Trixcorp 2014</p>-->
+			</footer>
+
+		</div>

@@ -1,0 +1,120 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'validations/views/partials/validation.client.header.html'"></div>
+
+<div class="container">
+
+			<div class="row row-offcanvas row-offcanvas-right">
+
+				<section name="sidebar" ng-include="'validations/views/partials/validation.client.sidebar.html'">
+				</section>
+
+				<div class="col-xs-12 col-sm-9">
+					<p class="pull-right visible-xs">
+						<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+					</p>
+
+					<div class="row">
+
+						<!-- The validation view -->
+						<section data-ng-controller="ValidationsController" data-ng-init="findOne()">
+							<!-- The edit validation form -->
+							<form data-ng-submit="update()" novalidate>
+
+							<div class="container">
+									<div class="col-md-9">
+											<div class="row">
+													<h3 class="dark-grey">Edit Validation</h3>
+													<!--<h5 class="dark-grey">Validation Status: <span>{{validation.status}}</span></h5>-->
+
+													<hr>
+
+													<h3 class="dark-grey">Name and Contact</h3>
+													<h5 class="dark-grey">Validation</h5>
+											</div>
+
+											<div class="row">
+												<!--
+												<div class="form-group col-lg-12">
+													<label>Validation ID</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation._id}}">
+												</div>
+												-->
+
+												<div class="form-group col-lg-6">
+													<label>Account Name</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation.account[0].name}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Validation Name</label>
+													<input type="" name="" class="form-control" id="" value="{{validation.name}}">
+												</div>
+
+												<div class="form-group col-lg-12">
+													<label>Background Image</label>
+													<input class="btn btn-success" data-ng-model="bgImage" id="bgImage" type="file" name="bgImage" class="form-control"/>
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Country</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation.country}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Emirate</label>
+													<input type="" name="" class="form-control" id="" value="{{validation.state}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Sales Order No</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation.account[0].sales_order_no}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Manager Phone Number</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation.phoneManager}}">
+												</div>
+
+											</div>
+
+											<hr>
+
+											<div class="row">
+												<h5 class="dark-grey">Contact Person</h5>
+
+												<div class="form-group col-lg-6">
+													<label>Name</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation.contactPerson[0].name}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Email</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation.contactPerson[0].email}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Office phone</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation.contactPerson[0].phoneOffice}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Mobile phone</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{validation.contactPerson[0].phoneCell}}">
+												</div>
+											</div>
+										</div>
+
+									</div>
+						</section>
+
+					</div><!--/row-->
+				</div><!--/.col-xs-12.col-sm-9-->
+
+			</div><!--/row-->
+
+			<div ng-include="'../../layout/footer.html'"></div>
+
+		</div>
+
+
+</section>

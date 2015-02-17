@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org">
+<head>
+	<!-- Use the 'title' property to render a page title  -->
+	<title><%= title %> - Surveymark Admin Panel</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link href="/lib/bootswatch-dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1411/styles/kendo.common-bootstrap.min.css" />
+<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1411/styles/kendo.bootstrap.min.css" />
+<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1411/styles/kendo.dataviz.min.css" />
+<link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1411/styles/kendo.dataviz.bootstrap.min.css" />
+<!--Pulling Awesome Font -->
+<!--<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
+<link rel="stylesheet" href="/lib/components-font-awesome/css/font-awesome.min.css">
+<link type="text/stylesheet" href="/content/style.css" rel="stylesheet">
+
+<style>
+	@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+	body {
+		background-color:#fff;
+		-webkit-font-smoothing: antialiased;
+		font: normal 14px Roboto,arial,sans-serif;
+		padding-top: 70px;
+	}
+</style>
+
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="/lib/bootswatch-dist/js/bootstrap.min.js"></script>
+
+
+<!-- Toastr for Notifications in Validation module -->
+<link rel="stylesheet" href="/lib/toastr/toastr.css">
+<script src="/lib/toastr/toastr.js"></script>
+
+<!--<script src="/lib/angular/angular.min.js"></script>-->
+<!--<script src="http://cdn.kendostatic.com/2014.3.1316/js/angular.min.js"></script>-->
+<script src="http://cdn.kendostatic.com/2014.3.1411/js/angular.min.js"></script>
+<script src="http://cdn.kendostatic.com/2014.3.1411/js/kendo.all.min.js"></script>
+<script src="http://cdn.kendostatic.com/2014.3.1411/js/kendo.timezones.min.js"></script>
+
+<script type="text/javascript" src="/lib/angular-route/angular-route.min.js"></script>
+<script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
+
+</head>
+<body>
+
+	<!-- Render AngularJS views  -->
+	<section ng-view></section>
+
+	<!-- Render the user object -->
+	<script type="text/javascript">
+		window.user = <%- user || 'null' %>;
+	</script>
+
+	<!-- Load local libraries -->
+	<!--
+	<script type="text/javascript" src="/lib/angular/angular.js"></script>
+	<script type="text/javascript" src="/lib/angular-route/angular-route.js"></script>
+	<script type="text/javascript" src="/lib/angular-resource/angular-resource.js"></script>
+-->
+
+	<!-- Load local kendo libraries -->
+	<!--
+	<script type="text/javascript" src="/scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="/scripts/kendo.all.min.js"></script>
+	<script type="text/javascript" src="/scripts/angular-kendo.js"></script>
+-->
+
+	<!-- Load the articles module -->
+	<script type="text/javascript" src="/articles/articles.client.module.js"></script>
+	<script type="text/javascript" src="/articles/controllers/articles.client.controller.js"></script>
+	<script type="text/javascript" src="/articles/services/articles.client.service.js"></script>
+	<script type="text/javascript" src="/articles/config/articles.client.routes.js"></script>
+
+	<!-- Load the accounts module -->
+	<script type="text/javascript" src="/accounts/accounts.client.module.js"></script>
+	<script type="text/javascript" src="/accounts/controllers/accounts.client.controller.js"></script>
+	<script type="text/javascript" src="/accounts/services/accounts.client.service.js"></script>
+	<script type="text/javascript" src="/accounts/config/accounts.client.routes.js"></script>
+
+
+	<!-- Load the locations module -->
+	<script type="text/javascript" src="/locations/locations.client.module.js"></script>
+	<script type="text/javascript" src="/locations/controllers/locations.client.controller.js"></script>
+	<script type="text/javascript" src="/locations/services/locations.client.service.js"></script>
+	<script type="text/javascript" src="/locations/config/locations.client.routes.js"></script>
+
+	<!-- Load the validations embedded with locations module -->
+	<script type="text/javascript" src="/locations/controllers/validations.client.controller.js"></script>
+	<script type="text/javascript" src="/locations/services/validations.client.service.js"></script>
+
+
+	<!-- Load the brands module -->
+	<script type="text/javascript" src="/brands/brands.client.module.js"></script>
+	<script type="text/javascript" src="/brands/controllers/brands.client.controller.js"></script>
+	<script type="text/javascript" src="/brands/services/brands.client.service.js"></script>
+	<script type="text/javascript" src="/brands/config/brands.client.routes.js"></script>
+
+	<!-- Load the validations module -->
+	<script type="text/javascript" src="/validations/validations.client.module.js"></script>
+	<script type="text/javascript" src="/validations/controllers/validations.client.controller.js"></script>
+	<script type="text/javascript" src="/validations/services/validations.client.service.js"></script>
+	<script type="text/javascript" src="/validations/config/validations.client.routes.js"></script>
+
+	<!-- Load the surveys module -->
+	<script type="text/javascript" src="/surveys/surveys.client.module.js"></script>
+	<script type="text/javascript" src="/surveys/controllers/surveys.client.controller.js"></script>
+	<script type="text/javascript" src="/surveys/services/surveys.client.service.js"></script>
+	<script type="text/javascript" src="/surveys/config/surveys.client.routes.js"></script>
+
+	<!--
+  <script type="text/javascript" src="scripts/controllers/main.js"></script>
+  <script type="text/javascript" src="scripts/controllers/create.js"></script>
+  <script type="text/javascript" src="scripts/controllers/view.js"></script>
+  <script type="text/javascript" src="scripts/controllers/header.js"></script>
+
+  <script type="text/javascript" src="scripts/services/form-service.js"></script>
+	-->
+
+  <script type="text/javascript" src="surveys/directives/form-directive.js"></script>
+  <script type="text/javascript" src="surveys/directives/field-directive.js"></script>
+
+  <script type="text/javascript" src="content/ui-bootstrap-tpls-0.12.0.min.js"></script>
+
+
+
+	<!-- Load the reports module -->
+	<!--
+	<script type="text/javascript" src="/reports/reports.client.module.js"></script>
+	<script type="text/javascript" src="/reports/controllers/reports.client.controller.js"></script>
+	<script type="text/javascript" src="/reports/services/reports.client.service.js"></script>
+	<script type="text/javascript" src="/reports/config/reports.client.routes.js"></script>
+	-->
+
+	<!-- Load the dashboard module -->
+	<script type="text/javascript" src="/dashboard/dashboard.client.module.js"></script>
+	<script type="text/javascript" src="/dashboard/controllers/dashboard.client.controller.js"></script>
+	<script type="text/javascript" src="/dashboard/config/dashboard.client.routes.js"></script>
+
+	<!-- Load the users module -->
+	<script type="text/javascript" src="/users/users.client.module.js"></script>
+	<script type="text/javascript" src="/users/services/authentication.client.service.js"></script>
+
+	<!-- Load the nav module -->
+	<script type="text/javascript" src="/layout/nav.client.module.js"></script>
+	<script type="text/javascript" src="/layout/nav.client.controller.js"></script>
+
+	<!-- Load the dialog module -->
+	<script type="text/javascript" src="/layout/dialog.client.module.js"></script>
+	<script type="text/javascript" src="/layout/dialog.client.service.js"></script>
+
+
+	<!-- Bootstrap AngularJS application -->
+	<script type="text/javascript" src="/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'brands/views/partials/brand.client.header.html'"></div>
+
+<!-- The brand view -->
+<section data-ng-controller="BrandsController" data-ng-init="findOne()">
+
+<div id="Main Brand data" style="padding: 20px;">
+    <div class="titleA">
+        Main brand data
+    </div>
+    <div style="margin: 10px 0 0 0;">
+		<span id="brandStatus" class="titleB">Brand status:</span>
+		<span id="TableUploadPanel_ctl00_BrandStatusLabelID">{{brand.status}}</span>
+    </div>
+    <div class="lineA" style="margin-top: 10px; margin-bottom: 10px;">
+    </div>
+    <div class="titleA">
+        Name and contact
+    </div>
+    <div class="titleB" style="margin: 10px 0 10px 0;">
+        Brand
+    </div>
+    <div id="formNameAndContact" style="width: 700px;">
+        <table id="TableUploadPanel_ctl00_brandMainRowsControl1" class="textData" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+	<tbody><tr>
+	<td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Account name:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Account name" class="labelReadOnly">Foodmark</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td><td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Brand ID:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Brand ID" class="labelReadOnly">{{brand._id}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr><tr>
+	<td colspan="2" style="width:100%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Brand name:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Brand name" class="labelReadOnly" innerid="Name">{{brand.name}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr>
+</tbody></table>
+        <div id="TableUploadPanel_ctl00_adrsUpdatePanel">
+
+
+<table class="textData" cellspacing="0" cellpadding="0" border="0" style="border-width: 0px;
+    border-collapse: collapse; border-collapse: separate; width: 100%;">
+    <tbody><tr>
+        <td style="width: 50%;">
+            <table id="TableUploadPanel_ctl00_newBrandAddressCtrl_CountryTable" class="textDataTable" cellspacing="0" cellpadding="0" border="0" style="border-width: 0px;
+                border-collapse: collapse; border-collapse: separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width: 100px;">
+                        <span>Country:&nbsp;</span>
+                    </td>
+			<td class="textDataTdInfoRequired">
+                        <span>&nbsp;</span>
+                    </td>
+			<td class="textDataTdInput">
+
+                        <span id="TableUploadPanel_ctl00_newBrandAddressCtrl_CountryComboLabel" class="labelReadOnly">{{brand.country}}</span>
+                    </td>
+		</tr>
+		<tr>
+			<td colspan="3">
+                    </td>
+		</tr>
+	</tbody></table>
+
+        </td>
+        <td style="width: 50%;">&nbsp;</td>
+    </tr>
+</tbody></table>
+<div id="TableUploadPanel_ctl00_newBrandAddressCtrl_DivAdrs"><table id="TableUploadPanel_ctl00_newBrandAddressCtrl_RcAuto" class="textData" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;width:100%;border-collapse:separate;">
+		<tbody><tr>
+	<td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>POBox:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="POBox" class="labelReadOnly" innerid="14">{{brand.postalCode}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td><td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span id="TableUploadPanel_ctl00_newBrandAddressCtrl_RcAuto_CtrlEmpty0" innerid="Empty0"></span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr><tr>
+	<td colspan="2" style="width:100%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Emirate:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Emirate" class="labelReadOnly" innerid="15">{{brand.state}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr>
+	</tbody></table></div>
+
+
+</div>
+        <table id="TableUploadPanel_ctl00_brandMainRowsControl11" class="textData" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+	<tbody><tr>
+	<td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Sales order no.:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Sales order no." class="labelReadOnly" innerid="SalesOrderNumber"></span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td><td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Timezone:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Timezone" class="labelReadOnly" innerid="INFTimezoneId">{{brand.timezone}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr>
+</tbody></table>
+        <table id="TableUploadPanel_ctl00_AdditionInfoTabledRowsControl" class="textData" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+	<tbody><tr>
+	<td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:175px;max-width:175px;"><span>WiFi system ID:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="WiFi system ID" class="labelReadOnly" innerid="SystemId">0</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td><td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:175px;max-width:175px;"><span>Manager pager number:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Manager pager number" class="labelReadOnly" innerid="ManagerPagerNo"></span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr><tr>
+	<td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:175px;max-width:175px;"><span>&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span id="TableUploadPanel_ctl00_AdditionInfoTabledRowsControl_CtrlInnerRowControl1" innerid="InnerRowControl1"></span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td><td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:175px;max-width:175px;"><span>Manager phone number:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Manager phone number" class="labelReadOnly" innerid="ManagerPhoneNo">{{brand.phoneManager}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr><tr>
+	<td colspan="2" style="width:100%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:175px;max-width:175px;"><span>Account structure group:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Account structure group" class="labelReadOnly">Foodmark</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr>
+</tbody></table>
+        <div class="titleB" style="margin: 10px 0 10px 0;">
+            GPS coordinates
+        </div>
+        <table id="TableUploadPanel_ctl00_brandMainGpsCoordinates" class="textData" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+	<tbody><tr>
+	<td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Latitude:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Latitude" class="labelReadOnly" innerid="GPSLat">{{brand.coords[0]}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td><td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Longitude:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Longitude" class="labelReadOnly" innerid="GPSLong">{{brand.coords[1]}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr>
+</tbody></table>
+        <div class="lineA" style="margin-top: 10px; margin-bottom: 10px;">
+        </div>
+        <div class="titleB" style="margin: 0 0 10px 0;">
+            Contact person
+        </div>
+        <table id="TableUploadPanel_ctl00_brandMainRowsControl2" class="textData" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+	<tbody><tr>
+	<td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Name:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Name" class="labelReadOnly" innerid="Name">{{brand.contactPerson[0].name}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td><td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Office phone:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Office phone" class="labelReadOnly" innerid="OfficePhone">{{brand.contactPerson[0].phoneOffice}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr><tr>
+	<td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>E-mail:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="E-mail" class="labelReadOnly" innerid="Email">{{brand.contactPerson[0].email}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td><td style="width:50%;"><table class="textDataTable" cellspacing="0" cellpadding="0" style="border-width:0px;border-collapse:collapse;border-collapse:separate;">
+		<tbody><tr>
+			<td class="textDataTdLabel" style="width:100px;max-width:100px;"><span>Mobile phone:&nbsp;</span></td><td class="textDataTdInfoRequired"><span>&nbsp;</span></td><td class="textDataTdInput"><span title="Mobile phone" class="labelReadOnly" innerid="MobilePhone">{{brand.contactPerson[0].phoneCell}}</span></td>
+		</tr><tr>
+			<td colspan="3"></td>
+		</tr>
+	</tbody></table></td>
+</tr><tr>
+	<td class="textDataTdSeparator" colspan="2"></td>
+</tr>
+</tbody></table>
+    </div>
+</div>
+
+
+</section>

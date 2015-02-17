@@ -1,0 +1,92 @@
+[
+  {
+  "location": "Carluccio",
+  "responseId": 1,
+  "responses": [{
+      "prompt": [{
+          "questionId": "guid1", //staffID
+          "timeTaken": "",
+          "value": "Waqas Ahmed"
+        }],
+        "en":[{
+          "questionId":"guid2", //How do you rate our services?
+          "timeTaken": "00:02:20",
+          "value": "EXCELLENT"
+        }]
+  },
+  {
+  "location": "Carluccio",
+  "responseId": 2,
+  "responses": [{
+      "prompt": [{
+          "questionId": "guid1", //staffID
+          "timeTaken": "",
+          "value": "Waqas Ahmed"
+        }],
+        "en":[{
+          "questionId":"guid2", //How do you rate our services?
+          "timeTaken": "00:02:20",
+          "value": "EXCELLENT"
+        }]
+  },
+  {
+  "location": "Carluccio",
+  "responseId": 3,
+  "responses": [{
+      "prompt": [{
+          "questionId": "guid1", //staffID
+          "timeTaken": "",
+          "value": "Waqas Ahmed"
+        }],
+        "en":[{
+          "questionId":"guid2", //How do you rate our services?
+          "timeTaken": "00:02:20",
+          "value": "GOOD"
+        }]
+  },
+  {
+  "location": "Carluccio",
+  "responseId": 4,
+  "responses": [{
+      "prompt": [{
+          "questionId": "guid1", //staffID
+          "timeTaken": "",
+          "value": "Waqas Ahmed"
+        }],
+        "en":[{
+          "questionId":"guid2", //How do you rate our services?
+          "timeTaken": "00:02:20",
+          "value": "POOR"
+        }]
+  },
+  {
+  "location": "Carluccio",
+  "responseId": 5,
+  "responses": [{
+      "prompt": [{
+          "questionId": "guid1", //staffID
+          "timeTaken": "",
+          "value": "Waqas Ahmed"
+        }],
+        "en":[{
+          "questionId":"guid2", //How do you rate our services?
+          "timeTaken": "00:02:20",
+          "value": "FAIR"
+        }]
+  },
+  {
+  "location": "Carluccio",
+  "responseId": 6,
+  "responses": [{
+      "prompt": [{
+          "questionId": "guid1", //staffID
+          "timeTaken": "",
+          "value": "Zakauddin"
+        }],
+        "en":[{
+          "questionId":"guid2", //How do you rate our services?
+          "timeTaken": "00:02:20",
+          "value": "GOOD"
+        }]
+  }  
+]
