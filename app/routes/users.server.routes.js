@@ -24,7 +24,7 @@ module.exports = function(app) {
 			//res.redirect('/users/' + req.user.username);
 	    if (!req.user) {
 				//console.log(res);
-				sendJSONresponse(res, 404, {"message": "locationid not found"});
+				sendJSONresponse(res, 404, {"message": "user not found"});
 			}
 			else {
 				//console.log(req.user);
