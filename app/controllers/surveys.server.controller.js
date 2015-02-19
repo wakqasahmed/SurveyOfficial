@@ -69,7 +69,7 @@ exports.listByLocationId = function(req, res) {
 				res.send({state: 'failure', surveys: null, message: "No survey found"});
 			}
 			else {
-				res.send({state: 'success', surveys: req.surveys ? req.surveys : null});
+				res.send({state: 'success', surveys: surveys ? surveys : null});
 			}
 		}
 	});
