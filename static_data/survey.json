@@ -1,0 +1,188 @@
+{
+    "accountId": "54e33c26d73255d09d000002",
+    "questions": [
+        "ar": [
+            {
+                "title": "ردك هو عنصر أساسي بالنسبة لنا. هل ترغب في المشاركة في استبيان سريع؟",
+                "type": "radio",
+                "order": 1,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "نعم",
+                        "value": "نعم",
+                        "goto": null
+                    },
+                    {
+                        "text": "لا",
+                        "value": "لا",
+                        "goto": 4
+                    },
+                    {
+                        "text": "رفض",
+                        "value": "رفض",
+                        "goto": 4
+                    }
+                ]
+            },
+            {
+                "title": "هل تلقيت تحية ودية؟",
+                "type": "radio",
+                "order": 2,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "نعم",
+                        "value": "نعم",
+                        "goto": null
+                    },
+                    {
+                        "text": "لا",
+                        "value": "لا",
+                        "goto": null
+                    }
+                ]
+            },
+            {
+                "title": "لم مدير / مشرف زيارة الجدول الخاص بك؟",
+                "type": "radio",
+                "order": 3,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "نعم",
+                        "value": "نعم",
+                        "goto": null
+                    },
+                    {
+                        "text": "لا",
+                        "value": "لا",
+                        "goto": null
+                    }
+                ]
+            },
+            {
+                "title": "شكرا",
+                "type": "radio",
+                "order": 4,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "حسن",
+                        "value": "حسن",
+                        "goto": null
+                    }
+                ]
+            }
+        ],
+        "en": [
+            {
+                "title": "Your Feedback is absolutely key to us Mr. Raqib. Would you like to participate in a quick questionnaire?",
+                "type": "radio",
+                "order": 1,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "YES",
+                        "value": "YES",
+                        "goto": null
+                    },
+                    {
+                        "text": "NO",
+                        "value": "NO",
+                        "goto": 15
+                    },
+                    {
+                        "text": "DECLINED",
+                        "value": "DECLINED",
+                        "goto": 15
+                    }
+                ]
+            },
+            {
+                "title": "Did you receive a friendly greeting?",
+                "type": "radio",
+                "order": 2,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "YES",
+                        "value": "YES",
+                        "goto": null
+                    },
+                    {
+                        "text": "NO",
+                        "value": "NO",
+                        "goto": null
+                    }
+                ]
+            },
+            {
+                "title": "Did a manager/supervisor visit your table?",
+                "type": "radio",
+                "order": 3,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "YES",
+                        "value": "YES",
+                        "goto": null
+                    },
+                    {
+                        "text": "NO",
+                        "value": "NO",
+                        "goto": null
+                    }
+                ]
+            },
+            {
+                "title": "What should be the question??",
+                "type": "radio",
+                "order": 2,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "YES",
+                        "value": "YES",
+                        "goto": null
+                    },
+                    {
+                        "text": "NO",
+                        "value": "NO",
+                        "goto": null
+                    }
+                ]
+            },
+            {
+                "title": "Thanks for being with us",
+                "type": "radio",
+                "order": 4,
+                "required": true,
+                "disabled": false,
+                "choices": [
+                    {
+                        "text": "OK",
+                        "value": "OK",
+                        "goto": null
+                    }
+                ]
+            }
+        ]
+      ],
+        "endDate": "12/22/2015",
+        "locationIds": [
+            "54e33a5cd73255f40e000000"
+        ],
+        "name": "Zafran",
+        "startDate": "12/22/2014",
+        "status": "active",
+        "type": "android"
+    }

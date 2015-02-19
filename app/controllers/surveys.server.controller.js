@@ -57,6 +57,24 @@ exports.list = function(req, res) {
 	});
 };
 
+exports.listByLocationId = function(req, res) {
+	Survey.find({locationId: req.locationId}, function(err, surveys){
+
+		// If an error occurs continue to the next middleware
+		if (err) {
+			return next(err);
+		} else {
+			// If an account could not be found, create a new account, otherwise, continue to the next middleware
+			if(surveys.length < 1) {
+				res.send({state: 'failure', surveys: null, message: "No survey found"});
+			}
+			else {
+				res.send({state: 'success', surveys: req.surveys ? req.surveys : null});
+			}
+		}
+	});
+};
+
 // Create a new controller method that returns an existing survey
 exports.read = function(req, res) {
 	res.json(req.survey);

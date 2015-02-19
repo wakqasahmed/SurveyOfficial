@@ -22,12 +22,12 @@ exports.create = function(req, res) {
 	var brand = new Brand(req.body);
 
 	// Set the brand's 'createdBy' property
-	brand.createdBy = req.user;
+	//brand.createdBy = req.user;
 
 	// Set the brand's 'createdOn' property
-	brand.createdOn = Date.now;
+	brand.createdOn = Date.now();
 
-	console.log('create called');
+	console.log(brand);
 
 	// Try saving the brand
 	brand.save(function(err) {

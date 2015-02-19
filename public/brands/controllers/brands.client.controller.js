@@ -7,9 +7,6 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
     	// Expose the Authentication service
         $scope.authentication = Authentication;
 
-      //set Top Navigation 'active' to highlight where we stand
-        $scope.setActive('brands');
-
       //Expose the Dialog service
         $scope.dialog = {
           message: ""
@@ -29,6 +26,8 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
 
         // Create a new controller method for creating new brands
         $scope.create = function() {
+
+          console.log(create brand called);
         	// Use the form fields to create a new brand $resource object
           var brand = new Brands({
               name: this.name,
@@ -37,6 +36,7 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
 
             // Use the brand '$save' method to send an appropriate POST request
             brand.$save(function(response) {
+              console.log(create brand called and success);
             	// If an brand was created successfully, redirect the user to the brand's page
                 $location.path('brands/' + response._id);
             }, function(errorResponse) {

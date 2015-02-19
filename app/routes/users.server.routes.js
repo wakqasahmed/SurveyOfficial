@@ -18,18 +18,21 @@ module.exports = function(app) {
 	   .get(users.renderSignup)
 	   .post(users.signup);
 
+	//sends successful login state back to angular
+	app.get('/auth/success', function(req, res){
+		res.send({state: 'success', user: req.user ? req.user : null});
+	});
+
+	//sends failure login state back to angular
+	app.get('/auth/failure', function(req, res){
+		res.send({state: 'failure', user: null, message: "Invalid username or password"});
+	});
+
 	// Set up the 'signin' routes - Mobile App API Method
-	app.route('/app/signin')
-	  .post(passport.authenticate('local', function(req, res) {
-			//res.redirect('/users/' + req.user.username);
-	    if (!req.user) {
-				//console.log(res);
-				sendJSONresponse(res, 404, {"message": "user not found"});
-			}
-			else {
-				//console.log(req.user);
-				sendJSONresponse(res, 200, req.user);
-			}
+	app.route('/auth/signin')
+	  .post(passport.authenticate('local', {
+					successRedirect: '/auth/success',
+					failureRedirect: '/auth/failure'
 		}));
 
 	// Set up the 'signin' routes - Admin Panel

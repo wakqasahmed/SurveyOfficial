@@ -51,7 +51,8 @@ var UserSchema = new Schema({
 		// Create a default 'created' value
 		default: Date.now
 	},
-	role: { type: String, enum: user_roles, default: 'admin' }
+	role: { type: String, enum: user_roles, default: 'admin' },
+	account: { type: Schema.ObjectId, ref: 'Account' }
 }, { collection : 'users' });
 
 // Set the 'fullname' virtual property

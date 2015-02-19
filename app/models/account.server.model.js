@@ -7,25 +7,18 @@ var mongoose = require('mongoose'),
 
 // Define a new 'AccountSchema'
 var AccountSchema = new Schema({
-	created: {
+	createdOn: {
 		type: Date,
 		default: Date.now
 	},
-	title: {
+	name: {
 		type: String,
 		default: '',
 		trim: true,
-		required: 'Title cannot be blank'
+		required: 'Name cannot be blank'
 	},
-	content: {
-		type: String,
-		default: '',
-		trim: true
-	},
-	creator: {
-		type: Schema.ObjectId,
-		ref: 'User'}
-}, { collection : 'accounts' });
+	status: { type: String, default: 'active'}
+	}, { collection : 'accounts' });
 
 // Create the 'Account' model out of the 'AccountSchema'
 mongoose.model('Account', AccountSchema);

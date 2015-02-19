@@ -3,7 +3,8 @@
 
 // Load the module dependencies
 var User = require('mongoose').model('User'),
-	passport = require('passport');
+		Account = require('mongoose').model('Account'),
+		passport = require('passport');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -41,6 +42,7 @@ exports.renderSignin = function(req, res, next) {
 		res.render('signin', {
 			// Set the page title variable
 			title: 'Sign-in Form',
+
 			// Set the flash message variable
 			messages: req.flash('error') || req.flash('info')
 		});
@@ -51,19 +53,55 @@ exports.renderSignin = function(req, res, next) {
 
 // Create a new controller method that renders the signup page
 exports.renderSignup = function(req, res, next) {
+
 	// If user is not connected render the signup page, otherwise redirect the user back to the main application page
 	if (!req.user) {
-		// Use the 'response' object to render the signup page
-		res.render('signup', {
-			// Set the page title variable
-			title: 'Sign-up Form',
-			// Set the flash message variable
-			messages: req.flash('error')
-		});
+
+			// Try finding a user document that was registered using the current OAuth provider
+			Account.find({
+				status: 'active'
+			}, function(err, accounts) {
+
+			// If an error occurs continue to the next middleware
+			if (err) {
+				return next(err);
+			} else {
+				// If an account could not be found, create a new account, otherwise, continue to the next middleware
+				if(accounts.length < 1) {
+					var profile = {};
+					profile.name = "Trix";
+
+					// Create the account
+					var account = new Account(profile);
+
+					// Try saving the new user document
+					account.save(function(err) {
+							res.render('signup', {
+							// Set the page title variable
+							title: 'Sign-up Form',
+							accounts: account,
+							// Set the flash message variable
+							messages: req.flash('error')
+						});
+					});
+				}
+				else {
+					// Use the 'response' object to render the signup page
+						res.render('signup', {
+						// Set the page title variable
+						title: 'Sign-up Form',
+						accounts: accounts,
+						// Set the flash message variable
+						messages: req.flash('error')
+					});
+				}
+
+			}});
 	} else {
 		return res.redirect('/');
 	}
 };
+
 
 // Create a new controller method that creates new 'regular' users
 exports.signup = function(req, res, next) {
@@ -76,29 +114,46 @@ exports.signup = function(req, res, next) {
 		// Set the user provider property
 		user.provider = 'local';
 
-		// Try saving the new user document
-		user.save(function(err) {
-			// If an error occurs, use flash messages to report the error
-			if (err) {
-				// Use the error handling method to get the error message
-				var message = getErrorMessage(err);
+		// Retrieve account information using DBRef ObjectID
+		user.account = Account.findOne({
+			"_id": req.body.account
+		}, function(err, account) {
 
-				// Set the flash messages
-				req.flash('error', message);
-
-				// Redirect the user back to the signup page
-				return res.redirect('/signup');
+		// If an error occurs continue to the next middleware
+		if (err) {
+			return next(err);
+		} else {
+			// If an account could not be found, send an error message, otherwise, continue to the next middleware
+			if(account.length < 1) {
+				return next({"message": "Account not found"});
 			}
+			else {
+				// Try saving the new user document
+				user.save(function(err) {
+					// If an error occurs, use flash messages to report the error
+					if (err) {
+						// Use the error handling method to get the error message
+						var message = getErrorMessage(err);
 
-			// If the user was created successfully use the Passport 'login' method to login
-			req.login(user, function(err) {
-				// If a login error occurs move to the next middleware
-				if (err) return next(err);
+						// Set the flash messages
+						req.flash('error', message);
 
-				// Redirect the user back to the main application page
-				return res.redirect('/');
-			});
-		});
+						// Redirect the user back to the signup page
+						return res.redirect('/signup');
+					}
+
+					// If the user was created successfully use the Passport 'login' method to login
+					req.login(user, function(err) {
+						// If a login error occurs move to the next middleware
+						if (err) return next(err);
+
+						// Redirect the user back to the main application page
+						return res.redirect('/');
+					});
+				});
+			}
+		}});
+
 	} else {
 		return res.redirect('/');
 	}

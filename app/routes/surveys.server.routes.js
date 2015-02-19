@@ -12,6 +12,10 @@ module.exports = function(app) {
 	   .get(surveys.list)
 	   .post(users.requiresLogin, surveys.create);
 
+	app.route('/api/device/surveys/:locationId')
+			.get(surveys.listByLocationId);
+
+
 	// Set up the 'surveys' parameterized routes
 	app.route('/api/surveys/:surveyId')
 	   .get(surveys.read)

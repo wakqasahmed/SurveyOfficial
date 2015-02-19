@@ -32,7 +32,7 @@ exports.create = function(req, res) {
 				message: getErrorMessage(err)
 			});
 		} else {
-			// Send a JSON representation of the article 
+			// Send a JSON representation of the article
 			res.json(article);
 		}
 	});
@@ -48,7 +48,7 @@ exports.list = function(req, res) {
 				message: getErrorMessage(err)
 			});
 		} else {
-			// Send a JSON representation of the article 
+			// Send a JSON representation of the article
 			res.json(articles);
 		}
 	});
@@ -76,7 +76,7 @@ exports.update = function(req, res) {
 				message: getErrorMessage(err)
 			});
 		} else {
-			// Send a JSON representation of the article 
+			// Send a JSON representation of the article
 			res.json(article);
 		}
 	});
@@ -95,7 +95,7 @@ exports.delete = function(req, res) {
 				message: getErrorMessage(err)
 			});
 		} else {
-			// Send a JSON representation of the article 
+			// Send a JSON representation of the article
 			res.json(article);
 		}
 	});
@@ -103,7 +103,7 @@ exports.delete = function(req, res) {
 
 // Create a new controller middleware that retrieves a single existing article
 exports.articleByID = function(req, res, next, id) {
-	// Use the model 'findById' method to find a single article 
+	// Use the model 'findById' method to find a single article
 	Article.findById(id).populate('creator', 'firstName lastName fullName').exec(function(err, article) {
 		if (err) return next(err);
 		if (!article) return next(new Error('Failed to load article ' + id));
@@ -116,7 +116,7 @@ exports.articleByID = function(req, res, next, id) {
 	});
 };
 
-// Create a new controller middleware that is used to authorize an article operation 
+// Create a new controller middleware that is used to authorize an article operation
 exports.hasAuthorization = function(req, res, next) {
 	// If the current user is not the creator of the article send the appropriate error message
 	if (req.article.creator.id !== req.user.id) {

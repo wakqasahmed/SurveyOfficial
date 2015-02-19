@@ -10,7 +10,8 @@ module.exports = function(app) {
 	// Set up the 'brands' base routes
 	app.route('/api/brands')
 		.get(brands.list)
-		.post(users.requiresLogin, brands.create);
+		.post(brands.create);
+//		.post(users.requiresLogin, brands.create);
 
 	// Set up the 'brands' parameterized routes
 	app.route('/api/brands/:brandId')
