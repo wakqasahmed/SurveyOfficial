@@ -27,7 +27,7 @@ exports.create = function(req, res) {
 	//response.createdBy = req.user;
 
 	for(var r in responses){
-		var response = new Response(r);
+		var response = new Response(responses[r]);
 
 		// Try saving the response
 		response.save(function(err) {
