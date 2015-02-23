@@ -2,8 +2,8 @@
 'use strict';
 
 // Create the 'brands' controller
-angular.module('brands').controller('BrandsController', ['$scope', '$routeParams', '$location', 'Authentication', 'Brands', 'Dialogs',
-    function($scope, $routeParams, $location, Authentication, Brands, Dialogs) {
+angular.module('brands').controller('BrandsController', ['$scope', '$routeParams', '$location', '$upload', 'Authentication', 'Brands', 'Dialogs', 'Locations',
+    function($scope, $routeParams, $location, $upload, Authentication, Brands, Dialogs, Locations) {
     	// Expose the Authentication service
         $scope.authentication = Authentication;
 
@@ -23,20 +23,78 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
               //alert('No clicked');
             });
         }
+/*
+        $scope.$watch('files', function () {
+          console.log($scope.files);
+            $scope.upload($scope.files);
+        });
+*/
+
+
+        $scope.onFileSelect = function(image) {
+          if (angular.isArray(image)) {
+              image = image[0];
+          }
+
+          // This is how I handle file types in client side
+          if (image.type !== 'image/png' && image.type !== 'image/jpeg') {
+              alert('Only PNG and JPEG are accepted.');
+              return;
+          }
+
+          $scope.uploadInProgress = true;
+          $scope.uploadProgress = 0;
+
+          $scope.upload = function (image) {
+              $upload.upload({
+                  url: '/api/brands/upload',
+                  method: 'POST',
+                  file: image
+              }).progress(function(event) {
+                  $scope.uploadProgress = Math.floor(event.loaded / event.total);
+                  $scope.$apply();
+              }).success(function(data, status, headers, config) {
+                  $scope.uploadInProgress = false;
+                  console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                  // If you need uploaded file immediately
+                  //$scope.uploadedImage = JSON.parse(data);
+                  $scope.uploadedImageName = data;
+              }).error(function(err) {
+                  $scope.uploadInProgress = false;
+                  console.log('Error uploading file: ' + err.message || err);
+              });
+          };
+
+          $scope.upload(image);
+
+        };
 
         // Create a new controller method for creating new brands
         $scope.create = function() {
 
-          console.log(create brand called);
-        	// Use the form fields to create a new brand $resource object
-          var brand = new Brands({
-              name: this.name,
-              bgImage: 'asdfasdf'//this.bgImage,
-          });
+            console.log('Uploaded Image: ' + this.uploadedImage);
+
+          	// Use the form fields to create a new brand $resource object
+            var brand = new Brands({
+                name: this.name,
+                status: this.status ? 'active' : 'inactive',
+                bgImage: this.uploadedImageName,
+                country: this.country,
+                state: this.state,
+                phoneManager: this.phoneManager,
+                contactPerson: [{
+                  name: this.contactPerson_name,
+                  email: this.contactPerson_email,
+                  phoneOffice: this.contactPerson_phoneOffice,
+                  phoneCell: this.contactPerson_phoneCell
+                }],
+                createdOn: Date.now(),
+                createdBy: $scope.authentication.user._id
+            });
 
             // Use the brand '$save' method to send an appropriate POST request
             brand.$save(function(response) {
-              console.log(create brand called and success);
+              console.log("create brand called and success");
             	// If an brand was created successfully, redirect the user to the brand's page
                 $location.path('brands/' + response._id);
             }, function(errorResponse) {
@@ -49,6 +107,7 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
         $scope.find = function() {
         	// Use the brand 'query' method to send an appropriate GET request
           //  $scope.brands = Brands.query();
+          var bgImagePath = "http://localhost:3000/content/brand_images/";
 
           $scope.brands = {
               dataSource: {
@@ -71,7 +130,7 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
                   //field: "country",
                   title: "Background Image",
                   width: "120px",
-                  template: "<img src='{{dataItem.bgImage}}' width='150px' height='250px' />"
+                  template: "<img src='{{bgImagePath + dataItem.bgImage}}' width='150px' height='250px' />"
                   }]
           };
 
@@ -103,6 +162,13 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
 
         // Create a new controller method for deleting a single brand
         $scope.delete = function(brand) {
+
+            $scope.associatedLocations = Locations.query({"brand": brand._id});
+
+          if($scope.associatedLocations) {
+            return 'Brand cannot be deleted, because it is already linked with the following locations:' + $scope.associatedLocations;
+          }
+
         	// If an brand was sent to the method, delete it
             if (brand) {
             	// Use the brand '$remove' method to delete the brand

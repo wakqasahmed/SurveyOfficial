@@ -21,8 +21,10 @@ exports.create = function(req, res) {
 	// Create a new account object
 	var account = new Account(req.body);
 
-	// Set the account's 'creator' property
-	account.creator = req.user;
+	// Set the account's 'createdBy' property
+	// account.createdBy = req.user;
+
+	account.createdOn = Date.now();
 
 	// Try saving the account
 	account.save(function(err) {
@@ -119,7 +121,8 @@ exports.accountByID = function(req, res, next, id) {
 // Create a new controller middleware that is used to authorize an account operation
 exports.hasAuthorization = function(req, res, next) {
 	// If the current user is not the creator of the account send the appropriate error message
-	if (req.account.creator.id !== req.user.id) {
+//	if (req.account.createdBy.id !== req.user.id) {
+	if (req.user.role !== "Admin" || req.user.role !== "Owner") {
 		return res.status(403).send({
 			message: 'User is not authorized'
 		});

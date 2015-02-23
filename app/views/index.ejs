@@ -43,6 +43,9 @@
 <script type="text/javascript" src="/lib/angular-route/angular-route.min.js"></script>
 <script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
 
+<script type="text/javascript" src="/lib/ng-file-upload/angular-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
+<script type="text/javascript" src="/lib/ng-file-upload/angular-file-upload.min.js"></script>
+
 </head>
 <body>
 
@@ -52,7 +55,6 @@
 	<!-- Render the user object -->
 	<script type="text/javascript">
 		window.user = <%- user || 'null' %>;
-		window.account = <%- account || 'null' %>;
 	</script>
 
 	<!-- Load local libraries -->
@@ -100,10 +102,12 @@
 	<script type="text/javascript" src="/brands/config/brands.client.routes.js"></script>
 
 	<!-- Load the validations module -->
+	<!--
 	<script type="text/javascript" src="/validations/validations.client.module.js"></script>
 	<script type="text/javascript" src="/validations/controllers/validations.client.controller.js"></script>
 	<script type="text/javascript" src="/validations/services/validations.client.service.js"></script>
 	<script type="text/javascript" src="/validations/config/validations.client.routes.js"></script>
+-->
 
 	<!-- Load the surveys module -->
 	<script type="text/javascript" src="/surveys/surveys.client.module.js"></script>

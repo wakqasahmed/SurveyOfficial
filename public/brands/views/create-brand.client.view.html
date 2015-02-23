@@ -24,7 +24,7 @@
 									<div class="col-md-9">
 											<div class="row">
 													<h3 class="dark-grey">New Brand</h3>
-													<!--<h5 class="dark-grey">Brand Status: <span>{{brand.status}}</span></h5>-->
+													<h5 class="dark-grey">Active: <input name="status" class="form-control" id="status" type="checkbox" data-ng-model="status" /></h5>
 
 													<hr>
 
@@ -42,7 +42,7 @@
 
 												<div class="form-group col-lg-6">
 													<label>Account Name</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{brand.account[0].name}}">
+													<input type="" name="" class="form-control" id="" disabled value="{{authentication.user.account.name}}">
 												</div>
 
 												<div class="form-group col-lg-6">
@@ -52,33 +52,37 @@
 
 												<div class="form-group col-lg-6">
 													<label>Background Image</label>
-													<input class="btn btn-success" data-ng-model="bgImage" id="bgImage" type="file" name="bgImage" class="form-control" required>
+<!--													<div class="form-control btn btn-primary" ng-file-select ng-model="files">Select File</div>-->
+													<input name="bgImage" id="bgImage" class="form-control" type="file" data-ng-file-select="onFileSelect($files)" />
+													<span data-ng-if="uploadInProgress">Upload progress: {{ uploadProgress }}</span>
+													<img data-ng-src="{{'content/brand_images/' +  uploadedImageName}}" data-ng-if="uploadedImageName" width="120">
+													<!--<span data-ng-src="{{uploadedImageName}}" data-ng-if="uploadedImageName">{{uploadedImageName}}</span>-->
 												</div>
 
 
 												<div class="form-group col-lg-6">
 													<label>Country</label>
-													<input type="text" name="country" class="form-control" id="country" disabled value="{{brand.account[0].country}}">
+													<input type="text" name="country" class="form-control" id="country" data-ng-model="country" placeholder="Country">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Emirate</label>
-													<input type="" name="" class="form-control" id="" data-ng-model="brand.state">
+													<input type="text" name="state" class="form-control" id="state" data-ng-model="state" placeholder="Emirate">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Sales Order No</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{brand.account[0].sales_order_no}}">
+													<input type="text" name="" class="form-control" id="" disabled value="{{authentication.user.account.salesOrderNo}}">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Manager Phone Number</label>
-													<input type="number" name="phoneManager" class="form-control" id="phoneManager" data-ng-model="brand.phoneManager">
+													<input type="text" name="phoneManager" class="form-control" id="phoneManager" data-ng-model="phoneManager" placeholder="00971xxXXXXXXX">
 												</div>
 
 												<div class="form-group col-lg-12">
 													<label>Account Structure Name</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{brand.account[0].name}}">
+													<input type="text" name="" class="form-control" id="" disabled value="{{authentication.user.account.name}}">
 												</div>
 
 											</div>
@@ -90,22 +94,22 @@
 
 												<div class="form-group col-lg-6">
 													<label>Name</label>
-													<input type="" name="" class="form-control" id="" data-ng-model="brand.contactPerson_name">
+													<input type="text" name="contactPerson_name" class="form-control" id="contactPerson_name" data-ng-model="contactPerson_name">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Email</label>
-													<input type="" name="" class="form-control" id="" data-ng-model="brand.contactPerson_email">
+													<input type="email" name="contactPerson_email" class="form-control" id="contactPerson_email" data-ng-model="contactPerson_email">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Office phone</label>
-													<input type="number" name="" class="form-control" id="" data-ng-model="brand.contactPerson_phoneOffice">
+													<input type="text" name="contactPerson_phoneOffice" class="form-control" id="contactPerson_phoneOffice" data-ng-model="contactPerson_phoneOffice" placeholder="00971xXXXXXXX">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Mobile phone</label>
-													<input type="number" name="" class="form-control" id="" data-ng-model="brand.contactPerson_phoneCell">
+													<input type="text" name="contactPerson_phoneCell" class="form-control" id="contactPerson_phoneCell" data-ng-model="contactPerson_phoneCell" placeholder="00971xxXXXXXXX">
 												</div>
 											</div>
 

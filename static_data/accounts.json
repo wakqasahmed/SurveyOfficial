@@ -1,0 +1,35 @@
+{
+	"name" : "Trix",
+	"status": "active",
+	"country" : "United Arab Emirates",
+	"postalCode" : "117192",
+	"state" : "Dubai",
+	"dealer" : "Trix",
+	"salesOrderNo" : 0,
+	"contactDetails" : [
+		{
+			"name" : "Vijay Shanaz",
+			"email" : "vijay@trixcorp.com",
+			"phoneOffice" : "042696970",
+			"phoneCell" : "0559027211"
+		}
+	]
+},
+{
+	"_id" : "54e49c08adfe0a860f6c9a3b",
+	"name" : "Foodmark",
+	"status": "active",
+	"country" : "United Arab Emirates",
+	"postalCode" : "25030",
+	"state" : "Dubai",
+	"dealer" : "Trix",
+	"salesOrderNo" : 0,
+	"contactDetails" : [
+		{
+			"name" : "Duncan Muir",
+			"email" : "duncan.muir@cplmg.com",
+			"phoneOffice" : "045014675",
+			"phoneCell" : "0505544547"
+		}
+	]
+}

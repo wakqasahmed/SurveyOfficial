@@ -115,7 +115,7 @@ exports.signup = function(req, res, next) {
 		user.provider = 'local';
 
 		// Retrieve account information using DBRef ObjectID
-		user.account = Account.findOne({
+		Account.findOne({
 			"_id": req.body.account
 		}, function(err, account) {
 
@@ -128,6 +128,10 @@ exports.signup = function(req, res, next) {
 				return next({"message": "Account not found"});
 			}
 			else {
+
+				user.account = account;
+				console.log(account);
+				console.log("User.Account: " + user.account);
 				// Try saving the new user document
 				user.save(function(err) {
 					// If an error occurs, use flash messages to report the error

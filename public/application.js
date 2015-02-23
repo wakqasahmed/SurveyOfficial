@@ -11,7 +11,7 @@ var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngResour
 			'navigations', 'dialogs', 'accounts', 'users', 'dashboard', 'articles', 'locations', 'brands', 'surveys', 'validations',
 
 			// 3rd Party Modules
-      'kendo.directives'
+      'kendo.directives', 'angularFileUpload'
 ]);
 
 // Configure the hashbang URLs using the $locationProvider services

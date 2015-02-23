@@ -5,6 +5,8 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
+var languages = 'english arabic'.split(' ');
+
 var answerSchema = new Schema({
 	questionId: String,
 	timeTaken: String,
@@ -13,14 +15,14 @@ var answerSchema = new Schema({
 
 var answersSchema = new Schema({
 	prompt: [answerSchema],
-	en: [answerSchema],
-	ar: [answerSchema]
+	data: [answerSchema]
 });
 
 // Define a new 'responseSchema'
 var responseSchema = new Schema({
  surveyId: {type: Schema.ObjectId, ref: 'Survey'},
- dateTaken: {type: Date, default: Date.now}, //response datetime
+ locationId: {type: Schema.ObjectId, ref: 'Location'},
+ language: {type: String, enum: languages, default: 'english'},
  totalTimeTaken: String, //response total time
  status: {type: String, default: "incomplete"}, //complete, incomplete
  sourceOS: String, //android v4.4.2

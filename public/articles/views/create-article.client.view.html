@@ -1,26 +1,56 @@
-<!-- The create article view -->
-<section data-ng-controller="ArticlesController">
-	<h1>New Article</h1>
-	<!-- The new article form -->
-	<form data-ng-submit="create()" novalidate>
-		<div>
-			<label for="title">Title</label>
-			<div>
-				<input type="text" data-ng-model="title" id="title" placeholder="Title" required>
-			</div>
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'brands/views/partials/article.client.header.html'"></div>
+
+<div class="container">
+
+			<div class="row row-offcanvas row-offcanvas-right">
+
+				<section name="sidebar" ng-include="'articles/views/partials/article.client.sidebar.html'">
+				</section>
+
+				<div class="col-xs-12 col-sm-9">
+					<p class="pull-right visible-xs">
+						<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+					</p>
+
+					<div class="row">
+
+						<!-- The create article view -->
+						<section data-ng-controller="ArticlesController">
+							<h1>New Article</h1>
+							<!-- The new article form -->
+							<form data-ng-submit="create()" novalidate>
+								<div>
+									<label for="title">Title</label>
+									<div>
+										<input type="text" data-ng-model="title" id="title" placeholder="Title" required>
+									</div>
+								</div>
+								<div>
+									<label for="content">Content</label>
+									<div>
+										<textarea data-ng-model="content" id="content" cols="30" rows="10" placeholder="Content"></textarea>
+									</div>
+								</div>
+								<div>
+									<input type="submit">
+								</div>
+								<!-- The error message element -->
+								<div data-ng-show="error">
+									<strong data-ng-bind="error"></strong>
+								</div>
+							</form>
+						</section>
+
+
+					</div><!--/row-->
+				</div><!--/.col-xs-12.col-sm-9-->
+
+			</div><!--/row-->
+
+			<div ng-include="'../../layout/footer.html'"></div>
+
 		</div>
-		<div>
-			<label for="content">Content</label>
-			<div>
-				<textarea data-ng-model="content" id="content" cols="30" rows="10" placeholder="Content"></textarea>
-			</div>
-		</div>
-		<div>
-			<input type="submit">
-		</div>
-		<!-- The error message element -->
-		<div data-ng-show="error">
-			<strong data-ng-bind="error"></strong>
-		</div>
-	</form>
+
+
 </section>

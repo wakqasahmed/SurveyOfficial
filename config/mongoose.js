@@ -18,7 +18,7 @@ module.exports = function() {
 	require('../app/models/article.server.model');
 	require('../app/models/location.server.model');
 	require('../app/models/brand.server.model');
-	require('../app/models/validation.server.model');
+//	require('../app/models/validation.server.model');
 	require('../app/models/survey.server.model');
 	require('../app/models/response.server.model');
 

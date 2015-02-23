@@ -12,14 +12,29 @@ var make_upload_to_model = filePluginLib.make_upload_to_model;
 var uploads_base = path.join(__dirname, "uploads");
 var uploads = path.join(uploads_base, "u");
 */
+
+var statuses = 'active inactive'.split(' ');
+
+var contactPersonSchema = new Schema({
+  name: String,
+  email: String,
+  phoneOffice: String,
+  phoneCell: String
+});
+
 // Define a new 'brandSchema'
 var brandSchema = new Schema({
   name: String,
+  status: { type: String, enum: statuses, "default": 'active' },
   bgImage: String,
-//  bgImage: file,
+  //  bgImage: file,
+  country: String,
+  state: String,
+  phoneManager: String,
+  contactPerson: [contactPersonSchema],
   createdOn: {type: Date},
-  modifiedOn: {type: Date, default: Date.now}
-//  createdBy: { type: Schema.ObjectId, ref: 'User' }
+  modifiedOn: {type: Date, default: Date.now},
+  createdBy: { type: Schema.ObjectId, ref: 'User' }
 }, { collection : 'brands' });
 /*
 brandSchema.plugin(filePlugin, {

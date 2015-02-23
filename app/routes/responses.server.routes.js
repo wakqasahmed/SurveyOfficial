@@ -12,6 +12,9 @@ module.exports = function(app) {
 	   .get(responses.list)
 	   .post(users.requiresLogin, responses.create);
 
+app.route('/api/device/responses')
+		.post(responses.create);
+
 	// Set up the 'responses' parameterized routes
 	app.route('/api/responses/:responseId')
 	   .get(responses.read)

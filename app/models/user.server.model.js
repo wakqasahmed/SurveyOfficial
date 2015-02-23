@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 	crypto = require('crypto'),
 	Schema = mongoose.Schema;
 
-var user_roles = 'admin manager'.split(' ');
+var user_roles = 'owner admin manager'.split(' ');
 
 // Define a new 'UserSchema'
 var UserSchema = new Schema({
@@ -52,7 +52,7 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
 	role: { type: String, enum: user_roles, default: 'admin' },
-	account: { type: Schema.ObjectId, ref: 'Account' }
+	account: {}
 }, { collection : 'users' });
 
 // Set the 'fullname' virtual property

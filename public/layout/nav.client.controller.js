@@ -1,9 +1,11 @@
 'use strict';
 
 // Create the 'navigations' controller
-angular.module('navigations').controller('NavController', ['$scope', '$routeParams', '$location',
-    function($scope, $routeParams, $location) {
+angular.module('navigations').controller('NavController', ['$scope', '$routeParams', '$location', 'Authentication',
+    function($scope, $routeParams, $location, Authentication) {
         $scope.$location = $location;
+
+        $scope.authentication = Authentication;
 
         $scope.urlListValidation = "#!/locations/" + $routeParams.locationId + "/validations";
 /*

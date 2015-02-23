@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 var choiceSchema = new Schema({
   text: String,
   value: String,
-  goto: {type: Number, "default": null},
+  goto: {type: Number, default: null},
 	notify: {type: Boolean, default: false}
 });
 
@@ -19,7 +19,7 @@ var promptSchema = new Schema({
 	order: Number,
 	required: {type: Boolean, required: true},
 	disabled: {type: Boolean},
-	choices: { type: Schema.ObjectId, ref: 'Validation' }
+	choices: {}
 });
 
 var questionSchema = new Schema({
@@ -32,21 +32,29 @@ var questionSchema = new Schema({
 });
 
 var questionsSchema = new Schema({
+	name: {
+	type: String,
+	// Set a unique 'username' index
+	unique: true,
+},
   prompt: [promptSchema],
   en: [questionSchema],
   ar: [questionSchema]
 });
 
+// Create the 'Questions' model out of the 'questionsSchema'
+mongoose.model('Questions', questionsSchema);
+
 // Define a new 'surveySchema'
 var surveySchema = new Schema({
-  name: String,
+  name: {type: String},
   startDate: {type: Date, "default": Date.now},
   endDate: {type: Date},
-  status: String,
-  locationIds: Array, //locations where this survey is used ex. carluccios locationId: 01
-  account: { type: Schema.ObjectId, ref: 'Account' }, //ex. foodmark accountId: 35
-  type: String,
-  questions: [questionsSchema],
+  status: {type: String},
+  locationIds: {type: Array}, //locations where this survey is used ex. carluccios locationId: 01
+  type: {type: String},
+	questions: [questionsSchema],
+//  questions: {type: mongoose.Schema.Types.ObjectId, ref: 'Questions'},
 	createdOn: {type: Date},
 	modifiedOn: {type: Date, "default": Date.now},
 	createdBy: { type: Schema.ObjectId, ref: 'User' }
@@ -59,5 +67,5 @@ surveySchema.plugin(autoIncrement.plugin, {
     incrementBy: 1
 });
 
-// Create the 'Survey' model out of the 'SurveySchema'
+// Create the 'Survey' model out of the 'surveySchema'
 mongoose.model('Survey', surveySchema);

@@ -3,7 +3,10 @@
 
 // Load the module dependencies
 var mongoose = require('mongoose'),
-	Brand = mongoose.model('Brand');
+	Brand = mongoose.model('Brand'),
+	uuid = require('node-uuid'),
+	multiparty = require('multiparty'),
+	fs = require('fs');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -16,13 +19,47 @@ var getErrorMessage = function(err) {
 	}
 };
 
+exports.postImage = function(req, res) {
+	var form = new multiparty.Form();
+	form.parse(req, function(err, fields, files) {
+	    var file = files.file[0];
+	    var contentType = file.headers['content-type'];
+	    var tmpPath = file.path;
+	    var extIndex = tmpPath.lastIndexOf('.');
+	    var extension = (extIndex < 0) ? '' : tmpPath.substr(extIndex);
+	    // uuid is for generating unique filenames.
+	    var fileName = uuid.v4() + extension;
+	    var destPath = appRoot + '/../public/content/brand_images/' + fileName;
+			var pathToSave = fileName;
+
+	    // Server side file type checker.
+	    if (contentType !== 'image/png' && contentType !== 'image/jpeg') {
+	        fs.unlink(tmpPath);
+	        return res.status(400).send('Unsupported file type.');
+	    }
+
+	    var is = fs.createReadStream(tmpPath);
+	    var os = fs.createWriteStream(destPath);
+
+	    if(is.pipe(os)) {
+	        fs.unlink(tmpPath, function (err) { //To unlink the file from temp path after copy
+	            if (err) {
+	                console.log(err);
+	            }
+	        });
+	        return res.json(pathToSave);
+	    }else
+	        return res.json('File not uploaded');
+	});
+};
+
 // Create a new controller method that creates new brands
 exports.create = function(req, res) {
 	// Create a new brand object
 	var brand = new Brand(req.body);
 
 	// Set the brand's 'createdBy' property
-	//brand.createdBy = req.user;
+	brand.createdBy = req.user;
 
 	// Set the brand's 'createdOn' property
 	brand.createdOn = Date.now();

@@ -10,7 +10,8 @@ var config = require('./config'),
 	methodOverride = require('method-override'),
 	session = require('express-session'),
 	flash = require('connect-flash'),
-	passport = require('passport');
+	passport = require('passport'),
+	path = require('path');
 
 // Define the Express configuration method
 module.exports = function() {
@@ -56,12 +57,15 @@ module.exports = function() {
 	require('../app/routes/articles.server.routes.js')(app);
 	require('../app/routes/locations.server.routes.js')(app);
 	require('../app/routes/brands.server.routes.js')(app);
-	require('../app/routes/validations.server.routes.js')(app);
+//	require('../app/routes/validations.server.routes.js')(app);
 	require('../app/routes/surveys.server.routes.js')(app);
 	require('../app/routes/responses.server.routes.js')(app);
 
 	// Configure static file serving
 	app.use(express.static('./public'));
+
+	global.appRoot = path.resolve(__dirname);
+	console.log(appRoot);
 
 	// Return the Express application instance
 	return app;

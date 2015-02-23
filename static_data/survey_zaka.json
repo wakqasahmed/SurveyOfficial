@@ -1,0 +1,81 @@
+{
+    "__v": 0,
+    "surveyNumber": 12,
+    "createdOn": "2015-02-22T08:19:39.253Z",
+    "name": "Zafran",
+    "status": "active",
+    "type": "Customer Feedback",
+    "createdBy": "54e790b79e95cf4f2445ae9f",
+    "_id": "54e9911bfabe669869a1bb11",
+    "modifiedOn": "2015-02-22T08:19:39.249Z",
+    "questions": [
+        {
+            "name": "Customer Feedback 1",
+            "_id": "54e9911bfabe669869a1bb12",
+            "ar": [
+                {
+                    "title": "ردك هو عنصر أساسي بالنسبة لنا. هل ترغب في المشاركة في استبيان سريع؟",
+                    "type": "radio",
+                    "order": 1,
+                    "required": true,
+                    "disabled": false,
+                    "_id": "54e9911bfabe669869a1bb17",
+                    "choices": [
+                        {
+                            "text": "نعم",
+                            "value": "نعم",
+                            "_id": "54e9911bfabe669869a1bb19",
+                            "notify": false,
+                            "goto": null
+                        },
+                        {
+                            "text": "لا",
+                            "value": "لا",
+                            "_id": "54e9911bfabe669869a1bb18",
+                            "notify": false,
+                            "goto": 4
+                        }
+                    ]
+                }
+            ],
+            "en": [
+                {
+                    "title": "Your Feedback is absolutely key to us Mr. Raqib. Would you like to participate in a quick questionnaire?",
+                    "type": "radio",
+                    "order": 1,
+                    "required": true,
+                    "disabled": false,
+                    "_id": "54e9911bfabe669869a1bb13",
+                    "choices": [
+                        {
+                            "text": "YES",
+                            "value": "YES",
+                            "_id": "54e9911bfabe669869a1bb16",
+                            "notify": false,
+                            "goto": null
+                        },
+                        {
+                            "text": "NO",
+                            "value": "NO",
+                            "_id": "54e9911bfabe669869a1bb15",
+                            "notify": false,
+                            "goto": 15
+                        },
+                        {
+                            "text": "DECLINED",
+                            "value": "DECLINED",
+                            "_id": "54e9911bfabe669869a1bb14",
+                            "notify": false,
+                            "goto": 15
+                        }
+                    ]
+                }
+            ],
+            "prompt": []
+        }
+    ],
+    "locationIds": [
+        "54e33a5cd73255f40e000000"
+    ],
+    "startDate": "2015-02-22T08:19:39.247Z"
+}

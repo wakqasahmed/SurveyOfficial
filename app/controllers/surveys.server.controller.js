@@ -18,14 +18,16 @@ var getErrorMessage = function(err) {
 
 // Create a new controller method that creates new surveys
 exports.create = function(req, res) {
+
+	console.log(req.body);
 	// Create a new survey object
 	var survey = new Survey(req.body);
 
 	// Set the survey's 'createdBy' property
-	survey.createdBy = req.user;
+	// survey.createdBy = req.user;
 
 	// Set the survey's 'createdOn' property
-	survey.createdOn = Date.now;
+	survey.createdOn = Date.now();
 
 	// Try saving the survey
 	survey.save(function(err) {

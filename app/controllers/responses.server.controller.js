@@ -18,14 +18,13 @@ var getErrorMessage = function(err) {
 
 // Create a new controller method that creates new responses
 exports.create = function(req, res) {
+
 	// Create a new response object
 	var response = new Response(req.body);
 
+	console.log(response);
 	// Set the response's 'createdBy' property
-	response.createdBy = req.user;
-
-	// Set the response's 'createdOn' property
-	response.createdOn = Date.now;
+	//response.createdBy = req.user;
 
 	// Try saving the response
 	response.save(function(err) {
