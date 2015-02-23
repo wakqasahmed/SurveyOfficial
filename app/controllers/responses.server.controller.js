@@ -20,24 +20,28 @@ var getErrorMessage = function(err) {
 exports.create = function(req, res) {
 
 	// Create a new response object
-	var response = new Response(req.body);
+	var responses = req.body;//new Response(req.body);
 
-	console.log(response);
+	console.log(responses);
 	// Set the response's 'createdBy' property
 	//response.createdBy = req.user;
 
-	// Try saving the response
-	response.save(function(err) {
-		if (err) {
-			// If an error occurs send the error message
-			return res.status(400).send({
-				message: getErrorMessage(err)
-			});
-		} else {
-			// Send a JSON representation of the response
-			res.json(response);
-		}
-	});
+	for(var r in responses){
+		var response = new Response(r);
+
+		// Try saving the response
+		response.save(function(err) {
+			if (err) {
+				// If an error occurs send the error message
+				return res.status(400).send({
+					message: getErrorMessage(err)
+				});
+			} else {
+				// Send a JSON representation of the response
+				res.json(response);
+			}
+		});
+	}
 };
 
 // Create a new controller method that retrieves a list of responses

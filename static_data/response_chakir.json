@@ -1,0 +1,42 @@
+{
+    "surveyId": "54e9911bfabe669869a1bb12",
+    "locationId": "54e33a5cd73255f40e000000",
+    "language": "english",
+    "totalTimeTaken": "00:09:00",
+    "status": "incomplete",
+    "sourceOS": "android v4.4",
+    "responses": [
+        {
+            "prompt": [
+                {
+                    "questionId": "12",
+                    "value": "Waqas"
+                },
+                {
+                    "questionId": "12",
+                    "value": "<Staff Name Here>"
+                },
+                {
+                    "questionId": "14",
+                    "value": "<Table No Here>"
+                },
+                {
+                    "questionId": "15",
+                    "value": "<Number of Guests Here>"
+                }
+            ],
+            "data": [
+                {
+                    "questionId": "40",
+                    "timeTaken": "00:05:00",
+                    "value": "YES"
+                },
+                {
+                    "questionId": "41",
+                    "timeTaken": "00:10:00",
+                    "value": "waqas@trixcorp.com"
+                }
+            ]
+        }
+    ]
+}
