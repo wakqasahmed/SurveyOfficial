@@ -8,7 +8,7 @@ var mainApplicationModuleName = 'mean';
 var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngResource', 'ngRoute',
 
 			//Custom Modules
-			'navigations', 'dialogs', 'accounts', 'users', 'dashboard', 'articles', 'locations', 'brands', 'surveys', 'validations',
+			'navigations', 'dialogs', 'accounts', 'users', 'dashboard', 'articles', 'locations', 'brands', 'surveys', 
 
 			// 3rd Party Modules
       'kendo.directives', 'angularFileUpload'

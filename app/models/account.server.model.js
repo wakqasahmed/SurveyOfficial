@@ -4,7 +4,8 @@
 // Load the module dependencies
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	autoIncrement = require('mongoose-auto-increment');
+	autoIncrement = require('mongoose-auto-increment'),
+	moment = require('moment-timezone');
 
 var statuses = 'active inactive'.split(' ');
 
@@ -31,7 +32,7 @@ var accountSchema = new Schema({
 	salesOrderNo: Number,
 	contactDetails: [contactPersonSchema],
 	createdOn: { type: Date },
-	modifiedOn: { type: Date, default: Date.now }
+	modifiedOn: { type: Date, default: moment.tz(Date.now(), 'Asia/Dubai') }
 	}, { collection : 'accounts' });
 
 accountSchema.plugin(autoIncrement.plugin, {

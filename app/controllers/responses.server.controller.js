@@ -18,29 +18,47 @@ var getErrorMessage = function(err) {
 
 // Create a new controller method that creates new responses
 exports.create = function(req, res) {
+	console.log("Chakir is doubting my app: " + req.body);
 
 	// Create a new response object
 	var responses = req.body;//new Response(req.body);
 
-	console.log(responses);
 	// Set the response's 'createdBy' property
 	//response.createdBy = req.user;
 
-	for(var r in responses){
-		var response = new Response(responses[r]);
+	var err_responses = [];
+	var success_responses = [];
+	var error = false;
 
+	for(var r in responses){
+		console.log(responses[r]);
+		var response = new Response(responses[r]);
+		console.log(response);
+/*
 		// Try saving the response
 		response.save(function(err) {
 			if (err) {
-				// If an error occurs send the error message
-				return res.status(400).send({
-					message: getErrorMessage(err)
-				});
-			} else {
-				// Send a JSON representation of the response
-				res.json(response);
+				error = true;
+				err_responses.push(response);
+				//console.log(err_responses);
+			}
+			else {
+				success_responses.push(response);
+				//console.log(success_response);
 			}
 		});
+		*/
+	}
+
+	console.log(error);
+
+	if(error){
+			res.send({state: 'failure', err_responses: err_responses});
+	}
+	else {
+		console.log(success_responses);
+		// Send a JSON representation of the response
+		res.send({state: 'success', success_responses: success_responses});
 	}
 };
 

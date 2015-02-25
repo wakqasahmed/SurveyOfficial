@@ -12,7 +12,7 @@ module.exports = function(app) {
 	   .get(surveys.list)
 //	   .post(users.requiresLogin, surveys.create);
 			.post(surveys.create);
-			
+
 	app.route('/api/device/surveys/:locationId')
 			.get(surveys.listByLocationId);
 

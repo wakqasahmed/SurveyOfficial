@@ -9,6 +9,7 @@
     "express": "~4.8.8",
     "express-session": "~1.7.6",
     "method-override": "~2.2.0",
+    "moment-timezone": "^0.3.0",
     "mongoose": "~3.8.15",
     "mongoose-auto-increment": "^3.2.0",
     "mongoose-file": "0.0.2",

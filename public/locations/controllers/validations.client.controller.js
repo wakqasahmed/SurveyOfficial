@@ -1,18 +1,47 @@
-angular.module('locations').controller("knownItemsController", function ($scope, $routeParams, knownItemsFactory, notificationFactory) {
+// Invoke 'strict' JavaScript mode
+'use strict';
+
+// Create the 'validations' controller
+angular.module('locations').controller("validationsController", ['$scope', '$routeParams', 'Validations', 'Notifications', 'Dialogs',
+  function ($scope, $routeParams, Validations, Notifications, Dialogs) {
+
+//Expose the Dialog service
+  $scope.dialog = {
+    message: ""
+  }
+
+  $scope.showDialog = function(title, message, item) {
+    Dialogs.showDialog(title, message).then(
+      function() {
+        //alert('Yes clicked');
+        $scope.deleteItem(item);
+      },
+      function() {
+        //alert('No clicked');
+      });
+  }
 
     // PRIVATE FUNCTIONS
     var requestSuccess = function () {
-        notificationFactory.success();
+        Notifications.success();
     }
 
     var requestError = function () {
-        notificationFactory.error();
+        Notifications.error();
     }
 
     var isNameDuplicated = function (itemName) {
-        return $scope.knownItems.some(function (entry) {
+        return $scope.validationTables.validations.some(function (entry) {
             return entry.name.toUpperCase() == itemName.toUpperCase();
         });
+    };
+
+    var isNameDuplicated2Edit = function (itemName) {
+        var count = 0;
+        $scope.validationTables.validations.some(function (entry) {
+            entry.name.toUpperCase() == itemName.toUpperCase() ? count++ : count;
+        });
+        return count == 1 ? false : true;
     };
 
     var isDirty = function(item) {
@@ -22,9 +51,13 @@ angular.module('locations').controller("knownItemsController", function ($scope,
     // PUBLIC PROPERTIES
 
     // all the items
-    $scope.knownItems = [];
+    $scope.validationTables = [];
+    $scope.validationData = [];
+
     // the item being added
     $scope.newItem = { name: '' };
+    $scope.newDataItem = { name: '', value: '', status: 'inactive' };
+
     // indicates if the view is being loaded
     $scope.loading = false;
     // indicates if the view is in add mode
@@ -55,9 +88,9 @@ angular.module('locations').controller("knownItemsController", function ($scope,
 
             // Set edit mode = false and restore the name for the rest of items in edit mode
             // (there should be only one)
-            $scope.knownItems.forEach(function (i) {
+            $scope.validationTables.validations.forEach(function (i) {
                 // item is not the item being edited now and it is in edit mode
-                if (item.id != i.id && i.editMode) {
+                if (item._id != i._id && i.editMode) {
                     // Restore name
                     i.name = i.serverName;
                     i.editMode = false;
@@ -69,80 +102,111 @@ angular.module('locations').controller("knownItemsController", function ($scope,
     // Creates the 'newItem' on the server
     $scope.createItem = function () {
         // Check if the item is already on the list
-        var duplicated = false; //isNameDuplicated($scope.newItem.name);
+        var duplicated = isNameDuplicated($scope.newItem.name);
 
         if (!duplicated) {
-            knownItemsFactory.save($scope.newItem,
-            // success response
-            function (createdItem) {
-                // Add at the first position
-                $scope.knownItems.unshift(createdItem);
-                $scope.toggleAddMode();
 
+            $scope.validationTables.validations.push($scope.newItem);
+
+            $scope.validationRequest = {
+              "validations": $scope.validationTables.validations,
+              "request_type": "update_validation_table"
+            };
+
+            Validations.update({locationId: $routeParams.locationId}, $scope.validationRequest, function (success) {
+                $scope.toggleAddMode();
                 requestSuccess();
-            },
-            requestError);
+
+                $scope.getAllItems();
+            }, requestError);
+
         } else {
-            notificationFactory.error("The item already exists.");
+            Notifications.error("The validation table already exists.");
         }
     }
 
+/*
     // Gets an item from the server using the id
     $scope.readItem = function (itemId) {
-        knownItemsFactory.get({ id: itemId }, requestSuccess, requestError);
+        Validations.get({ id: itemId }, requestSuccess, requestError);
     }
-
+*/
     // Updates an item
     $scope.updateItem = function (item) {
         item.editMode = false;
 
         // Only update if there are changes
         if (isDirty(item)) {
-            knownItemsFactory.update({ id: item.id }, item, function (success) {
+          // Check if the item is in the list more than once (itself)
+          var duplicated = isNameDuplicated2Edit(item.name);
+
+          if(!duplicated) {
+
+            for(var v in $scope.validationTables.validations)
+            {
+                if($scope.validationTables.validations[v]._id == item._id) {
+                  $scope.validationTables.validations[v].name = item.name;
+                }
+            }
+
+            $scope.validationRequest = {
+              "validations": $scope.validationTables.validations,
+              "request_type": "update_validation_table"
+            };
+
+            Validations.update({locationId: $routeParams.locationId}, $scope.validationRequest, function (success) {
+                $scope.toggleAddMode();
                 requestSuccess();
             }, requestError);
+
+          } else {
+            Notifications.error("The validation table already exists.");
+          }
+
+          $scope.getAllItems();
+
         }
     }
 
     // Deletes an item
     $scope.deleteItem = function (item) {
-        knownItemsFactory.delete({ id: item.id }, item, function (success) {
-            requestSuccess();
-            // Remove from scope
-            var index = $scope.knownItems.indexOf(item);
-            $scope.knownItems.splice(index, 1);
-        }, requestError);
+
+      // Remove from scope
+      var index = $scope.validationTables.validations.indexOf(item);
+      $scope.validationTables.validations.splice(index, 1);
+
+      $scope.validationRequest = {
+        "validations": $scope.validationTables.validations,
+        "request_type": "update_validation_table"
+      };
+
+      Validations.update({locationId: $routeParams.locationId}, $scope.validationRequest, function (success) {
+          requestSuccess();
+      }, requestError);
+
     }
 
     // Get all items from the server
     $scope.getAllItems = function () {
         $scope.loading = true;
-        /*
-        $scope.knownItems = knownItemsFactory.query(function (success) {
-            $scope.loading = false;
-        }, requestError);
-        */
 
-        $scope.knownItems = knownItemsFactory.get({locationId: $routeParams.locationId},function (success) {
+        $scope.validationTables = Validations.get({locationId: $routeParams.locationId},function (success) {
             $scope.loading = false;
         }, requestError);
 
     };
 
     $scope.findOneValidation = function() {
-      $scope.knownItems = knownItemsFactory.get({locationId: $routeParams.locationId},function (success) {
+      $scope.validationTables = Validations.get({locationId: $routeParams.locationId},function (success) {
           $scope.loading = false;
-          angular.forEach($scope.knownItems.validations, function(value,index){
+          angular.forEach($scope.validationTables.validations, function(value,index){
                     if(value._id == $routeParams.validationId)
                     {
-                      $scope.validationDoc = value.data;
+                      $scope.validationTable = value.data;
 //                       alert(value.data);
                     }
                 });
       }, requestError);
-
-
-
     };
 
     // In edit mode, if user press ENTER, update item
@@ -165,7 +229,8 @@ angular.module('locations').controller("knownItemsController", function ($scope,
         }
     };
 
-
     // LOADS ALL ITEMS
     $scope.getAllItems();
-});
+}
+
+]);

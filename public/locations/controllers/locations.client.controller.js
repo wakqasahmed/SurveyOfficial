@@ -2,8 +2,8 @@
 'use strict';
 
 // Create the 'locations' controller
-angular.module('locations').controller('LocationsController', ['$scope', '$routeParams', '$location', 'Authentication', 'Locations', 'Dialogs',
-    function($scope, $routeParams, $location, Authentication, Locations, Dialogs) {
+angular.module('locations').controller('LocationsController', ['$scope', '$routeParams', '$location', '$http', 'Authentication', 'Locations', 'Dialogs',
+    function($scope, $routeParams, $location, $http, Authentication, Locations, Dialogs) {
     	// Expose the Authentication service
         $scope.authentication = Authentication;
 
@@ -24,12 +24,47 @@ angular.module('locations').controller('LocationsController', ['$scope', '$route
             });
         }
 
+        // Create a new controller method for retrieving a list of brands with status 'active'
+        $scope.findActiveBrands = function() {
+          $http({method: 'GET', url: '/api/brands/active'}).
+            success(function(data, status, headers, config) {
+              // this callback will be called asynchronously
+              // when the response is available
+              $scope.activeBrands = data;
+            }).
+            error(function(data, status, headers, config) {
+              // called asynchronously if an error occurs
+              // or server returns response with an error status.
+            });
+        };
+
+        // Populate timezones list
+        $scope.populateTimezones = function() {
+          $scope.timezones = moment.tz.names();
+        };
+
         // Create a new controller method for creating new locations
         $scope.create = function() {
+
+          $scope.coords = [this.coords_longitude, this.coords_latitude];
+
         	// Use the form fields to create a new location $resource object
             var location = new Locations({
-                title: this.title,
-                content: this.content
+                name: this.name,
+                status: this.status ? 'active' : 'inactive',
+                country: this.country,
+                state: this.state,
+                postalCode: this.postalCode,
+                timezone: 'Asia/Dubai',
+                phoneManager: this.phoneManager,
+                brand: this.brand._id,
+                coords: $scope.coords,
+                contactPerson: [{
+                  name: this.contactPerson_name,
+                  email: this.contactPerson_email,
+                  phoneOffice: this.contactPerson_phoneOffice,
+                  phoneCell: this.contactPerson_phoneCell
+                }]
             });
 
             // Use the location '$save' method to send an appropriate POST request

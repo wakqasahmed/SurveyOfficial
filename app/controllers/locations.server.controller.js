@@ -3,7 +3,9 @@
 
 // Load the module dependencies
 var mongoose = require('mongoose'),
-	Location = mongoose.model('Location');
+	Location = mongoose.model('Location'),
+	Brand = mongoose.model('Brand'),
+	moment = require('moment-timezone');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -21,12 +23,13 @@ exports.create = function(req, res) {
 	// Create a new location object
 	var location = new Location(req.body);
 
-/*
 	// Set the location's 'createdBy' property
 	location.createdBy = req.user;
-*/
+
 	// Set the location's 'createdOn' property
-	location.createdOn = Date.now;
+	location.createdOn = moment.tz(Date.now(), 'Asia/Dubai');
+
+console.log(location);
 
 	// Try saving the location
 	location.save(function(err) {
@@ -69,27 +72,34 @@ exports.update = function(req, res) {
 	// Get the location from the 'request' object
 	var location = req.location;
 
-/*
-	// Update the location fields
-	location.name = req.body.name;
-	location.status = req.body.status;
-	location.country = req.body.country;
-	location.state = req.body.state;
-	location.postalCode = req.body.postalCode;
-	location.timezone = req.body.timezone;
-	location.phoneManager = req.body.phoneManager;
-	// Always store coordinates longitude, latitude order.
-	location.coords = req.body. ;
-	location.contactPerson: [contactPersonSchema],
-	location.brand: { type: Schema.ObjectId, ref: 'Brand' },
-	location.validations: [validationSchema],
-	location.createdOn: = req.body.createdOn;
-	location.modifiedBy: { type: Schema.ObjectId, ref: 'User' }
-*/
+	console.log(req.body);
 
-	location.validations = req.body.validations;
+	if(req.body.request_type == "update_location")
+	{
+		// Update the location fields
+		location.name = req.body.name;
+		location.status = req.body.status;
+		location.country = req.body.country;
+		location.state = req.body.state;
+		location.postalCode = req.body.postalCode;
+		//	location.timezone = req.body.timezone;
+		location.phoneManager = req.body.phoneManager;
+		// Always store coordinates longitude, latitude order.
+		location.coords = req.body.coords;
+		location.contactPerson.name = req.body.contactPerson.name;
+		location.contactPerson.email = req.body.contactPerson.email;
+		location.contactPerson.phoneOffice = req.body.contactPerson.phoneOffice;
+		location.contactPerson.phoneCell = req.body.contactPerson.phoneCell;
 
-	console.log(location);
+		location.brand = req.body.brand;
+		location.modifiedOn = moment.tz(Date.now(), 'Asia/Dubai');
+		//location.modifiedBy = req.user;
+	}
+	else if(req.body.request_type == "update_validation_table")
+	{
+			location.validations = req.body.validations;
+			//location.validations.modifiedOn = moment.tz(Date.now(), 'Asia/Dubai');
+	}
 
 	// Try saving the updated location
 	location.save(function(err) {

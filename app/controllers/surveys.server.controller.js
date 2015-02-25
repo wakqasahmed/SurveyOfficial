@@ -60,7 +60,8 @@ exports.list = function(req, res) {
 };
 
 exports.listByLocationId = function(req, res) {
-	Survey.find({locationId: req.locationId}, function(err, surveys){
+
+	Survey.find({ locationIds: req.params.locationId }, function(err, surveys){
 
 		// If an error occurs continue to the next middleware
 		if (err) {

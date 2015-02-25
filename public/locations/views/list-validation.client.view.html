@@ -16,22 +16,12 @@
           <div class="row">
 
             <!-- The location view -->
-            <section data-ng-controller="knownItemsController">
+            <section data-ng-controller="validationsController">
               <div class="container">
                   <div class="col-md-9">
                       <div class="row">
-                          <h3 class="dark-grey">Validation Data</h3>
-                          <h5 class="dark-grey">Location Name: <span>{{location.name}}</span></h5>
-
-                          <div>
-                            <a class="btn btn-primary" href="/#!/locations/{{location._id}}/edit">Edit</a>
-                            <a class="btn btn-danger" href="/#!/locations/{{location._id}}" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?')">Delete</a>
-                          </div>
-
-                          <hr>
-
-                          <h3 class="dark-grey">Name and Contact</h3>
-                          <h5 class="dark-grey">Location</h5>
+                          <h3 class="dark-grey">Validation Tables</h3>
+                          <h5 class="dark-grey">Location Name: <span>{{validationTables.name}}</span></h5>
                       </div>
 
                       <hr>
@@ -68,29 +58,28 @@
                                 <!-- Content columns-->
                                 <td>
                                     <form name="addForm">
-                                        <input type="text" ng-model="newItem.name" class="form-control" required placeholder="new item..." ng-keydown="saveOnEnter(knownItem, $event)" required />
+                                        <input type="text" ng-model="newItem.name" class="form-control" required placeholder="new item..." ng-keydown="saveOnEnter(tableItem, $event)" required />
                                     </form>
                                 </td>
                             </tr>
 
                             <!--Content-->
-                            <p> {{knownItems | json}}</p>
-                            <tr ng-repeat="knownItem in knownItems.validations">
+                            <tr ng-repeat="tableItem in validationTables.validations">
                                 <!--Buttons column-->
                                 <td>
                                     <!--Edit + Delete-->
-                                    <div class="btn-toolbar" ng-show="knownItem.editMode == null || knownItem.editMode == false">
+                                    <div class="btn-toolbar" ng-show="tableItem.editMode == null || tableItem.editMode == false">
                                         <div class="btn-group">
-                                            <i class="btn glyphicon glyphicon-edit" ng-click="toggleEditMode(knownItem)" title="Edit"></i>
-                                            <i class="btn glyphicon glyphicon-trash" ng-click="deleteItem(knownItem)" title="Delete" data-toggle="modal"></i>
+                                            <i class="btn glyphicon glyphicon-edit" ng-click="toggleEditMode(tableItem)" title="Edit"></i>
+                                            <i class="btn glyphicon glyphicon-trash" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?', tableItem)" title="Delete" data-toggle="modal"></i>
                                         </div>
                                     </div>
 
                                     <!--Save + Cancel-->
-                                    <div class="btn-toolbar" ng-show="knownItem.editMode">
+                                    <div class="btn-toolbar" ng-show="tableItem.editMode">
                                         <div class="btn-group">
-                                            <i class="btn glyphicon glyphicon-floppy-disk" ng-click="updateItem(knownItem)" title="Save" ng-disabled="editForm.$invalid"></i>
-                                            <i class="btn glyphicon glyphicon-remove" ng-click="toggleEditMode(knownItem)" title="Cancel"></i>
+                                            <i class="btn glyphicon glyphicon-floppy-disk" ng-click="updateItem(tableItem)" title="Save" ng-disabled="editForm.$invalid"></i>
+                                            <i class="btn glyphicon glyphicon-remove" ng-click="toggleEditMode(tableItem)" title="Cancel"></i>
                                         </div>
                                     </div>
                                 </td>
@@ -98,12 +87,12 @@
                                 <!-- Content columns-->
                                 <td style="vertical-align:middle">
                                     <!--Name read mode-->
-                                    <span ng-show="knownItem.editMode == null || knownItem.editMode == false" ng-dblclick="toggleEditMode(knownItem)">
-                                        <a data-ng-href="#!/locations/{{knownItems._id}}/{{knownItem._id}}">{{knownItem.name}}</a>
+                                    <span ng-show="tableItem.editMode == null || tableItem.editMode == false" ng-dblclick="toggleEditMode(tableItem)">
+                                        <a data-ng-href="#!/locations/{{validationTables._id}}/validations/{{tableItem._id}}">{{tableItem.name}}</a>
                                     </span>
                                     <!--Name edit mode-->
                                     <form name="editForm">
-                                        <input ng-model="knownItem.name" ng-show="knownItem.editMode" required ng-keydown="updateOnEnter(knownItem, $event)" class="form-control" />
+                                        <input ng-model="tableItem.name" ng-show="tableItem.editMode" required ng-keydown="updateOnEnter(tableItem, $event)" class="form-control" />
                                     </form>
                                 </td>
                             </tr>

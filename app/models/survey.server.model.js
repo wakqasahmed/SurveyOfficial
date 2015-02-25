@@ -4,7 +4,8 @@
 // Load the module dependencies
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	autoIncrement = require('mongoose-auto-increment');
+	autoIncrement = require('mongoose-auto-increment'),
+	moment = require('moment-timezone');
 
 var choiceSchema = new Schema({
   text: String,
@@ -15,11 +16,11 @@ var choiceSchema = new Schema({
 
 var promptSchema = new Schema({
 	title: String,
-	type: String,
+	type: {type: String, default: 'dropdown'},
 	order: Number,
-	required: {type: Boolean, required: true},
+	required: {type: Boolean, default: true},
 	disabled: {type: Boolean},
-	choices: {}
+	validation: { type: Schema.ObjectId, ref: 'Location' }
 });
 
 var questionSchema = new Schema({
@@ -51,12 +52,12 @@ var surveySchema = new Schema({
   startDate: {type: Date, "default": Date.now},
   endDate: {type: Date},
   status: {type: String},
-  locationIds: {type: Array}, //locations where this survey is used ex. carluccios locationId: 01
+  locationIds: [String], //locations where this survey is used ex. carluccios locationId: 01
   type: {type: String},
 	questions: [questionsSchema],
 //  questions: {type: mongoose.Schema.Types.ObjectId, ref: 'Questions'},
 	createdOn: {type: Date},
-	modifiedOn: {type: Date, "default": Date.now},
+	modifiedOn: {type: Date, default: moment.tz(Date.now(), 'Asia/Dubai')},
 	createdBy: { type: Schema.ObjectId, ref: 'User' }
 }, { collection : 'surveys' });
 

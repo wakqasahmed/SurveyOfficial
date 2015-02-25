@@ -16,7 +16,7 @@
 					<div class="row">
 
 						<!-- The location view -->
-						<section data-ng-controller="LocationsController" data-ng-init="findOne()">
+						<section data-ng-controller="LocationsController">
 							<!-- The new location form -->
 							<form data-ng-submit="create()" novalidate>
 
@@ -24,7 +24,7 @@
 									<div class="col-md-9">
 											<div class="row">
 													<h3 class="dark-grey">New Location</h3>
-													<!--<h5 class="dark-grey">Location Status: <span>{{location.status}}</span></h5>-->
+													<h5 class="dark-grey">Active: <input name="status" class="form-control" id="status" type="checkbox" data-ng-model="status" /></h5>
 
 													<hr>
 
@@ -42,7 +42,7 @@
 
 												<div class="form-group col-lg-6">
 													<label>Account Name</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{location.account[0].name}}">
+													<input type="" name="" class="form-control" id="" disabled value="{{authentication.user.account.name}}">
 												</div>
 
 												<div class="form-group col-lg-6">
@@ -50,40 +50,53 @@
 													<input type="text" name="name" class="form-control" id="name" type="text" data-ng-model="name" placeholder="Name" required>
 												</div>
 
+												<div class="form-group col-lg-12" data-ng-init="findActiveBrands()">
+													<label>Brand Name</label>
+													<select class="form-control" ng-options="item.name for item in activeBrands" ng-model="brand">
+														<!--<option value="">-- Select a Brand --</option>-->
+													</select>
+												</div>
+
 												<div class="form-group col-lg-6">
 													<label>Country</label>
-													<input type="text" name="country" class="form-control" id="country" disabled value="{{location.account[0].country}}">
+													<input type="text" name="country" class="form-control" id="country" data-ng-model="country">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>POBox</label>
-													<input type="text" name="postalCode" class="form-control" id="postalCode" data-ng-model="location.postalCode">
+													<input type="text" name="postalCode" class="form-control" id="postalCode" data-ng-model="postalCode">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Emirate</label>
-													<input type="" name="" class="form-control" id="" data-ng-model="location.state">
+													<input type="text" name="state" class="form-control" id="state" data-ng-model="state">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Sales Order No</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{location.account[0].name}}">
+													<input type="" name="" class="form-control" id="" disabled value="{{authentication.user.account.salesOrderNo}}">
 												</div>
 
+												<!--<div class="form-group col-lg-6" data-ng-init="populateTimezones()">-->
 												<div class="form-group col-lg-6">
 													<label>Timezone</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{location.timezone}}">
+													<!--<select class="form-control" disabled ng-options="item for item in timezones" ng-model="timezone">
+														<option value="">-- Select a Timezone --</option>
+													</select>-->
+													<select class="form-control" disabled>
+														<option value="Asia/Dubai" selected>Asia/Dubai</option>
+													</select>
 												</div>
 
 
 												<div class="form-group col-lg-6">
 													<label>Manager Phone Number</label>
-													<input type="number" name="phoneManager" class="form-control" id="phoneManager" data-ng-model="location.phoneManager">
+													<input type="text" name="phoneManager" class="form-control" id="phoneManager" data-ng-model="phoneManager">
 												</div>
 
 												<div class="form-group col-lg-12">
 													<label>Account Structure Name</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{location.account[0].name}}">
+													<input type="" name="" class="form-control" id="" disabled value="{{authentication.user.account.name}}">
 												</div>
 
 											</div>
@@ -93,12 +106,12 @@
 
 												<div class="form-group col-lg-6">
 													<label>Latitude</label>
-													<input type="" name="" class="form-control" id="" data-ng-model="location.coords_latitude">
+													<input type="number" name="coords_latitude" class="form-control" id="" data-ng-model="coords_latitude">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Longitude</label>
-													<input type="" name="" class="form-control" id="" data-ng-model="location.coords_longitude">
+													<input type="number" name="coords_longitude" class="form-control" id="" data-ng-model="coords_longitude">
 												</div>
 
 											</div>
@@ -110,22 +123,22 @@
 
 												<div class="form-group col-lg-6">
 													<label>Name</label>
-													<input type="" name="" class="form-control" id="" data-ng-model="location.contactPerson_name">
+													<input type="text" name="contactPerson_name" class="form-control" id="contactPerson_name" data-ng-model="contactPerson_name">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Email</label>
-													<input type="" name="" class="form-control" id="" data-ng-model="location.contactPerson_email">
+													<input type="text" name="contactPerson_email" class="form-control" id="contactPerson_email" data-ng-model="contactPerson_email">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Office phone</label>
-													<input type="number" name="" class="form-control" id="" data-ng-model="location.contactPerson_phoneOffice">
+													<input type="text" name="contactPerson_phoneOffice" class="form-control" id="contactPerson_phoneOffice" data-ng-model="contactPerson_phoneOffice">
 												</div>
 
 												<div class="form-group col-lg-6">
 													<label>Mobile phone</label>
-													<input type="number" name="" class="form-control" id="" data-ng-model="location.contactPerson_phoneCell">
+													<input type="text" name="contactPerson_phoneCell" class="form-control" id="contactPerson_phoneCell" data-ng-model="contactPerson_phoneCell">
 												</div>
 											</div>
 

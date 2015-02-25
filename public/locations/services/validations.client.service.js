@@ -1,8 +1,8 @@
-angular.module('locations').factory('notificationFactory', function () {
+angular.module('locations').factory('Notifications', function () {
     toastr.options = {
         "showDuration": "100",
         "hideDuration": "100",
-        "timeOut": "2000",
+        "timeOut": "3000",
         "extendedTimeOut": "5000",
     }
 
@@ -22,7 +22,7 @@ angular.module('locations').factory('notificationFactory', function () {
     };
 });
 
-angular.module('locations').factory("knownItemsFactory", function ($resource) {
+angular.module('locations').factory("Validations", function ($resource) {
 
     return $resource('/api/locations/:locationId', //return $resource('/api/locations/:id',
     {

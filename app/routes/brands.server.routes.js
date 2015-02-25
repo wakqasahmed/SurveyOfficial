@@ -14,6 +14,9 @@ module.exports = function(app) {
 		.post(brands.create);
 //		.post(users.requiresLogin, brands.create);
 
+app.route('/api/brands/active')
+	.get(brands.listActiveBrands);
+
 app.route('/api/brands/upload')
 //    .post(users.requiresLogin, brands.postImage);
 		.post(brands.postImage);

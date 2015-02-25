@@ -23,7 +23,7 @@ angular.module('locations').config(['$routeProvider',
 		when('/locations/:locationId/create', {
 			templateUrl: 'locations/views/create-validation.client.view.html'
 		}).
-		when('/knownItems/:locationId/:validationId', {
+		when('/locations/:locationId/validations/:validationId', {
 			templateUrl: 'locations/views/view-validation.client.view.html'
 		}).
 		when('/locations/:locationId/:validationId/edit', {

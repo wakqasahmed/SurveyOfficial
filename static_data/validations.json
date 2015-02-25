@@ -8,6 +8,14 @@ db.locations.update(
    { upsert: true }
 )
 
+db.surveys.update(
+  {"_id": "54e98f9f39e788ef6858fffa"},
+  {$set: {"questions":
+    {"prompt":[{"title":"Staff ID for Display", "validation":"54ed4e0cc10a2f9d58a6bcbf"}]},
+    "locationIds": ["54ec7e3a447de82d3c2544b4"]
+  }},
+  {upsert: true, multi: true});
+
 db.locations.update(
    { "name": "Zafran" },
    { $set: { "brand": {

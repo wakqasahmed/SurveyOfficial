@@ -16,22 +16,13 @@
           <div class="row">
 
             <!-- The location view -->
-            <section data-ng-controller="knownItemsController" data-ng-init="findOneValidation()">
+            <section data-ng-controller="validationDataController" data-ng-init="findOneValidation()">
               <div class="container">
                   <div class="col-md-9">
                       <div class="row">
                           <h3 class="dark-grey">Validation Data</h3>
                           <h5 class="dark-grey">Location Name: <span>{{location.name}}</span></h5>
 
-                          <div>
-                            <a class="btn btn-primary" href="/#!/locations/{{location._id}}/edit">Edit</a>
-                            <a class="btn btn-danger" href="/#!/locations/{{location._id}}" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?')">Delete</a>
-                          </div>
-
-                          <hr>
-
-                          <h3 class="dark-grey">Name and Contact</h3>
-                          <h5 class="dark-grey">Location</h5>
                       </div>
 
                       <hr>
@@ -51,6 +42,8 @@
 
                                 <!-- Content columns-->
                                 <th style="vertical-align:middle">Name</th>
+                                <th style="vertical-align:middle">Value</th>
+                                <th style="vertical-align:middle">Status</th>
                             </tr>
 
                             <!--Row with the new item-->
@@ -68,29 +61,39 @@
                                 <!-- Content columns-->
                                 <td>
                                     <form name="addForm">
-                                        <input type="text" ng-model="newItem.name" class="form-control" required placeholder="new item..." ng-keydown="saveOnEnter(knownItem, $event)" required />
+                                        <input type="text" ng-model="newDataItem.name" class="form-control" required placeholder="display name..." ng-keydown="saveOnEnter(dataItem, $event)" required />
+                                    </form>
+                                </td>
+                                <td>
+                                    <form name="addForm">
+                                        <input type="text" ng-model="newDataItem.value" class="form-control" required placeholder="value..." ng-keydown="saveOnEnter(dataItem, $event)" required />
+                                    </form>
+                                </td>
+                                <td>
+                                    <form name="addForm">
+                                        <input type="text" ng-model="newDataItem.status" class="form-control" required placeholder="inactive" ng-keydown="saveOnEnter(dataItem, $event)" required />
                                     </form>
                                 </td>
                             </tr>
 
                             <!--Content-->
-                            <p> {{validationDoc | json}}</p>
-                            <tr ng-repeat="knownItem in validationDoc">
+                            <p> {{validationData | json}}</p>
+                            <tr ng-repeat="dataItem in validationData">
                                 <!--Buttons column-->
                                 <td>
                                     <!--Edit + Delete-->
-                                    <div class="btn-toolbar" ng-show="knownItem.editMode == null || knownItem.editMode == false">
+                                    <div class="btn-toolbar" ng-show="dataItem.editMode == null || dataItem.editMode == false">
                                         <div class="btn-group">
-                                            <i class="btn glyphicon glyphicon-edit" ng-click="toggleEditMode(knownItem)" title="Edit"></i>
-                                            <i class="btn glyphicon glyphicon-trash" ng-click="deleteItem(knownItem)" title="Delete" data-toggle="modal"></i>
+                                            <i class="btn glyphicon glyphicon-edit" ng-click="toggleEditMode(dataItem)" title="Edit"></i>
+                                            <i class="btn glyphicon glyphicon-trash" ng-click="showDialog('Delete Confirmation', 'Delete the record?', dataItem)" title="Delete" data-toggle="modal"></i>
                                         </div>
                                     </div>
 
                                     <!--Save + Cancel-->
-                                    <div class="btn-toolbar" ng-show="knownItem.editMode">
+                                    <div class="btn-toolbar" ng-show="dataItem.editMode">
                                         <div class="btn-group">
-                                            <i class="btn glyphicon glyphicon-floppy-disk" ng-click="updateItem(knownItem)" title="Save" ng-disabled="editForm.$invalid"></i>
-                                            <i class="btn glyphicon glyphicon-remove" ng-click="toggleEditMode(knownItem)" title="Cancel"></i>
+                                            <i class="btn glyphicon glyphicon-floppy-disk" ng-click="updateItem(dataItem)" title="Save" ng-disabled="editForm.$invalid"></i>
+                                            <i class="btn glyphicon glyphicon-remove" ng-click="toggleEditMode(dataItem)" title="Cancel"></i>
                                         </div>
                                     </div>
                                 </td>
@@ -98,12 +101,32 @@
                                 <!-- Content columns-->
                                 <td style="vertical-align:middle">
                                     <!--Name read mode-->
-                                    <span ng-show="knownItem.editMode == null || knownItem.editMode == false" ng-dblclick="toggleEditMode(knownItem)">
-                                        <a data-ng-href="#!/locations/{{knownItems._id}}/{{knownItem._id}}">{{knownItem.text}}</a>
+                                    <span ng-show="dataItem.editMode == null || dataItem.editMode == false" ng-dblclick="toggleEditMode(dataItem)">
+                                        {{dataItem.name}}
                                     </span>
                                     <!--Name edit mode-->
                                     <form name="editForm">
-                                        <input ng-model="knownItem.name" ng-show="knownItem.editMode" required ng-keydown="updateOnEnter(knownItem, $event)" class="form-control" />
+                                        <input ng-model="dataItem.name" ng-show="dataItem.editMode" required ng-keydown="updateOnEnter(dataItem, $event)" class="form-control" />
+                                    </form>
+                                </td>
+                                <td style="vertical-align:middle">
+                                    <!--Name read mode-->
+                                    <span ng-show="dataItem.editMode == null || dataItem.editMode == false" ng-dblclick="toggleEditMode(dataItem)">
+                                        {{dataItem.value}}
+                                    </span>
+                                    <!--Name edit mode-->
+                                    <form name="editForm">
+                                        <input ng-model="dataItem.value" ng-show="dataItem.editMode" required ng-keydown="updateOnEnter(dataItem, $event)" class="form-control" />
+                                    </form>
+                                </td>
+                                <td style="vertical-align:middle">
+                                    <!--Name read mode-->
+                                    <span ng-show="dataItem.editMode == null || dataItem.editMode == false" ng-dblclick="toggleEditMode(dataItem)">
+                                        {{dataItem.status}}
+                                    </span>
+                                    <!--Name edit mode-->
+                                    <form name="editForm">
+                                        <input ng-model="dataItem.status" ng-show="dataItem.editMode" required ng-keydown="updateOnEnter(dataItem, $event)" class="form-control" />
                                     </form>
                                 </td>
                             </tr>

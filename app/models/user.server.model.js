@@ -4,7 +4,8 @@
 // Load the module dependencies
 var mongoose = require('mongoose'),
 	crypto = require('crypto'),
-	Schema = mongoose.Schema;
+	Schema = mongoose.Schema,
+	moment = require('moment-timezone');
 
 var user_roles = 'owner admin manager'.split(' ');
 
@@ -49,7 +50,7 @@ var UserSchema = new Schema({
 	created: {
 		type: Date,
 		// Create a default 'created' value
-		default: Date.now
+		default: moment.tz(Date.now(), 'Asia/Dubai')
 	},
 	role: { type: String, enum: user_roles, default: 'admin' },
 	account: {}

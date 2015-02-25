@@ -3,7 +3,8 @@
 
 // Load the module dependencies
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+	Schema = mongoose.Schema,
+	moment = require('moment-timezone');
 
 var languages = 'en ar'.split(' ');
 
@@ -27,7 +28,7 @@ var responseSchema = new Schema({
  status: {type: String, default: "incomplete"}, //complete, incomplete
  sourceOS: String, //android v4.4.2
  responses: [answersSchema],
- createdOn: {type: Date, default: Date.now}
+ createdOn: {type: Date, default: moment.tz(Date.now(), 'Asia/Dubai')}
 }, { collection : 'responses' });
 
 // Create the 'Response' model out of the 'ResponseSchema'

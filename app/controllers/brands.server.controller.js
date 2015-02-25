@@ -81,6 +81,22 @@ exports.create = function(req, res) {
 	});
 };
 
+// Create a new controller method that retrieves a list of brands with status 'active'
+exports.listActiveBrands = function(req, res) {
+	// Use the model 'find' method to get a list of brands
+	Brand.where('status').equals('active').exec(function(err, brands) {
+		if (err) {
+			// If an error occurs send the error message
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			// Send a JSON representation of the brand
+			res.json(brands);
+		}
+	});
+};
+
 // Create a new controller method that retrieves a list of brands
 exports.list = function(req, res) {
 	// Use the model 'find' method to get a list of brands

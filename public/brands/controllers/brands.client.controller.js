@@ -72,8 +72,6 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
         // Create a new controller method for creating new brands
         $scope.create = function() {
 
-            console.log('Uploaded Image: ' + this.uploadedImage);
-
           	// Use the form fields to create a new brand $resource object
             var brand = new Brands({
                 name: this.name,
@@ -88,10 +86,11 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
                   phoneOffice: this.contactPerson_phoneOffice,
                   phoneCell: this.contactPerson_phoneCell
                 }],
-                createdOn: Date.now(),
+                createdOn: moment.tz(Date.now(), 'Asia/Dubai'),
                 createdBy: $scope.authentication.user._id
             });
 
+            console.log(brand.createdOn);
             // Use the brand '$save' method to send an appropriate POST request
             brand.$save(function(response) {
               console.log("create brand called and success");
