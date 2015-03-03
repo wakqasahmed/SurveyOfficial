@@ -1,0 +1,24 @@
+{
+  "author": {
+    "name": "https://github.com/tamtakoe"
+  },
+  "name": "oi.multiselect",
+  "version": "0.1.5",
+  "main": [
+    "./dist/multiselect-tpls.js"
+  ],
+  "dependencies": {
+    "angular": ">=1.2"
+  },
+  "homepage": "https://github.com/tamtakoe/oi.multiselect",
+  "_release": "0.1.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.5",
+    "commit": "2ce5b8a1fa826a94f63460b55bad42d3ec10f081"
+  },
+  "_source": "git://github.com/tamtakoe/oi.multiselect.git",
+  "_target": "~0.1.5",
+  "_originalSource": "oi.multiselect",
+  "_direct": true
+}

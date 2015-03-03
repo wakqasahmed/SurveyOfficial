@@ -10,6 +10,8 @@
     "bootswatch-dist": "yeti",
     "ng-file-upload": "~3.0.7",
     "moment-timezone": "~0.3.0",
-    "moment": "~2.9.0"
+    "moment": "~2.9.0",
+    "oi.multiselect": "~0.1.5",
+    "angular-sortable-view": "~0.0.13"
   }
 }

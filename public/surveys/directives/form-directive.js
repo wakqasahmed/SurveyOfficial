@@ -2,7 +2,7 @@
 
 angular.module('surveys').directive('formDirective', function () {
     return {
-        controller: function($scope){
+        controller: 'SurveysController'/*function($scope){
             $scope.submit = function(){
                 alert('Form submitted..');
                 $scope.form.submitted = true;
@@ -11,7 +11,7 @@ angular.module('surveys').directive('formDirective', function () {
             $scope.cancel = function(){
                 alert('Form canceled..');
             }
-        },
+        }*/,
         templateUrl: './surveys/views/directive-templates/form/form.html',
         restrict: 'E',
         scope: {

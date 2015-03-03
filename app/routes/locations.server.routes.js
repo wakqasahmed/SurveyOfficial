@@ -13,6 +13,9 @@ module.exports = function(app) {
 			.post(locations.create);
 //	   .post(users.requiresLogin, locations.create);
 
+app.route('/api/locations/active')
+	.get(locations.listActiveLocations);
+
 	// Set up the 'locations' parameterized routes
 	app.route('/api/locations/:locationId')
 	   .get(locations.read)

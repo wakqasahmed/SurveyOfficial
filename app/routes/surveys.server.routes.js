@@ -16,6 +16,9 @@ module.exports = function(app) {
 	app.route('/api/device/surveys/:locationId')
 			.get(surveys.listByLocationId);
 
+	app.route('/api/surveys/types')
+			.get(surveys.listTypes);
+
 
 	// Set up the 'surveys' parameterized routes
 	app.route('/api/surveys/:surveyId')

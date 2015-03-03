@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
 	moment = require('moment-timezone');
 
 var choiceSchema = new Schema({
-  text: String,
+	textEN: String,
+	textAR: String,
   value: String,
   goto: {type: Number, default: null},
 	notify: {type: Boolean, default: false}
@@ -24,7 +25,8 @@ var promptSchema = new Schema({
 });
 
 var questionSchema = new Schema({
-  title: String,
+  titleEN: String,
+	titleAR: String,
   type: String,
   order: Number,
   required: {type: Boolean, required: true},
@@ -33,18 +35,10 @@ var questionSchema = new Schema({
 });
 
 var questionsSchema = new Schema({
-	name: {
-	type: String,
-	// Set a unique 'username' index
-	unique: true,
-},
   prompt: [promptSchema],
   en: [questionSchema],
   ar: [questionSchema]
 });
-
-// Create the 'Questions' model out of the 'questionsSchema'
-mongoose.model('Questions', questionsSchema);
 
 // Define a new 'surveySchema'
 var surveySchema = new Schema({
@@ -55,7 +49,6 @@ var surveySchema = new Schema({
   locationIds: [String], //locations where this survey is used ex. carluccios locationId: 01
   type: {type: String},
 	questions: [questionsSchema],
-//  questions: {type: mongoose.Schema.Types.ObjectId, ref: 'Questions'},
 	createdOn: {type: Date},
 	modifiedOn: {type: Date, default: moment.tz(Date.now(), 'Asia/Dubai')},
 	createdBy: { type: Schema.ObjectId, ref: 'User' }

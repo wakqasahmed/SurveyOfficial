@@ -3,7 +3,9 @@
 
 // Load the module dependencies
 var mongoose = require('mongoose'),
-	Survey = mongoose.model('Survey');
+	Survey = mongoose.model('Survey'),
+//	Location = mongoose.model('Location'),
+	moment = require('moment-timezone');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -24,10 +26,10 @@ exports.create = function(req, res) {
 	var survey = new Survey(req.body);
 
 	// Set the survey's 'createdBy' property
-	// survey.createdBy = req.user;
+	survey.createdBy = req.user;
 
 	// Set the survey's 'createdOn' property
-	survey.createdOn = Date.now();
+	survey.createdOn = moment.tz(Date.now(), 'Asia/Dubai');
 
 	// Try saving the survey
 	survey.save(function(err) {
@@ -59,9 +61,29 @@ exports.list = function(req, res) {
 	});
 };
 
+// Create a new controller method that retrieves a list of survey types
+exports.listTypes = function(req, res) {
+	// Use the model 'find' method to get a list of surveys
+	console.log('List Types Called');
+	Survey.aggregate({ $group: 'type' }).exec(function(err, surveyTypes) {
+		if (err) {
+			// If an error occurs send the error message
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			// Send a JSON representation of the surveyTypes
+			res.json(surveyTypes);
+			console.log(surveyTypes);
+		}
+	});
+};
+
+
 exports.listByLocationId = function(req, res) {
 
-	Survey.find({ locationIds: req.params.locationId }, function(err, surveys){
+//	Survey.find({ locationIds: req.params.locationId }).populate('validation').exec(function(err, surveys){
+	Survey.find({ locationIds: req.params.locationId }).exec(function(err, surveys){
 
 		// If an error occurs continue to the next middleware
 		if (err) {

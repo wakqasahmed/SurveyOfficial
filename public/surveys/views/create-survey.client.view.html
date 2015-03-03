@@ -18,7 +18,9 @@
 						<!-- The survey view -->
 						<section data-ng-controller="SurveysController">
 							<!-- The new survey form -->
-							<!--<form data-ng-submit="create()" novalidate>-->
+							<!--
+							<form data-ng-submit="create()" novalidate>
+							-->
 
 							<div class="container">
 									<div class="col-md-9">
@@ -39,36 +41,47 @@
 																<div class="form-properties">
 																		<h3>Survey Details</h3>
 																		<div class="row">
-																				<div class="span2">Survey Number: </div>
-																				<div class="span4"><input type="text" name="form-id" ng-disabled="true" ng-model="form.form_id"></div>
+																				<div class="col-md-2">Survey Number: </div>
+																				<div class="col-md-4"><input type="text" name="form-id" ng-disabled="true" ng-model="form.form_id"></div>
 																		</div>
 																		<div class="row">
-																				<div class="span2">Survey Name:</div>
-																				<div class="span4"><input type="text" name="form-name" ng-disabled="previewMode" ng-model="form.form_name"></div>
+																				<div class="col-md-2">Survey Name:</div>
+																				<div class="col-md-4"><input type="text" name="form-name" ng-disabled="previewMode" ng-model="form.form_name"></div>
 																		</div>
-<div class="row">
-		<div class="span2">Start Date:</div>
-		<div class="span4"><input type="date" name="form-name" ng-disabled="previewMode" ng-model="form.form_start_date"></div>
-</div>
-<div class="row">
-		<div class="span2">End Date:</div>
-		<div class="span4"><input type="date" name="form-name" ng-disabled="previewMode" ng-model="form.form_end"></div>
-</div>
-<div class="row">
-		<div class="span2">Status:</div>
-		<div class="span4"><input type="checkbox" name="form-name" ng-disabled="previewMode" ng-model="form.form_status"></div>
-</div>
-<div class="row">
-		<div class="span2">Survey Type:</div>
-		<div class="span4"><input type="text" name="form-name" ng-disabled="previewMode" ng-model="form.form_type"></div>
-</div>
-<div class="row">
-		<div class="span2">Survey Locations:</div>
-		<div class="span4"><select multiple="multiple" name="form-name" ng-disabled="previewMode" ng-model="form.form_locations">
-		<option>Carluccio</option>
-		<option>Zafran</option>
-		</select></div>
-</div>
+																		<div class="row">
+																				<div class="col-md-2">Start Date:</div>
+																				<div class="col-md-4"><input type="date" name="form-name" ng-disabled="previewMode" ng-model="form.form_start_date"></div>
+																		</div>
+																		<div class="row">
+																				<div class="col-md-2">End Date:</div>
+																				<div class="col-md-4"><input type="date" name="form-name" ng-disabled="previewMode" ng-model="form.form_end_date"></div>
+																		</div>
+																		<div class="row">
+																				<div class="col-md-2">Status:</div>
+																				<div class="col-md-4"><input type="checkbox" name="form-name" ng-disabled="previewMode" ng-model="form.form_status"></div>
+																		</div>
+																		<div class="row" data-ng-init="findSurveyTypes">
+																				<div class="col-md-2">Survey Type:</div>
+																				<div class="col-md-4"><oi-multiselect
+																		    ng-options="item for item in surveyTypes"
+																		    placeholder="Select or Add New"
+																				name="form-name" ng-disabled="previewMode" ng-model="form.form_type"
+																		    oi-multiselect-options="{
+																																    newItem: 'prompt',
+																																    saveTrigger: 'enter, blur, tab'
+																																}"
+																				></oi-multiselect></div>
+																		</div>
+																		<div class="row" data-ng-init="findActiveLocations()">
+																				<div class="col-md-2">Survey Locations:</div>
+																				<div class="col-md-10"><oi-multiselect
+																				ng-options="item.name for item in activeLocations track by item._id"
+																				placeholder="Select Locations"
+																				multiple="multiple" name="form-name" ng-disabled="previewMode" ng-model="form.form_locations"
+																				notempty
+																				></oi-multiselect>
+																				</div>
+																		</div>
 
 
 
@@ -76,57 +89,44 @@
 
 																<hr>
 
-																<h3>Fields</h3>
+																<h3>Prompts</h3>
 																<div class="add-field">
-																		<select ng-model="addField.new" ng-options="type.name as type.value for type in addField.types"></select>
-																		<button type="submit" class="btn" ng-click="addNewField()"><i class="icon-plus"></i> Add Field</button>
+																		<select ng-model="addPrompt.new" ng-options="type._id as type.name for type in addPrompt.types"></select>
+																		<button type="submit" class="btn" ng-click="addNewPrompt()"><i class="icon-plus"></i> Add Prompt</button>
 																</div>
 																<hr>
-																<p ng-show="form.form_fields.length == 0">No fields added yet.</p>
-																<accordion close-others="accordion.oneAtATime">
-																		<accordion-group heading="{{field.field_title}}" ng-repeat="field in form.form_fields">
+																<p ng-show="form.prompt_fields.length == 0">No prompts added yet.</p>
+																<accordion close-others="accordionPrompt.oneAtATime">
+																		<accordion-group heading="{{field.field_title}}" ng-repeat="field in form.prompt_fields">
 
 																				<div class="accordion-edit">
-																						<button class="btn btn-danger pull-right" type="button" ng-click="deleteField(field.field_id)"><i class="icon-trash icon-white"></i> Delete</button>
+																						<button class="btn btn-danger pull-right" type="button" ng-click="deletePromptField(field.field_id)"><i class="icon-trash icon-white"></i> Delete</button>
 
 																						<div class="row">
-																								<div class="span2">Field ID: </div>
-																								<div class="span4">{{field.field_id}}</div>
+																								<div class="col-md-2">Prompt ID: </div>
+																								<div class="col-md-4">{{field.field_id}}</div>
 																						</div>
 																						<div class="row">
-																								<div class="span2">Field Type:</div>
-																								<div class="span4">{{field.field_type}}</div>
+																								<div class="col-md-2">Prompt Type:</div>
+																								<div class="col-md-4">{{field.field_type}}</div>
 																						</div>
 
 																						<div class="clear"></div> <hr>
 
 																						<div class="row">
-																								<div class="span2">Field Title:</div>
-																								<div class="span4"><input type="text" ng-model="field.field_title" value="{{field.field_title}}"></div>
+																								<div class="col-md-4">Prompt Title:</div>
+																								<div class="col-md-4"><input type="text" disabled ng-model="field.field_title" value="{{field.field_title}}"></div>
 																						</div>
 																						<div class="row">
-																								<div class="span2">Field Default Value:</div>
-																								<div class="span4"><input type="text" ng-model="field.field_value" value="{{field.field_value}}"></div>
-																						</div>
-																						<div class="row" ng-show="showAddOptions(field)">
-																								<div class="span2">Field Options:</div>
-																								<div class="span6">
-																										<div ng-repeat="option in field.field_options">
-																												<input type="text" ng-model="option.option_title" value="{{option.option_title}}">
-																												<label for="notification">Notify:
-																												<input type="checkbox" ng-model="option.option_notify" value="{{option.option_notify}}"></label>
-																												<a class="btn btn-danger btn-mini right" type="button" ng-click="deleteOption(field, option)"><i class="icon-minus icon-white"></i></a>
-																												<span class="label label-inverse">Value: {{ option.option_value }}</span>
-																										</div>
-																										<button class="btn btn-primary btn-small" type="button" ng-click="addOption(field)"><i class="icon-plus icon-white"></i> Add Option</button>
-																								</div>
+																								<div class="col-md-4">Prompt Default Value:</div>
+																								<div class="col-md-4"><input type="text" disabled ng-model="field.field_value" value="{{field.field_value}}"></div>
 																						</div>
 
 																	<div class="clear"></div> <hr>
 
 																						<div class="row">
-																								<div class="span2">Required:</div>
-																								<div class="span4">
+																								<div class="col-md-2">Required:</div>
+																								<div class="col-md-4">
 																										<label>
 																												<input type="radio" ng-value="true" ng-selected ng-model="field.field_required"/>
 																												&nbsp; Yes
@@ -141,8 +141,97 @@
 																	<div class="clear"></div> <hr>
 
 																	<div class="row">
-																		<div class="span2">Disabled:</div>
-																								<div class="span4">
+																		<div class="col-md-2">Disabled:</div>
+																								<div class="col-md-4">
+																										<label>
+																												<input type="radio" ng-value="true" ng-selected ng-model="field.field_disabled"/>
+																												&nbsp; Yes
+																										</label>
+																										<label>
+																												<input type="radio" ng-value="false" ng-model="field.field_disabled"/>
+																												&nbsp; No
+																										</label>
+																								</div>
+																						</div>
+																				</div>
+																		</accordion-group>
+																</accordion>
+
+
+																<hr>
+
+																<h3>Questions</h3>
+																<div class="add-field">
+																		<select ng-model="addField.new" ng-options="type.name as type.value for type in addField.types"></select>
+																		<button type="submit" class="btn" ng-click="addNewField()"><i class="icon-plus"></i> Add Question</button>
+																</div>
+																<hr>
+																<p ng-show="form.form_fields.length == 0">No questions added yet.</p>
+																<accordion close-others="accordion.oneAtATime" sv-root sv-part="form.form_fields" class="sortable-container" sv-on-sort="setOrder($partTo)">
+																		<accordion-group heading="{{field.field_titleEN}}" ng-repeat="field in form.form_fields" sv-element>
+
+																				<div class="accordion-edit">
+																						<button class="btn btn-danger pull-right" type="button" ng-click="deleteField(field.field_id)"><i class="icon-trash icon-white"></i> Delete</button>
+
+																						<div class="row">
+																								<div class="col-md-2">Question ID: </div>
+																								<div class="col-md-4">{{field.field_id}}</div>
+																						</div>
+																						<div class="row">
+																								<div class="col-md-2">Question Type:</div>
+																								<div class="col-md-4">{{field.field_type}}</div>
+																						</div>
+
+																						<div class="clear"></div> <hr>
+
+																						<div class="row">
+																								<div class="col-md-4">Question Title (English):</div>
+																								<div class="col-md-4"><input type="text" ng-model="field.field_titleEN" value="{{field.field_titleEN}}"></div>
+																						</div>
+																						<div class="row">
+																								<div class="col-md-4">Question Title (Arabic):</div>
+																								<div class="col-md-4"><input type="text" ng-model="field.field_titleAR" value="{{field.field_titleAR}}"></div>
+																						</div>
+																						<div class="row">
+																								<div class="col-md-4">Question Default Value:</div>
+																								<div class="col-md-4"><input type="text" ng-model="field.field_value" value="{{field.field_value}}"></div>
+																						</div>
+																						<div class="row" ng-show="showAddOptions(field)">
+																								<div class="col-md-4">Question Options:</div>
+																								<div class="col-md-8">
+																										<div ng-repeat="option in field.field_options">
+																												<input type="text" ng-model="option.option_titleEN" value="{{option.option_titleEN}}">
+																												<input type="text" ng-model="option.option_titleAR" value="{{option.option_titleAR}}">
+																												<label for="notification">Notify:
+																												<input type="checkbox" ng-model="option.option_notify" value="{{option.option_notify}}"></label>
+																												<a class="btn btn-danger btn-mini right" type="button" ng-click="deleteOption(field, option)"><i class="icon-minus icon-white"></i></a>
+																												<span class="label label-inverse">Value: {{ option.option_value }}</span>
+																										</div>
+																										<button class="btn btn-primary btn-small" type="button" ng-click="addOption(field)"><i class="icon-plus icon-white"></i> Add Option</button>
+																								</div>
+																						</div>
+
+																	<div class="clear"></div> <hr>
+
+																						<div class="row">
+																								<div class="col-md-2">Required:</div>
+																								<div class="col-md-4">
+																										<label>
+																												<input type="radio" ng-value="true" ng-selected ng-model="field.field_required"/>
+																												&nbsp; Yes
+																										</label>
+																										<label>
+																												<input type="radio" ng-value="false" ng-model="field.field_required"/>
+																												&nbsp; No
+																										</label>
+																								</div>
+																						</div>
+
+																	<div class="clear"></div> <hr>
+
+																	<div class="row">
+																		<div class="col-md-2">Disabled:</div>
+																								<div class="col-md-4">
 																										<label>
 																												<input type="radio" ng-value="true" ng-selected ng-model="field.field_disabled"/>
 																												&nbsp; Yes
