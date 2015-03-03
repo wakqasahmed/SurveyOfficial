@@ -63,6 +63,12 @@ $scope.accordionPrompt.oneAtATime = true;
 
 //$scope.surveyTypes = [ { _id: 'Customer Feedback' }, { _id: 'Home Delivery' } ];
 
+$scope.addSurveyType = function(query) {
+    var obj = {_id: query};
+    $scope.surveyTypes.push(obj);
+    return obj;
+};
+
 // Create a new controller method for retrieving a list of brands with status 'active'
 $scope.findSurveyTypes = function() {
   $http({method: 'GET', url: '/api/surveys/types'}).
