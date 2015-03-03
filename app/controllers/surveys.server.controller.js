@@ -65,7 +65,8 @@ exports.list = function(req, res) {
 exports.listTypes = function(req, res) {
 	// Use the model 'find' method to get a list of surveys
 	console.log('List Types Called');
-	Survey.aggregate({ $group: 'type' }).exec(function(err, surveyTypes) {
+	Survey.aggregate().group({ _id: "$type" })
+	.exec(function(err, surveyTypes) {
 		if (err) {
 			// If an error occurs send the error message
 			return res.status(400).send({

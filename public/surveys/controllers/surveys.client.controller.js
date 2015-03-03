@@ -61,17 +61,17 @@ $scope.accordionPrompt.oneAtATime = true;
 
 //$scope.surveyTypes = ["Customer Feedback","Home Delivery"];
 
+//$scope.surveyTypes = [ { _id: 'Customer Feedback' }, { _id: 'Home Delivery' } ];
+
 // Create a new controller method for retrieving a list of brands with status 'active'
 $scope.findSurveyTypes = function() {
   $http({method: 'GET', url: '/api/surveys/types'}).
     success(function(data, status, headers, config) {
       // this callback will be called asynchronously
       // when the response is available
-      console.log(data);
       $scope.surveyTypes = data;
     }).
     error(function(data, status, headers, config) {
-      console.log("Error: " + data);
       // called asynchronously if an error occurs
       // or server returns response with an error status.
     });
