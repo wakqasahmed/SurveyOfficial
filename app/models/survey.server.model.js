@@ -36,8 +36,7 @@ var questionSchema = new Schema({
 
 var questionsSchema = new Schema({
   prompt: [promptSchema],
-  en: [questionSchema],
-  ar: [questionSchema]
+  survey: [questionSchema]
 });
 
 // Define a new 'surveySchema'

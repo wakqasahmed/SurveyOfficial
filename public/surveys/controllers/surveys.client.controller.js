@@ -477,8 +477,7 @@ $scope.$location = $location;
                 type: this.form.form_type,
                 questions: [{
                   prompt: $scope.prompt_fields,
-                  en: $scope.form_fields,
-                  ar: $scope.form_fields
+                  survey: $scope.form_fields
                 }]
             });
 
