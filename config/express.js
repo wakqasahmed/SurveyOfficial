@@ -21,8 +21,10 @@ module.exports = function() {
 	// Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
 	if (process.env.NODE_ENV === 'development') {
 		app.use(morgan('dev'));
+		global.brandImagePath = "http://localhost:3000/content/brand_images/";
 	} else if (process.env.NODE_ENV === 'production') {
 		app.use(compress());
+		global.brandImagePath = "http://official-surveymark.rhcloud.com/content/brand_images/";
 	}
 
 	// Use the 'body-parser' and 'method-override' middleware functions
@@ -65,7 +67,7 @@ module.exports = function() {
 	app.use(express.static('./public'));
 
 	global.appRoot = path.resolve(__dirname);
-	console.log(appRoot);
+//	console.log(appRoot);
 
 	// Return the Express application instance
 	return app;

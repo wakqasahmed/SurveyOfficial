@@ -73,10 +73,12 @@ exports.listActiveLocations = function(req, res) {
 			});
 		} else {
 
+			console.log(brandImagePath);
+
 			for(var l in locations)
 			{
 				if(locations[l].brand.bgImage)
-					locations[l].brand.bgImage = 'http://official-surveymark.rhcloud.com/content/brand_images/' + locations[l].brand.bgImage;
+					locations[l].brand.bgImage = brandImagePath + locations[l].brand.bgImage;
 			}
 
 			// Send a JSON representation of the location
