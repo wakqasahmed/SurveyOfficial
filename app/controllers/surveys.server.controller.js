@@ -90,7 +90,7 @@ exports.listByLocationId = function(req, res) {
 		if (err) {
 			return next(err);
 		} else {
-			// If an account could not be found, create a new account, otherwise, continue to the next middleware
+			// If a survey could not be found, send a failure message
 			if(surveys.length < 1) {
 				res.send({state: 'failure', surveys: null, message: "No survey found"});
 			}

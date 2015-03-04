@@ -413,7 +413,7 @@ $scope.$location = $location;
         // Create a new controller method for creating new surveys
         $scope.create = function() {
 
-          $scope.form.status = $scope.form.status ? 'active' : 'inactive';
+          $scope.form.form_status = ($scope.form.form_status ? 'active' : 'inactive');
           $scope.prompt_fields = [];
           $scope.form_fields = [];
           $scope.form_locations = [];
@@ -472,7 +472,7 @@ $scope.$location = $location;
                 name: this.form.form_name,
                 startDate: this.form.form_start_date,
                 endDate: this.form.form_end_date,
-                status: this.form.status,
+                status: this.form.form_status,
                 locationIds: $scope.form_locations, //locations where this survey is used ex. carluccios locationId: 01
                 type: this.form.form_type,
                 questions: [{
@@ -480,8 +480,6 @@ $scope.$location = $location;
                   survey: $scope.form_fields
                 }]
             });
-
-console.log(survey);
 
             // Use the survey '$save' method to send an appropriate POST request
             survey.$save(function(response) {
