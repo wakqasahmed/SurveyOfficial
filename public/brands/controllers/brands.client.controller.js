@@ -106,7 +106,7 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
         $scope.find = function() {
         	// Use the brand 'query' method to send an appropriate GET request
           //  $scope.brands = Brands.query();
-          var bgImagePath = "http://localhost:3000/content/brand_images/";
+          var bgImagePath = "http://official-surveymark.rhcloud.com/content/brand_images/";
 
           $scope.brands = {
               dataSource: {

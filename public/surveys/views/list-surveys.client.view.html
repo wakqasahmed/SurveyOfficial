@@ -1,19 +1,54 @@
-<!-- The list surveys view -->
-<section data-ng-controller="SurveysController" data-ng-init="find()">
-	<h1>Surveys</h1>
-	<ul>
-		<!-- The list of survey -->
-		<li data-ng-repeat="survey in surveys">
-			<a data-ng-href="#!/surveys/{{survey._id}}" data-ng-bind="survey.title"></a>
-			<br>
-			<small data-ng-bind="survey.created | date:'medium'"></small>
-			<small>/</small>
-			<small data-ng-bind="survey.creator.fullName"></small>
-			<p data-ng-bind="survey.content"></p>
-		</li>
-	</ul>
-	<!-- If there are no surveys in the list, suggest the user's create a new survey -->
-	<div data-ng-hide="!surveys || surveys.length">
-		No surveys yet, why don't you <a href="/#!/surveys/create">create one</a>?
-	</div>
-</section>
+<div ng-include="'../../layout/topnav.html'"></div>
+
+<div class="container">
+
+			<div class="row row-offcanvas row-offcanvas-right">
+
+				<section name="sidebar" ng-include="'surveys/views/partials/survey.client.sidebar.html'">
+				</section>
+
+				<div class="col-xs-12 col-sm-9">
+					<p class="pull-right visible-xs">
+						<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+					</p>
+
+					<div class="row">
+						<!-- The list surveys view -->
+						<section data-ng-controller="SurveysController" data-ng-init="find()">
+
+							<h3 class="dark-grey">Surveys List</h3>
+
+							<!-- The list of survey -->
+							<kendo-grid options="surveys">
+							</kendo-grid>
+
+							<!-- The list of survey without kendo -->
+							<!--
+							<ul>
+								<li data-ng-repeat="survey in surveys">
+									<a data-ng-href="#!/surveys/{{survey._id}}" data-ng-bind="survey.name"></a>
+									<br>
+									<small data-ng-bind="survey.created | date:'medium'"></small>
+									<small>/</small>
+									<small data-ng-bind="survey.creator.fullName"></small>
+									<p data-ng-bind="survey.content"></p>
+								</li>
+							</ul> -->
+							<!-- If there are no surveys in the list, suggest the user's create a new survey -->
+							<div data-ng-hide="!surveys || surveys.length">
+								No surveys yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/surveys/create">create one</a>?</span>
+							</div>
+						</section>
+
+					</div><!--/row-->
+				</div><!--/.col-xs-12.col-sm-9-->
+
+			</div><!--/row-->
+
+			<hr>
+
+			<footer>
+				<!--<p>© Trixcorp 2014</p>-->
+			</footer>
+
+		</div>
