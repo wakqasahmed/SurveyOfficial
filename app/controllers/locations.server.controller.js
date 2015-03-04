@@ -65,13 +65,20 @@ exports.list = function(req, res) {
 // Create a new controller method that retrieves a list of locations with status 'active'
 exports.listActiveLocations = function(req, res) {
 	// Use the model 'find' method to get a list of brands
-	Location.where('status').equals('active').exec(function(err, locations) {
+	Location.where('status').equals('active').populate('brand', 'bgImage').exec(function(err, locations) {
 		if (err) {
 			// If an error occurs send the error message
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
+
+			for(var l in locations)
+			{
+				if(locations[l].brand.bgImage)
+					locations[l].brand.bgImage = 'http://official-surveymark.rhcloud.com/content/brand_images/' + locations[l].brand.bgImage;
+			}
+
 			// Send a JSON representation of the location
 			res.json(locations);
 		}
