@@ -1,0 +1,144 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'brands/views/partials/brand.client.header.html'"></div>
+
+<div class="container">
+
+			<div class="row row-offcanvas row-offcanvas-right">
+
+				<section name="sidebar" ng-include="'brands/views/partials/brand.client.sidebar.html'">
+				</section>
+
+				<div class="col-xs-12 col-sm-9">
+					<p class="pull-right visible-xs">
+						<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+					</p>
+
+					<div class="row">
+
+						<!-- The brand view -->
+						<section data-ng-controller="BrandsController">
+							<!-- The new brand form -->
+							<form data-ng-submit="create()" novalidate>
+
+							<div class="container">
+									<div class="col-md-9">
+											<div class="row">
+													<h3 class="dark-grey">New Brand</h3>
+													<h5 class="dark-grey">Active: <input name="status" class="form-control" id="status" type="checkbox" data-ng-model="status" /></h5>
+
+													<hr>
+
+													<h3 class="dark-grey">Name and Contact</h3>
+													<h5 class="dark-grey">Brand</h5>
+											</div>
+
+											<div class="row">
+												<!--
+												<div class="form-group col-lg-12">
+													<label>Brand ID</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{brand._id}}">
+												</div>
+												-->
+
+												<div class="form-group col-lg-6">
+													<label>Account Name</label>
+													<input type="" name="" class="form-control" id="" disabled value="{{authentication.user.account.name}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Brand Name</label>
+													<input type="text" name="name" class="form-control" id="name" type="text" data-ng-model="name" placeholder="Name" required>
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Background Image</label>
+<!--													<div class="form-control btn btn-primary" ng-file-select ng-model="files">Select File</div>-->
+													<input name="bgImage" id="bgImage" class="form-control" type="file" data-ng-file-select="onFileSelect($files)" />
+													<span data-ng-if="uploadInProgress">Upload progress: {{ uploadProgress }}</span>
+													<img data-ng-src="{{'content/brand_images/' +  uploadedImageName}}" data-ng-if="uploadedImageName" width="120">
+													<!--<span data-ng-src="{{uploadedImageName}}" data-ng-if="uploadedImageName">{{uploadedImageName}}</span>-->
+												</div>
+
+
+												<div class="form-group col-lg-6">
+													<label>Country</label>
+													<input type="text" name="country" class="form-control" id="country" data-ng-model="country" placeholder="Country">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Emirate</label>
+													<input type="text" name="state" class="form-control" id="state" data-ng-model="state" placeholder="Emirate">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Sales Order No</label>
+													<input type="text" name="" class="form-control" id="" disabled value="{{authentication.user.account.salesOrderNo}}">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Manager Phone Number</label>
+													<input type="text" name="phoneManager" class="form-control" id="phoneManager" data-ng-model="phoneManager" placeholder="00971xxXXXXXXX">
+												</div>
+
+												<div class="form-group col-lg-12">
+													<label>Account Structure Name</label>
+													<input type="text" name="" class="form-control" id="" disabled value="{{authentication.user.account.name}}">
+												</div>
+
+											</div>
+
+											<hr>
+
+											<div class="row">
+												<h5 class="dark-grey">Contact Person</h5>
+
+												<div class="form-group col-lg-6">
+													<label>Name</label>
+													<input type="text" name="contactPerson_name" class="form-control" id="contactPerson_name" data-ng-model="contactPerson_name">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Email</label>
+													<input type="email" name="contactPerson_email" class="form-control" id="contactPerson_email" data-ng-model="contactPerson_email">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Office phone</label>
+													<input type="text" name="contactPerson_phoneOffice" class="form-control" id="contactPerson_phoneOffice" data-ng-model="contactPerson_phoneOffice" placeholder="00971xXXXXXXX">
+												</div>
+
+												<div class="form-group col-lg-6">
+													<label>Mobile phone</label>
+													<input type="text" name="contactPerson_phoneCell" class="form-control" id="contactPerson_phoneCell" data-ng-model="contactPerson_phoneCell" placeholder="00971xxXXXXXXX">
+												</div>
+											</div>
+
+											<div class="row">
+												<div>
+													<button type="submit" class="btn btn-primary">Submit</button>
+												</div>
+											</div>
+
+											<div class="row">
+												<!-- The error message element -->
+												<div data-ng-show="error">
+													<strong data-ng-bind="error"></strong>
+												</div>
+											</div>
+
+										</div>
+
+									</div>
+						</section>
+
+					</div><!--/row-->
+				</div><!--/.col-xs-12.col-sm-9-->
+
+			</div><!--/row-->
+
+			<div ng-include="'../../layout/footer.html'"></div>
+
+		</div>
+
+
+</section>
