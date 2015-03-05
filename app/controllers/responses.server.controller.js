@@ -20,8 +20,8 @@ var getErrorMessage = function(err) {
 exports.create = function(req, res) {
 
 	// Create a new response object
-	//var responses = req.body.responses;
-	var responses = req.body;
+	var responses = req.body.responses;
+	//var responses = req.body;
 
 	var err_responses = [];
 	var success_responses = [];
