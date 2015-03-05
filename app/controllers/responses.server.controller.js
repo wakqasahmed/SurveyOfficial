@@ -16,12 +16,12 @@ var getErrorMessage = function(err) {
 	}
 };
 
+
 // Create a new controller method that creates new responses
 exports.create = function(req, res) {
 
 	// Create a new response object
-	var responses = req.body.responses;
-	//var responses = req.body;
+	var responses = req.body;
 
 	var err_responses = [];
 	var success_responses = [];
@@ -60,7 +60,7 @@ exports.create = function(req, res) {
 // Create a new controller method that retrieves a list of responses
 exports.list = function(req, res) {
 	// Use the model 'find' method to get a list of responses
-	Response.find().sort('-created').populate('createdBy', 'firstName lastName fullName').exec(function(err, responses) {
+	Response.find().exec(function(err, responses) {
 		if (err) {
 			// If an error occurs send the error message
 			return res.status(400).send({

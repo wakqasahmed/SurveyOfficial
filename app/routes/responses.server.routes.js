@@ -9,8 +9,7 @@ var users = require('../../app/controllers/users.server.controller'),
 module.exports = function(app) {
 	// Set up the 'responses' base routes
 	app.route('/api/responses')
-	   .get(responses.list)
-	   .post(users.requiresLogin, responses.create);
+	   .get(responses.list);
 
 app.route('/api/device/responses')
 		.post(responses.create);
