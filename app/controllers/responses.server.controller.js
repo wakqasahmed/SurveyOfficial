@@ -21,7 +21,6 @@ var getErrorMessage = function(err) {
 exports.create = function(req, res) {
 
 	// Create a new response object
-	res.setHeader('Content-Type', 'text/plain');
 	var responses = JSON.parse(req.body.responses);
 
 	var err_responses = [];
