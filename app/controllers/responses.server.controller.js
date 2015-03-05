@@ -18,23 +18,19 @@ var getErrorMessage = function(err) {
 
 // Create a new controller method that creates new responses
 exports.create = function(req, res) {
-	console.log("Chakir is doubting my app: " + req.body);
 
 	// Create a new response object
-	var responses = req.body;//new Response(req.body);
-
-	// Set the response's 'createdBy' property
-	//response.createdBy = req.user;
+	//var responses = req.body.responses;
+	var responses = req.body;
 
 	var err_responses = [];
 	var success_responses = [];
 	var error = false;
 
 	for(var r in responses){
-		console.log(responses[r]);
+
 		var response = new Response(responses[r]);
-		console.log(response);
-/*
+
 		// Try saving the response
 		response.save(function(err) {
 			if (err) {
@@ -47,19 +43,18 @@ exports.create = function(req, res) {
 				//console.log(success_response);
 			}
 		});
-		*/
-	}
 
-	console.log(error);
+	}
 
 	if(error){
 			res.send({state: 'failure', err_responses: err_responses});
 	}
 	else {
-		console.log(success_responses);
+		//console.log(success_responses);
 		// Send a JSON representation of the response
 		res.send({state: 'success', success_responses: success_responses});
 	}
+
 };
 
 // Create a new controller method that retrieves a list of responses
