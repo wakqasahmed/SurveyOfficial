@@ -99,8 +99,7 @@ exports.update = function(req, res) {
 
 	console.log(req.body);
 
-	if(req.body.request_type == "update_location")
-	{
+	if(req.body.request_type == "update_location") {
 		// Update the location fields
 		location.name = req.body.name;
 		location.status = req.body.status;
@@ -120,8 +119,7 @@ exports.update = function(req, res) {
 		location.modifiedOn = moment.tz(Date.now(), 'Asia/Dubai');
 		//location.modifiedBy = req.user;
 	}
-	else if(req.body.request_type == "update_validation_table")
-	{
+	else if(req.body.request_type == "update_validation_table")	{
 			location.validations = req.body.validations;
 			//location.validations.modifiedOn = moment.tz(Date.now(), 'Asia/Dubai');
 	}

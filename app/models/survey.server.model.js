@@ -21,7 +21,7 @@ var promptSchema = new Schema({
 	order: Number,
 	required: {type: Boolean, default: true},
 	disabled: {type: Boolean},
-	validation: { type: Schema.ObjectId, ref: 'Location' }
+	validation: {}
 });
 
 var questionSchema = new Schema({

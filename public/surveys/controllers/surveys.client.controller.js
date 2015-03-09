@@ -291,7 +291,7 @@ $scope.$location = $location;
                 "field_required" : true,
                 "field_disabled" : false,
                 "field_order": $scope.addPrompt.lastAddedID,
-                "field_validation": $scope.added_promptID
+                "field_validation": $scope.added_promptName
             };
 
             // put newPromptField into fields array

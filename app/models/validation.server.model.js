@@ -12,7 +12,7 @@ var keyValSchema = new Schema({
 });
 
 // Define a new 'validationSchema'
-var validationSchema = new Schema({
+var validationSchema = new Schema({  
   name: String,
   data: [keyValSchema],
   createdOn: {type: Date},

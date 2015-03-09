@@ -3,7 +3,8 @@
 
 // Load the module dependencies
 var mongoose = require('mongoose'),
-	Validation = mongoose.model('Validation');
+	Validation = mongoose.model('Validation'),
+	Location = mongoose.model('Location');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -44,7 +45,7 @@ exports.create = function(req, res) {
 // Create a new controller method that retrieves a list of validations
 exports.list = function(req, res) {
 	// Use the model 'find' method to get a list of validations
-	Validation.find().sort('-created').populate('createdBy', 'firstName lastName fullName').exec(function(err, validations) {
+	Validation.find().exec(function(err, validations) {
 		if (err) {
 			// If an error occurs send the error message
 			return res.status(400).send({
@@ -84,6 +85,50 @@ exports.update = function(req, res) {
 		}
 	});
 };
+
+exports.bulkLocationsUpdate = function(req, res) {
+
+	var newValidationTable = req.params.tableName;
+
+	var query = {};
+	var update = {$addToSet: {'validations': {'name': newValidationTable, '_id': mongoose.Types.ObjectId()}}};
+
+	var bulk = Location.collection.initializeOrderedBulkOp();
+	bulk.find(query).update(update);
+	bulk.execute(function(err, loc){
+		if (err) {
+			// If an error occurs send the error message
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			// Send a JSON representation of the location
+			res.send({"status":"success"});
+		}
+		//console.log(loc);
+	});
+
+	/*
+	Location.findAndUpdate({}).exec(function(err, loc){
+		if (err) {
+			// If an error occurs send the error message
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			console.log(loc);
+			for(var i = 0; i < loc.length; i++)
+			{
+					var currLoc =	JSON.parse(loc.validations[0]);
+					console.log(currLoc);
+					//loc.validations[0].push(newValidationTable);
+			}
+
+			// Send a JSON representation of the location
+			res.send({"status":"success"});
+		}
+	});*/
+}
 
 // Create a new controller method that delete an existing validation
 exports.delete = function(req, res) {

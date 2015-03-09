@@ -59,7 +59,7 @@ module.exports = function() {
 	require('../app/routes/articles.server.routes.js')(app);
 	require('../app/routes/locations.server.routes.js')(app);
 	require('../app/routes/brands.server.routes.js')(app);
-//	require('../app/routes/validations.server.routes.js')(app);
+	require('../app/routes/validations.server.routes.js')(app);
 	require('../app/routes/surveys.server.routes.js')(app);
 	require('../app/routes/responses.server.routes.js')(app);
 

@@ -12,6 +12,9 @@ module.exports = function(app) {
 	   .get(validations.list)
 	   .post(users.requiresLogin, validations.create);
 
+	app.route('/api/validations/tables/:tableName')
+			.get(validations.bulkLocationsUpdate);
+
 	// Set up the 'validations' parameterized routes
 	app.route('/api/validations/:validationId')
 	   .get(validations.read)

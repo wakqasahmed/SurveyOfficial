@@ -4,7 +4,7 @@
 // Load the module dependencies
 var mongoose = require('mongoose'),
 	Survey = mongoose.model('Survey'),
-//	Location = mongoose.model('Location'),
+	Location = mongoose.model('Location'),
 	moment = require('moment-timezone');
 
 // Create a new error handling controller method
@@ -21,7 +21,7 @@ var getErrorMessage = function(err) {
 // Create a new controller method that creates new surveys
 exports.create = function(req, res) {
 
-	console.log(req.body);
+	console.log(req.body.questions[0].prompt);
 	// Create a new survey object
 	var survey = new Survey(req.body);
 
@@ -30,7 +30,25 @@ exports.create = function(req, res) {
 
 	// Set the survey's 'createdOn' property
 	survey.createdOn = moment.tz(Date.now(), 'Asia/Dubai');
+/*
+	Location.find({"_id": { $in : survey.locationIds }}, 'validations', function(err, loc){
+			console.log(loc);
 
+
+
+	});
+	*/
+
+	/*
+	for(var i = 0; i < survey.locationIds.length; i++) {
+
+	}
+
+	for(var i=0; i<survey.questions[0].prompt.length; i++)
+	{
+		survey.questions[0].prompt
+	}
+*/
 	// Try saving the survey
 	survey.save(function(err) {
 		if (err) {
@@ -90,12 +108,33 @@ exports.listByLocationId = function(req, res) {
 		if (err) {
 			return next(err);
 		} else {
+
 			// If a survey could not be found, send a failure message
 			if(surveys.length < 1) {
 				res.send({state: 'failure', surveys: null, message: "No survey found"});
 			}
 			else {
-				res.send({state: 'success', surveys: surveys ? surveys : null});
+
+				for(var s in surveys) {
+					Location.findOne({"_id": req.params.locationId}).exec(function(err, loc){
+
+						for(var i=0; i < surveys[s].questions[0].prompt.length; i++) {
+
+							for(var j = 0; j < loc.validations.length; j++){
+
+								if(loc.validations[j].name == surveys[s].questions[0].prompt[i].validation){
+									surveys[s].questions[0].prompt[i].validation = JSON.parse(JSON.stringify(loc.validations[j]));
+								}
+							}
+						}
+
+						res.send({state: 'success', surveys: surveys ? surveys : null});
+
+					});
+
+				}
+
+
 			}
 		}
 	});
