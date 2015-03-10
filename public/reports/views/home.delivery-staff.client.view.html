@@ -1,0 +1,58 @@
+<!-- Sidebar -->
+<section name="sidebar" ng-include="'reports/views/partials/reports.client.sidebar.html'">
+</section>
+
+
+
+
+
+<div ng-include="'reports/views/partials/reports.client.header.html'"></div>
+<div ng-include="'../../layout/topnav.html'"></div>
+
+<div class="container">
+  <h3> Home Delivery </h3>
+
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+
+
+
+    <div data-ng-controller="reportsController" >
+
+        <form name="myForm" >
+            Pick a month:
+            <input id="exampleInput" type="month" name="input" ng-model="value" placeholder="yyyy-MM" min="2013-01" max="2013-12" required />
+
+
+
+             Brands
+            <select ng-click="init()" >
+                <option ng-repeat="names in brand" >{{names}}</option>
+
+
+            </select>
+
+            Locations
+            <select>
+                <option>Carlicious</option>
+                <option>Dubai</option>
+
+            </select>
+
+            <button type="submit" ng-click=" foodquality()"> Generate Report </button>
+
+
+
+
+
+<tt>Selected Month = {{value | date: "yyyy-MM"}}</tt><br/>
+       </form>
+
+        <div class="demo-section k-content">
+            <div id="chart"></div>
+
+            <div id="chart1"></div>
+        </div>
+    </div>
+</div>

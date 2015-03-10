@@ -1,0 +1,121 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'validations/views/partials/validation.client.header.html'"></div>
+
+<div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <section name="sidebar" ng-include="'validations/views/partials/validation.client.sidebar.html'">
+        </section>
+
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+
+          <div class="row">
+
+            <!-- The location view -->
+            <section data-ng-controller="validationsController">
+              <div class="container">
+                  <div class="col-md-9">
+                      <div class="row">
+                          <h3 class="dark-grey">Validation Tables</h3>
+                      </div>
+
+                      <hr>
+
+                      <div class="row">
+
+                        <!--AngularJS SPA CRUD table-->
+                        <table class="table table-condensed table-hover table-striped" ng-hide="loading">
+                            <!-- Header-->
+                            <tr class="panel-title">
+                                <!--Buttons column-->
+                                <th style="width: 100px;">
+                                    <!--Add + Cancel-->
+                                    <div class="btn-toolbar"><i class="btn glyphicon glyphicon-plus" ng-click="toggleAddMode()" title="Add" ng-hide="addMode"></i></div>
+                                    <div class="btn-toolbar"><i class="btn glyphicon glyphicon-minus" ng-click="toggleAddMode()" title="Cancel" ng-show="addMode"></i></div>
+                                </th>
+
+                                <!-- Content columns-->
+                                <th style="vertical-align:middle">Name</th>
+                            </tr>
+
+                            <!--Row with the new item-->
+                            <tr ng-show="addMode" style="background: rgb(251, 244, 222)">
+                                <!--Buttons column-->
+                                <td>
+                                    <div class="btn-toolbar">
+                                        <!--Create + Cancel-->
+                                        <div class="btn-group">
+                                            <i class="btn glyphicon glyphicon-floppy-disk" ng-click="createItem()" title="Create" ng-disabled="addForm.$invalid"></i>
+                                            <i class="btn glyphicon glyphicon-remove" ng-click="toggleAddMode()" title="Cancel"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!-- Content columns-->
+                                <td>
+                                    <form name="addForm">
+                                        <input type="text" ng-model="newItem.name" class="form-control" required placeholder="new item..." ng-keydown="saveOnEnter(tableItem, $event)" required />
+                                    </form>
+                                </td>
+                            </tr>
+
+                            <!--Content-->
+                            <tr ng-repeat="tableItem in validationTables.validations">
+                                <!--Buttons column-->
+                                <td>
+                                    <!--Edit + Delete-->
+                                    <div class="btn-toolbar" ng-show="tableItem.editMode == null || tableItem.editMode == false">
+                                        <div class="btn-group">
+                                            <i class="btn glyphicon glyphicon-edit" ng-click="toggleEditMode(tableItem)" title="Edit"></i>
+                                            <i class="btn glyphicon glyphicon-trash" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?', tableItem)" title="Delete" data-toggle="modal"></i>
+                                        </div>
+                                    </div>
+
+                                    <!--Save + Cancel-->
+                                    <div class="btn-toolbar" ng-show="tableItem.editMode">
+                                        <div class="btn-group">
+                                            <i class="btn glyphicon glyphicon-floppy-disk" ng-click="updateItem(tableItem)" title="Save" ng-disabled="editForm.$invalid"></i>
+                                            <i class="btn glyphicon glyphicon-remove" ng-click="toggleEditMode(tableItem)" title="Cancel"></i>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Content columns-->
+                                <td style="vertical-align:middle">
+                                    <!--Name read mode-->
+                                    <span ng-show="tableItem.editMode == null || tableItem.editMode == false" ng-dblclick="toggleEditMode(tableItem)">
+                                        {{tableItem.name}}
+                                    </span>
+                                    <!--Name edit mode-->
+                                    <form name="editForm">
+                                        <input ng-model="tableItem.name" ng-show="tableItem.editMode" required ng-keydown="updateOnEnter(tableItem, $event)" class="form-control" />
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!--Loading indicator-->
+                        <img src="../images/loading.gif" ng-show="loading" class="center-block" title="Loading..." />
+
+                    </div>
+
+
+                    </div>
+
+                  </div>
+            </section>
+
+          </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+      </div><!--/row-->
+
+      <div ng-include="'../../layout/footer.html'"></div>
+
+    </div>
+
+
+</section>

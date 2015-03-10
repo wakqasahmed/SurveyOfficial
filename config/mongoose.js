@@ -21,6 +21,7 @@ module.exports = function() {
 	require('../app/models/validation.server.model');
 	require('../app/models/survey.server.model');
 	require('../app/models/response.server.model');
+	require('../app/models/report.server.model');
 
 	// Return the Mongoose connection instance
 	return db;

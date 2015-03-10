@@ -16,6 +16,10 @@ module.exports = function(app) {
 app.route('/api/locations/active')
 	.get(locations.listActiveLocations);
 
+//to use in Reports to get Locations By Brand Ids (array comma separated)
+app.route('/api/locations/locationsByBrands/:brandIds')
+		.get(locations.byBrands);
+
 	// Set up the 'locations' parameterized routes
 	app.route('/api/locations/:locationId')
 	   .get(locations.read)

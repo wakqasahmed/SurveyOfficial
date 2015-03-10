@@ -1,0 +1,12 @@
+<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" data-ng-controller="NavController">
+  <div class="list-group">
+  	<ul class="list-group-item" ng-class="{active: ($location.path() == '/reports') }"><a href="#!/reports">Monthly</a></ul>
+    <li class="list-group-item" ng-class="{active: ($location.path() == '/reports/staff') }"><a href="#!/reports/staff">Staff Report</a></li>
+    <li class="list-group-item" ng-class="{active: ($location.path() == '/reports/homedelivery') }"><a href="#!/reports/homedelivery">Home Delivery  </a></li>
+    <li class="list-group-item" ng-class="{active: ($location.path() == '/reports/guest') }"><a href="#!/reports/guest"> Guest Survey vs Guest Checks </a></li>
+    <li class="list-group-item" ng-class="{active: ($location.path() == '/reports/brandsum') }"><a href="#!/reports/brandsum">Brand Summary</a></li>
+
+    <li class="list-group-item" ng-class="{active: ($location.path() == '/reports/totalsum') }"><a href="#!/reports/totalsum"> Foodmark  Summary</a></li>
+
+  </div>
+</div><!--/.sidebar-offcanvas-->

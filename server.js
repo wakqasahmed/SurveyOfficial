@@ -21,6 +21,10 @@ var app = express({
 		name : process.env.OPENSHIFT_APP_NAME || "Surveymark"
 });
 
+if(process.env.NODE_ENV == 'development'){
+	app.locals.pretty = true;
+	app.set('json spaces', 2);
+}
 
 // Configure the Passport middleware
 var passport = passport();

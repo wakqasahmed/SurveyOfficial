@@ -1,0 +1,41 @@
+<div ng-include="'reports/views/partials/reports.client.header.html'"></div>
+<div ng-include="'../../layout/topnav.html'"></div>
+
+<section name="sidebar" ng-include="'reports/views/partials/reports.client.sidebar.html'" >
+        </section>
+
+        <section  ng-controller="reportsController">
+          <div class="container">
+          <div class="row">
+
+          <div class="col-md-6">
+               <h3>Guest Check V Guest Surverys</h3>
+
+            <multiselect2 data-ng-init="brandName()" class="input-xlarge" multiple="true"
+                ng-model="selectedBrand"
+                options="c.name for c in brand "
+                change="selected()" uncheckAll="alert('got');"></multiselect2>
+                <div class="well well-small">
+                    {{selectedBrand.name}}
+                </div>
+
+
+
+
+
+
+
+
+
+                <div>
+                    <ul>Locations in Brand
+                        <li ng-repeat="x  in locationByBrand" ng-hide="!selectedBrand.length">
+                              {{ x.name }}  <input type="" name=""  id="" /> <input type="Button" value="Submit"  />
+                        </li>
+                    </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          </section>

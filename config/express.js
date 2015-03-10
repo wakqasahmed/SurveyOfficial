@@ -62,6 +62,7 @@ module.exports = function() {
 	require('../app/routes/validations.server.routes.js')(app);
 	require('../app/routes/surveys.server.routes.js')(app);
 	require('../app/routes/responses.server.routes.js')(app);
+	require('../app/routes/reports.server.routes.js')(app);
 
 	// Configure static file serving
 	app.use(express.static('./public'));

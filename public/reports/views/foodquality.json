@@ -1,0 +1,75 @@
+[
+    {
+        "location": "Balance Cafe Dubai",
+        "questionID": 1 ,
+        "excellent": 100,
+        "good": null,
+        "bad": null,
+        "poor": null
+        
+    },
+    
+    {
+        "location": "Cafe Fahaheel",
+        "questionID": 1 ,
+       
+        "excellent": null,
+        "good": 100,
+        "bad": null,
+        "poor": null  
+    },
+
+    {
+        "location": "Carluccio Airport",
+        "questionID": 1 ,
+       
+        "excellent": null,
+        "good": null,
+        "bad": 100,
+        "poor": null
+    },
+
+      {
+        "location": "Carluccio Deira City Center",
+        "questionID": 1 ,
+       
+       "excellent": null,
+        "good": null,
+        "bad": null,
+        "poor": 100
+        
+    },
+
+    {
+        "location": "Carluccio Doha Qatar",
+        "questionID": 1 ,
+       
+        "excellent": 40,
+        "good": 20,
+        "bad": 10,
+        "poor": 30
+    },
+
+      {
+        "location": "Carluccio Dubai Mall",
+        "questionID": 1 ,
+       
+      "excellent": null,
+        "good": null,
+        "bad": null,
+        "poor": 100
+        
+    },
+
+      {
+        "location": "Carluccio Marina Mall",
+        "questionID": 1 ,
+       
+      "excellent": 55,
+        "good": 28,
+        "bad": 12,
+        "poor": 5
+    }
+    
+
+]

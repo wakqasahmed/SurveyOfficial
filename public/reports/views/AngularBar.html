@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html ng-app="KendoDemos">
+<head>
+    <base href="http://localhost:3000">
+    <style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>
+    <title></title>
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1316/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1316/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1316/styles/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1316/styles/kendo.dataviz.default.min.css" />
+
+    <script src="http://cdn.kendostatic.com/2014.3.1316/js/jquery.min.js"></script>
+    <script data-require="angular.js@*" data-semver="1.4.0-beta.4" src="https://code.angularjs.org/1.2.20/angular.js"></script>
+    <script src="http://cdn.kendostatic.com/2014.3.1316/js/kendo.all.min.js"></script>
+    <link rel="stylesheet" href="http://demos.telerik.com/kendo-ui/content/shared/styles/examples-offline.css">
+    <script src="http://demos.telerik.com/kendo-ui/content/shared/js/console.js"></script>
+</head>
+<body>
+  <script>
+
+
+
+
+
+    angular.module("KendoDemos", [ "kendo.directives" ])
+        .controller("Ctrl", function($scope){
+            $scope.onSeriesHover = function(e) {
+                kendoConsole.log(kendo.format("event :: seriesHover ({0} : {1})", e.series.name , e.value));
+
+            };
+    
+            $scope.electricity = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "../content/js/participation.json",
+                        dataType: "json"
+                    }
+                },
+                sort: {
+                    field: "createdOn",
+                    dir: "asc"
+                }
+                
+                
+                    
+            
+            });
+
+
+            
+        })
+
+       function customersController($scope,$http) {
+  $http.get("D:/trix/surveymark/content/js/part.json")
+  .success(function(response) {$scope.names = response;});
+}
+
+   
+
+</script>
+<div id="example" >
+  
+    <div ng-controller="Ctrl">
+    <div class="demo-section k-content">
+        <div class="box-col" style="width: 600px;">
+            <h4>Hover some series</h4>
+
+            <div kendo-chart
+                 k-legend="{ position: 'top' }"
+                 k-series-defaults="{ type: 'bar'   }"
+                 k-series="[
+
+                                 { field: 'participants', name: 'location.data'   },
+                                 
+                                 
+                                
+                             ]"
+                 k-data-source="electricity"
+                 k-series-hover="onSeriesHover"
+                 k-category-axis="{ labels:{ visible:true }, field: 'location' }"
+                 ></div>
+        </div>
+        <div class="box-col">
+            <h4>Console</h4>
+            <div class="console"></div>
+        </div>
+    </div>
+
+        </div>
+        <div ng-controller="customersController">
+     
+   <ul>
+  <li ng-repeat="x in names">
+    {{ x.location + ', ' + x.responseId }}
+  </li>
+
+</ul>
+<div ng-repeat="(key, data) in names">
+  {{data.location}}
+  {{data.responseId}}
+
+</div>
+</div>
+
+    <div>{{error}}</div>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

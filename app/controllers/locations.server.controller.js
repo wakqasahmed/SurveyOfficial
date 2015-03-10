@@ -173,6 +173,25 @@ exports.locationByID = function(req, res, next, id) {
 	});
 };
 
+exports.byBrands = function(req, res){
+
+		var brands = req.params.brandIds.split(',');
+		console.log(brands);
+
+		for (var b in brands){
+			console.log(mongoose.Types.ObjectId.isValid(brands[b].toString()));
+			brands[b] = brands[b].toString();
+		}
+
+
+		Location.find({
+    	'brand': { $in: brands}}, 'name brand', function(err, docs){
+					res.json(docs);
+		});
+
+}
+
+
 // Create a new controller middleware that is used to authorize an location operation
 exports.hasAuthorization = function(req, res, next) {
 	// If the current user is not the creator of the location or current user is not 'admin' role send the appropriate error message
