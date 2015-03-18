@@ -11,9 +11,8 @@ var ReportSchema = new Schema({
 {collection: 'users_comments'});
 
 var ReportMonthlyParticipationRateSchema = new Schema({
-	_id: {type: Schema.Types.ObjectId,  ref: 'Location'},
+	_id: {type: Schema.Types.ObjectId, ref: 'Location'},
 	count: Number
-
 },
 {collection: "report_participation_rate"});
 

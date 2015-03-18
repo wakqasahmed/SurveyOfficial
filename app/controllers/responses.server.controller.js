@@ -3,7 +3,8 @@
 
 // Load the module dependencies
 var mongoose = require('mongoose'),
-	Response = mongoose.model('Response');
+	Response = mongoose.model('Response'),
+    moment = require('moment-timezone');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -27,11 +28,57 @@ exports.create = function(req, res) {
 	var success_responses = [];
 	var error = false;
 
+
+
+    var opts  = [{
+        path: 'locationId'
+        , select: 'phoneManager'
+
+    },{
+        path: 'surveyId'
+        , select: 'questions.survey.choices.value questions.survey.choices.notify'
+
+    }
+
+    ]
+    Response.populate(responses,opts,function(err, docs1) {
+        // assert.ifError(err);
+        console.log();
+        console.log( JSON.stringify(docs1));
+        for ( var i=0 ; i <  docs1.length ; i++){
+          var phoneMna = docs1[0].locationId.phoneManager ;
+
+            for (var j =0 ; j < docs1[0].responses[0].data.length ; j++) {
+                var value = docs1[0].responses[0].data[j].value ;
+                for( var l = 0 ; l <  docs1[0].surveyId.questions[0].survey[j].choices.length ; l++){
+                  var choiceValue =  docs1[0].surveyId.questions[0].survey[j].choices[l].value ;
+                    var notify =  docs1[0].surveyId.questions[0].survey[j].choices[l].notify ;
+                    if(notify && choiceValue == value){
+                        console.log(" We have to send SMS to : "+phoneMna+"  Some customer has choosen "+value);
+                    }
+                }
+            }
+        }
+
+    });
+
 	for(var r in responses){
 
 		var response = new Response(responses[r]);
 
+
+
 		// Try saving the response
+        var initTime = new Date(response.responses[0].data[0].timeTaken );
+        for (var i =0 ; i < response.responses[0].data.length ; i++) {
+            var d = new Date(response.responses[0].data[i].timeTaken );
+            var diff = new Date() ;
+            diff.setTime(d.getTime()-initTime.getTime());
+            response.responses[0].data[i].duration = moment.tz(diff, 'Africa/Casablanca').format('HH:mm:ss');// diff.toLocaleTimeString();
+
+            console.log(" duration : "+moment.tz(diff, 'Africa/Casablanca').format('HH:mm:ss'));
+        }
+
 		response.save(function(err) {
 			if (err) {
 				error = true;

@@ -73,12 +73,12 @@ exports.listActiveLocations = function(req, res) {
 			});
 		} else {
 
-			console.log(brandImagePath);
+			console.log(" > locations " + locations);
 
-			for(var l in locations)
+			for(var i=0; i < locations.length; i++)
 			{
-				if(locations[l].brand.bgImage)
-					locations[l].brand.bgImage = brandImagePath + locations[l].brand.bgImage;
+                if(locations[i].brand.bgImage.split("/").length<= 1)
+                 locations[i].brand.bgImage = brandImagePath +locations[i].brand.bgImage;
 			}
 
 			// Send a JSON representation of the location

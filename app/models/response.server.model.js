@@ -11,6 +11,7 @@ var languages = 'en ar'.split(' ');
 var answerSchema = new Schema({
 	questionId: String,
 	timeTaken: String,
+    duration: String,
 	value: String
 });
 
@@ -23,6 +24,7 @@ var answersSchema = new Schema({
 var responseSchema = new Schema({
  surveyId: {type: Schema.ObjectId, ref: 'Survey'},
  locationId: {type: Schema.ObjectId, ref: 'Location'},
+    brandId: {type: Schema.ObjectId, ref: 'Brand'},
  language: {type: String, enum: languages, default: 'en'},
  totalTimeTaken: String, //response total time
  status: {type: String, default: "incomplete"}, //complete, incomplete

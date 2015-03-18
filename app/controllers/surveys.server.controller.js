@@ -117,7 +117,7 @@ exports.listByLocationId = function(req, res) {
 
 				for(var s in surveys) {
 					Location.findOne({"_id": req.params.locationId}).exec(function(err, loc){
-
+                        console.log(loc);
 						for(var i=0; i < surveys[s].questions[0].prompt.length; i++) {
 
 							for(var j = 0; j < loc.validations.length; j++){
