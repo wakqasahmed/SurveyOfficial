@@ -29,7 +29,7 @@ exports.create = function(req, res) {
 	// Set the location's 'createdOn' property
 	location.createdOn = moment.tz(Date.now(), 'Asia/Dubai');
 
-console.log(location);
+	location.createdWithin = req.user.account._id;
 
 	// Try saving the location
 	location.save(function(err) {

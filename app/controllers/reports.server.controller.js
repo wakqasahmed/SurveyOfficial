@@ -86,6 +86,8 @@ Response.mapReduce(o, function (err, model, stats) {
 		console.log(docs);
 		// Send a JSON representation of the reports
 		res.json(docs);
+		});
+	});
 
 	});*/
 
