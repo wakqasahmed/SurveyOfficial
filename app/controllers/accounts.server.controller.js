@@ -3,7 +3,10 @@
 
 // Load the module dependencies
 var mongoose = require('mongoose'),
-	Account = mongoose.model('Account');
+	Account = mongoose.model('Account'),
+	Location = mongoose.model('Location'),
+	Brand = mongoose.model('Brand'),
+	ObjectId = mongoose.Types.ObjectId;
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -56,6 +59,52 @@ exports.list = function(req, res) {
 	});
 };
 
+exports.treeview = function(req, res) {
+	console.log(req.params.accountId);
+	var accountId = new ObjectId(req.params.accountId);
+
+Location.aggregate([
+        { "$match": { "createdWithin": accountId } },
+        { "$group": {
+            _id: "$brand",
+						name: {$push: '$name'}
+						//"name": { "$first": "$name" }
+        }}
+    ]).exec(function(err,results){
+        if (err) {
+					// If an error occurs send the error message
+					return res.status(400).send({
+						message: getErrorMessage(err)
+					});
+				} else {
+
+        Brand.populate(results, { "path": "_id", "select": "name" }, function(err,results) {
+            if (err) throw err;
+            //console.log( JSON.stringify( results, undefined, 4 ) );
+
+						results = results.map(function(doc) {
+								doc.text = doc._id.name;
+								doc.items = [];
+
+								for (var i = 0; i < doc.name.length; i++) {
+									var temp1 = {'text': doc.name[i]};
+									doc.items.push(temp1);
+								}
+
+								delete doc._id;
+								delete doc.name;
+								return doc;
+						});
+
+						// Send a JSON representation of the locations
+						res.json(results);
+					});
+				}
+
+		});
+
+};
+
 // Create a new controller method that returns an existing account
 exports.read = function(req, res) {
 	res.json(req.account);
@@ -102,6 +151,7 @@ exports.delete = function(req, res) {
 		}
 	});
 };
+
 
 // Create a new controller middleware that retrieves a single existing account
 exports.accountByID = function(req, res, next, id) {

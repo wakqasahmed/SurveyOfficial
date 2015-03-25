@@ -56,7 +56,6 @@ module.exports = function() {
 	require('../app/routes/index.server.routes.js')(app);
 	require('../app/routes/users.server.routes.js')(app);
 	require('../app/routes/accounts.server.routes.js')(app);
-	require('../app/routes/articles.server.routes.js')(app);
 	require('../app/routes/locations.server.routes.js')(app);
 	require('../app/routes/brands.server.routes.js')(app);
 	require('../app/routes/validations.server.routes.js')(app);

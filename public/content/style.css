@@ -67,3 +67,21 @@ html, body {
   color:red;
   font-size: smaller;
 }
+
+/** csv rendered table **/
+
+.csv .table {overflow-x: scroll;}
+.csv table {font-size: 10pt;}
+.csv table tr {background-color: #fff;}
+.csv table thead tr,
+.csv table tbody tr:nth-child(2n) {background-color: #f8f8f8;}
+
+.csv td, .csv th {
+  max-width: 250px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1em;
+  border: 1px solid #aaa;
+  padding: 6px 6px;
+}

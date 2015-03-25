@@ -176,7 +176,7 @@ exports.locationByID = function(req, res, next, id) {
 exports.byBrands = function(req, res){
 
 		var brands = req.params.brandIds.split(',');
-          brands.pop()
+          brands.pop();
 		console.log(brands);
 
 		for (var b in brands){
