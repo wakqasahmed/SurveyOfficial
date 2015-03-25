@@ -96,7 +96,7 @@ exports.list = function(req, res) {
 			});
 
             // Send a JSON representation of the survey
-            res.json(surveys);
+            //res.json(surveys);
         }
     });
 };
