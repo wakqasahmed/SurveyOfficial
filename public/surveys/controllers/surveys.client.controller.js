@@ -494,7 +494,51 @@ $scope.$location = $location;
         // Create a new controller method for retrieving a list of surveys
         $scope.find = function() {
         	// Use the survey 'query' method to send an appropriate GET request
-            $scope.surveys = Surveys.query();
+          //  $scope.surveys = Surveys.query();
+
+          $scope.surveys = {
+              dataSource: {
+                  type: "json",
+                  transport: {
+                      read: "/api/surveys"
+                  },
+                  pageSize: 5,
+                  serverPaging: true,
+                  serverSorting: true
+              },
+              sortable: true,
+              pageable: true,
+              columns: [{
+                  //field: "name",
+                  title: "Survey Name",
+                  width: "120px",
+                  template: "<a href='\\#\\!/surveys/{{dataItem._id}}'>{{dataItem.name}}</a>"
+                  },{
+                  field: "status",
+                  title: "Status",
+                  width: "120px"
+//                  template: "{{'PO Box ' + dataItem.postalCode + ' ' + dataItem.state + ' ' + dataItem.country}}"
+                  },{
+                  field: "startDate",
+                  title: "Start Date",
+                  width: "120px"
+                  },{
+                  field: "endDate",
+                  title: "End Date",
+                  width: "120px"
+                  },{
+                  field: "type",
+                  title: "Type",
+                  width: "120px"
+//                  template: "{{'PO Box ' + dataItem.postalCode + ' ' + dataItem.state + ' ' + dataItem.country}}"
+                  },{
+//                  field: "locationIds[0].locationId.name",
+                  title: "Locations",
+                  width: "120px",
+                  template: "<div ng-repeat='loc in dataItem.locationIds'><div ng-repeat='(key, value) in loc'>{{value.name}}</div></div>"
+        }]
+          };
+
         };
 
         // Create a new controller method for retrieving a single survey

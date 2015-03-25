@@ -4,7 +4,8 @@
 // Load the module dependencies
 var mongoose = require('mongoose'),
 	Response = mongoose.model('Response'),
-    moment = require('moment-timezone');
+	ObjectId = mongoose.Types.ObjectId,
+	moment = require('moment-timezone');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -180,6 +181,168 @@ exports.responseByID = function(req, res, next, id) {
 		// Call the next middleware
 		next();
 	});
+};
+
+exports.dataexport = function(req, res) {
+
+var reqFields = req.body.reqFields,
+		reqQuery = req.body.reqQuery;
+
+if(reqQuery.locationIds) {
+	for (var i = 0; i < reqQuery.locationIds.length; i++) {
+		reqQuery.locationIds[i] = new ObjectId(reqQuery.locationIds[i]._id);
+	}
+}
+
+if((reqQuery.startDate) && (reqQuery.endDate) ) {
+	reqQuery.startDate = new Date(reqQuery.startDate);
+	reqQuery.endDate = new Date(reqQuery.endDate);
+}
+
+/*
+	var reqFields =  {
+			"accountId": 0,
+			"accountName": 0,
+			"brandId": 1,
+			"brandName": 1,
+	    "surveyId": 1,
+			"surveyName": 1,
+			"locationId": 1,
+			"locationName": 1,
+			"latlon": 1,
+
+			"language": 1,
+			"status": 1,
+			"timeTaken": 1,
+	    "totalTimeTaken": 1,
+	    "sourceOS": 1,
+	    "createdOn": 1 };
+
+
+	var reqQuery = {
+		locationIds:[new ObjectId("54f7231d9a66644803c12899"),
+								new ObjectId("550156759ec8d072cfb9beb6"),
+								new ObjectId("550173482fad6fddd281ceb2")],
+		startDate:new Date("2015-01-12"),
+		endDate :new Date("2015-03-12")
+	};
+*/
+
+//	console.log(reqFields);
+//	console.log(reqQuery);
+
+	reqFields["responses.data.questionId"] = 1
+	reqFields["responses.data.value"] = 1
+
+//var query  ={locationId:{$in:reqQuery.locationIds}, createdOn:{"$lte":reqQuery.endDate,"$gte":reqQuery.startDate}};
+var query  ={
+	locationId:{$in:reqQuery.locationIds},
+	createdOn:{"$lte":reqQuery.endDate,"$gte":reqQuery.startDate},
+	surveyId: new ObjectId(reqQuery.surveyId),
+	hour:{"$gte":Number(moment(reqQuery.startTime).format('H')), "$lte":Number(moment(reqQuery.endTime).format('H'))}};
+
+	var fields = reqFields;
+
+  fields.hour = {"$hour" :"$createdOn" };
+
+   Response.aggregate([
+       {$project:fields},
+       {$match :query}
+   ]).exec(function(err,docs){
+
+			     if(docs){
+			         console.log(" DOCS "+docs);
+
+							var selectedSurveyFields = [];
+							var selectedAccountFields = [];
+							var selectedBrandFields = [];
+							var selectedLocationFields = [];
+
+							var selectedFields = function(inputField, dbField, selection){
+								if(inputField){
+									selection.push(dbField);
+									console.log(selection);
+								}
+							}
+
+//							selectedFields(reqFields.accountId, "_id", selectedAccountFields);
+							selectedFields(reqFields.accountName, "name", selectedAccountFields);
+
+							selectedFields(reqFields.surveyId, "questions.prompt._id", selectedSurveyFields);
+							selectedFields(reqFields.surveyId, "questions.prompt.title", selectedSurveyFields);
+							selectedFields(reqFields.surveyId, "questions.survey._id", selectedSurveyFields);
+							selectedFields(reqFields.surveyId, "questions.survey.titleEN", selectedSurveyFields);
+
+//							selectedFields(reqFields.surveyId, "_id", selectedSurveyFields);
+							selectedFields(reqFields.surveyName, "name", selectedSurveyFields);
+
+//							selectedFields(reqFields.brandId, "_id", selectedBrandFields);
+							selectedFields(reqFields.brandName, "name", selectedBrandFields);
+
+//							selectedFields(reqFields.locationId, "_id", selectedLocationFields);
+							selectedFields(reqFields.locationName, "name", selectedLocationFields);
+							selectedFields(reqFields.coords, "coords", selectedLocationFields);
+
+							var opts = [];
+
+							opts.push({
+									path: 'surveyId',
+									select: selectedSurveyFields.join(' ')
+							});
+
+							if(selectedAccountFields){
+								opts.push({
+										path: 'accountId',
+										select: selectedAccountFields.join(' ')
+								});
+							}
+
+							if(selectedLocationFields){
+								opts.push({
+										path: 'locationId',
+										select: selectedLocationFields.join(' ')
+								});
+							}
+
+							if(selectedBrandFields){
+								opts.push({
+										path: 'brandId',
+										select: selectedLocationFields.join(' ')
+								});
+							}
+
+							/*
+			         var opts =[{
+			             path: 'surveyId',
+			             select: 'questions.survey.titleEN'
+			             //options: { limit: 2 }
+			         }];
+
+							if(reqFields.surveyName){
+								opts[0] = {
+										path: 'surveyId',
+										select: 'name questions.survey.titleEN'
+								}
+							}
+
+			         if(reqFields.locationName){
+			             opts.push({
+			                 path: 'locationId',
+			                 select: 'name'
+			             });
+			         }
+*/
+			         Response.populate(docs,opts,function(err, docs1) {
+			             if(err) console.log(err);
+										else{
+											console.log("DOCS1: " + docs1);
+											res.send(docs1);
+										}
+
+			         });
+			     }
+   });
+
 };
 
 // Create a new controller middleware that is used to authorize an response operation

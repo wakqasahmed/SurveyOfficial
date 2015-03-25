@@ -1,9 +1,9 @@
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Create the 'accounts' controller
-angular.module('accounts').controller('AccountsController', ['$scope', '$routeParams', '$location', 'Authentication', 'Accounts',
-    function($scope, $routeParams, $location, Authentication, Accounts) {
+angular.module('accounts').controller('AccountsController', ['$scope', 'filterFilter', '$routeParams', '$location', '$http', 'Authentication', 'Accounts',
+    function($scope, filterFilter, $routeParams, $location, $http, Authentication, Accounts) {
     	// Expose the Authentication service
         $scope.authentication = Authentication;
 
@@ -62,8 +62,17 @@ angular.module('accounts').controller('AccountsController', ['$scope', '$routePa
           // Use the account 'query' method to send an appropriate GET request
           //   $scope.accounts = Accounts.query();
 
+var config = {
+    method: "GET",
+    url: "api/accounts/" + $scope.authentication.user.account._id + "/treeview"
+};
+
+$http(config).success(function(data, status, headers, config) {
+    $scope.treeData1 = data;
+
              $scope.treeData = new kendo.data.HierarchicalDataSource({ data: [
-                { text: "Foodmark", items: [
+   { text: $scope.authentication.user.account.name, items: $scope.treeData1/*[
+
                   { text: "Café Fahaheel" },
                   { text: "Centrepoint Café" },
                   { text: "Café Awqaf" },
@@ -109,9 +118,20 @@ angular.module('accounts').controller('AccountsController', ['$scope', '$routePa
                   { text: "Ushna", items: [
                     { text: "Ushna" }
                   ] }
-                ] }
+   ]*/ }
               ]});
+
               //$scope.itemTemplate = "{{dataItem.text}} <button ng-click='click(dataItem)'>Click</button>";
+
+}).
+error(function(data, status, headers, config) {
+  // called asynchronously if an error occurs
+  // or server returns response with an error status.
+  console.log('data from error: ' + data);
+});
+
+
+
 
         };
 
@@ -156,5 +176,6 @@ angular.module('accounts').controller('AccountsController', ['$scope', '$routePa
                 });
             }
         };
+
     }
 ]);

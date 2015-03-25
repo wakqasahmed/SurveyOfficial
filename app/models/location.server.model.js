@@ -45,7 +45,8 @@ var locationSchema = new Schema({
 	validations: [validationSchema],
   createdOn: {type: Date},
   modifiedOn: {type: Date},
-	createdBy: { type: Schema.ObjectId, ref: 'User' }
+	createdBy: { type: Schema.ObjectId, ref: 'User' },
+	createdWithin: {type: Schema.ObjectId, ref: 'Account' }
 }, { collection : 'locations' });
 
 // Create the 'Location' model out of the 'LocationSchema'

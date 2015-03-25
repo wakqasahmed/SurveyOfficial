@@ -3,78 +3,100 @@
 
 // Load the module dependencies
 var mongoose = require('mongoose'),
-    Survey = mongoose.model('Survey'),
-    Location = mongoose.model('Location'),
-    moment = require('moment-timezone');
+	Survey = mongoose.model('Survey'),
+	Location = mongoose.model('Location'),
+	moment = require('moment-timezone');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
-    if (err.errors) {
-        for (var errName in err.errors) {
-            if (err.errors[errName].message) return err.errors[errName].message;
-        }
-    } else {
-        return 'Unknown server error';
-    }
+	if (err.errors) {
+		for (var errName in err.errors) {
+			if (err.errors[errName].message) return err.errors[errName].message;
+		}
+	} else {
+		return 'Unknown server error';
+	}
 };
 
 // Create a new controller method that creates new surveys
 exports.create = function(req, res) {
 
-    console.log(req.body.questions[0].prompt);
-    // Create a new survey object
-    var survey = new Survey(req.body);
+	console.log(req.body.questions[0].prompt);
+	// Create a new survey object
+	var survey = new Survey(req.body);
 
-    // Set the survey's 'createdBy' property
-    survey.createdBy = req.user;
+	// Set the survey's 'createdBy' property
+	survey.createdBy = req.user;
 
-    // Set the survey's 'createdOn' property
-    survey.createdOn = moment.tz(Date.now(), 'Asia/Dubai');
-    /*
-     Location.find({"_id": { $in : survey.locationIds }}, 'validations', function(err, loc){
-     console.log(loc);
+	// Set the survey's 'createdOn' property
+	survey.createdOn = moment.tz(Date.now(), 'Asia/Dubai');
+/*
+	Location.find({"_id": { $in : survey.locationIds }}, 'validations', function(err, loc){
+			console.log(loc);
 
 
 
-     });
-     */
+	});
+	*/
 
-    /*
-     for(var i = 0; i < survey.locationIds.length; i++) {
+	/*
+	for(var i = 0; i < survey.locationIds.length; i++) {
 
-     }
+	}
 
-     for(var i=0; i<survey.questions[0].prompt.length; i++)
-     {
-     survey.questions[0].prompt
-     }
-     */
-    // Try saving the survey
-    survey.save(function(err) {
-        if (err) {
-            // If an error occurs send the error message
-            return res.status(400).send({
-                message: getErrorMessage(err)
-            });
-        } else {
-            // Send a JSON representation of the survey
-            res.json(survey);
-        }
-    });
+	for(var i=0; i<survey.questions[0].prompt.length; i++)
+	{
+		survey.questions[0].prompt
+	}
+*/
+	// Try saving the survey
+	survey.save(function(err) {
+		if (err) {
+			// If an error occurs send the error message
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			// Send a JSON representation of the survey
+			res.json(survey);
+		}
+	});
 };
 
 // Create a new controller method that retrieves a list of surveys
 exports.list = function(req, res) {
     // Use the model 'find' method to get a list of surveys
-    Survey.find().sort('-created').populate('createdBy', 'firstName lastName fullName').exec(function(err, surveys) {
+	Survey.find().sort('-createdOn').exec(function(err, surveys) {
         if (err) {
             // If an error occurs send the error message
             return res.status(400).send({
                 message: getErrorMessage(err)
             });
         } else {
+
+			var opts = [];
+			opts.push({
+					path: 'locationIds.locationId',
+					select: 'name'
+			});
+
+			for (var j = 0; j < surveys.length; j++) {
+						for (var i = 0; i < surveys[j].locationIds.length; i++) {
+							surveys[j].locationIds[i] = {"locationId": surveys[j].locationIds[i]};
+						}
+			}
+
+			Location.populate(surveys,opts,function(err, docs1) {
+					if(err) console.log(err);
+					else{
+						//console.log("DOCS1: " + docs1);
+						res.json(docs1);
+					}
+
+			});
+
             // Send a JSON representation of the survey
-            res.json(surveys);
+            //res.json(surveys);
         }
     });
 };

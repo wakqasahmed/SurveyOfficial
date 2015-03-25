@@ -12,12 +12,18 @@ module.exports = function(app) {
 	   .get(accounts.list)
 	   .post(users.requiresLogin, accounts.create);
 
+app.route('/api/accounts/:accountId/treeview')
+	.get(accounts.treeview);
+
+
 	// Set up the 'accounts' parameterized routes
 	app.route('/api/accounts/:accountId')
 	   .get(accounts.read)
 	   .put(users.requiresLogin, accounts.hasAuthorization, accounts.update)
 	   .delete(users.requiresLogin, accounts.hasAuthorization, accounts.delete);
 
+/*
 	// Set up the 'accountId' parameter middleware
 	app.param('accountId', accounts.accountByID);
+	*/
 };

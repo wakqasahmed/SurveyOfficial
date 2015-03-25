@@ -1,0 +1,231 @@
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'responses/views/partials/response.client.header.html'"></div>
+
+<div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <section name="sidebar" ng-include="'responses/views/partials/response.client.sidebar.html'">
+        </section>
+
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+
+          <div class="row">
+
+            <!-- The response view -->
+            <section data-ng-controller="ResponsesController">
+              <!-- The new data export form -->
+              <form data-ng-submit="dataExport()" novalidate>
+
+              <div class="container">
+              		<div class="col-md-9">
+                      <div class="row">
+                  				<h3 class="dark-grey">Export Data</h3>
+                      </div>
+
+                      <div class="row">
+                        <h5 class="dark-grey">Date Range</h5>
+                        <div class="form-group col-lg-6">
+                          <label for="start">Start date:</label>
+                          <input id="start" style="width: 200px"
+                                       ng-model="date_range_start_str"
+                                       k-ng-model="date_range_end_obj"
+                                        />
+                        </div>
+                        <div class="form-group col-lg-6">
+                          <label for="end">End date:</label>
+                          <input id="end" style="width: 200px"
+                                       ng-model="date_range_end_str"
+                                       k-ng-model="date_range_end_obj"
+                                        />
+                         </div>
+
+                      </div>
+
+<!--
+                      <div class="row">
+                        <h5 class="dark-grey">Date Range</h5>
+
+                        <div class="form-group col-lg-6">
+                          <label>From<span style="color: #ff0000">*</span></label>
+                          <input type="date" name="" class="form-control" id="" ng-model="date_range_from">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>To<span style="color: #ff0000">*</span></label>
+                          <input type="date" name="" class="form-control" id="" ng-model="date_range_to">
+                        </div>
+
+                      </div>
+-->
+                      <div class="row">
+                        <h5 class="dark-grey">Hours</h5>
+
+                        <div class="form-group col-lg-6">
+                          <label>All Day</label>
+                          <input type="radio" selected name="time_group" ng-model="time_group" ng-change="timeRangeReset()" class="form-control" id="" ng-value="true">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>Custom Range</label>
+                          <input type="radio" name="time_group" ng-model="time_group" class="form-control" id="" ng-value="false">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>From</label>
+                          <input placeholder="HH:mm:ss" type="time" name="" class="form-control" id="" ng-disabled="time_group" ng-model="time_range_from">
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                          <label>To</label>
+                          <input placeholder="HH:mm:ss" type="time" name="" class="form-control" id="" ng-disabled="time_group" ng-model="time_range_to">
+                        </div>
+
+                      </div>
+
+                      <div class="row">
+                        <h5 class="dark-grey">Column Filtering</h5>
+
+                        <div class="form-group col-lg-6" ng-repeat="column in columnFiltering">
+                          <!--
+                            - use `value="{{column.name}}"` to give the input a real value, in case the form gets submitted
+                              traditionally
+
+                            - use `ng-checked="column.selected"` to have the checkbox checked based on some angular expression
+                              (no two-way-data-binding)
+
+                            - use `ng-model="column.selected"` to utilize two-way-data-binding. Note that `.selected`
+                              is arbitrary. The property name could be anything and will be created on the object if not present.
+                          -->
+
+                          <input
+                            type="checkbox"
+                            name="selectedColumns[]"
+                            value="{{column.name}}"
+                            ng-model="column.selected"
+                            ng-disabled="column.disabled"
+                          > {{column.name}}
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <h5 class="dark-grey">Response Filtering</h5>
+
+                        <div class="form-group col-lg-6" ng-repeat="filter in responseFiltering">
+                          <input
+                            type="checkbox"
+                            name="selectedFilters[]"
+                            value="{{filter.name}}"
+                            ng-model="filter.selected"
+                            ng-disabled="filter.disabled"
+                          > {{filter.name}}
+                        </div>
+                      </div>
+
+                      <div class="row">
+
+                        <div class="form-group col-lg-6">
+                          <label>Language</label>
+                          <input type="" name="" class="form-control" id="" disabled value="Neutral">
+                        </div>
+
+                      </div>
+
+                      <div class="row">
+
+                        <div class="form-group col-lg-12" data-ng-init="findLocations()">
+                          <label>Locations</label>
+                          <oi-multiselect
+                              ng-options="item.name for item in allLocations track by item._id"
+                              placeholder="Select Locations"
+                              multiple="multiple" name="" ng-model="selected_locations"
+                              notempty
+                              ></oi-multiselect>
+                        </div>
+
+                      </div>
+
+                      <div class="row">
+
+                        <div class="form-group col-lg-12" data-ng-init="findSurveys()">
+                          <label>Survey</label>
+                      		<select class="form-control" ng-options="item.name for item in allSurveys" ng-model="selected_survey"></select>
+                        </div>
+
+                      </div>
+
+                      <div class="row">
+                        <div>
+                          <button type="submit" class="btn btn-primary">Generate</button>
+                        </div>
+                      </div>
+
+                      <hr>
+<!--
+                      <div class="row">
+                        <h5 class="dark-grey">Export Format</h5>
+
+                        <div class="form-group col-lg-3">
+                          <button ng-disabled="gridDataExport.dataSource.data().length == 0" ng-click="saveAsPdfA4()" class="btn btn-primary">Download PDF-A4</button>
+                          <button ng-disabled="gridDataExport.dataSource.data().length == 0" ng-click="saveAsPdf()" class="btn btn-primary">Download PDF</button>
+                        </div>
+
+                        <div class="form-group col-lg-3">
+                          <button ng-disabled="gridDataExport.dataSource.data().length == 0" ng-click="saveAsPdfA5()" class="btn btn-primary">Download PDF-A5</button>
+                        </div>
+
+                        <div class="form-group col-lg-3">
+                          <button ng-disabled="gridDataExport.dataSource.data().length == 0" ng-click="saveAsCsv()" class="btn btn-primary">Download CSV</button>
+                        </div>
+
+                        <div class="form-group col-lg-3">
+                          <button ng-disabled="gridDataExport.dataSource.data().length == 0" ng-click="saveAsXls()" class="btn btn-primary">Download XLS</button>
+                        </div>
+
+                      </div>
+-->
+
+
+
+<!--
+                      <div class="row">
+                        <div>
+                          <button csv-directive="dataCsv" class="btn btn-primary">Download CSV</button>
+                        </div>
+                      </div>
+-->
+                      <div class="row">
+                        <!-- The error message element -->
+                        <div data-ng-show="error">
+                          <strong data-ng-bind="error"></strong>
+                        </div>
+                      </div>
+<!--
+                      <div class="row csv">
+                        <div class="table">
+                          <table></table>
+                        </div>
+                      </div>-->
+
+                      <div class="row" style="overflow-x: scroll">
+                        <!-- The list of responses -->
+                        <div style="width: 3000px" kendo-grid="gridDataExport" k-options="data2export" k-rebind="data2export"></div>
+                      </div>
+
+              			</div>
+
+                  </div>
+                </form>
+            </section>
+
+          </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+      </div><!--/row-->
+
+      <div ng-include="'../../layout/footer.html'"></div>
+
+    </div>

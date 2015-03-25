@@ -29,7 +29,7 @@ exports.create = function(req, res) {
 	// Set the location's 'createdOn' property
 	location.createdOn = moment.tz(Date.now(), 'Asia/Dubai');
 
-console.log(location);
+	location.createdWithin = req.user.account._id;
 
 	// Try saving the location
 	location.save(function(err) {
@@ -176,7 +176,7 @@ exports.locationByID = function(req, res, next, id) {
 exports.byBrands = function(req, res){
 
 		var brands = req.params.brandIds.split(',');
-          brands.pop()
+          brands.pop();
 		console.log(brands);
 
 		for (var b in brands){

@@ -2,9 +2,11 @@
 'use strict';
 
 // Load the module dependencies
-var User = require('mongoose').model('User'),
-		Account = require('mongoose').model('Account'),
+var mongoose = require('mongoose'),
+		User = mongoose.model('User'),
+		Account = mongoose.model('Account'),
 		passport = require('passport');
+
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -33,6 +35,16 @@ var getErrorMessage = function(err) {
 	// Return the message error
 	return message;
 };
+
+exports.byAccount = function(req, res){
+
+		var accountId = mongoose.Types.ObjectId(req.params.accountId);
+
+		User.find({'account._id': accountId}, function(err, users){
+					res.json(users);
+		});
+
+}
 
 // Create a new controller method that renders the signin page
 exports.renderSignin = function(req, res, next) {
