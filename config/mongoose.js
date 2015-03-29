@@ -15,7 +15,6 @@ module.exports = function() {
 	// Load the application models
 	require('../app/models/user.server.model');
 	require('../app/models/account.server.model');
-	require('../app/models/article.server.model');
 	require('../app/models/location.server.model');
 	require('../app/models/brand.server.model');
 	require('../app/models/validation.server.model');

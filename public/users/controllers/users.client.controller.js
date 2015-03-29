@@ -2,8 +2,8 @@
 'use strict';
 
 // Create the 'users' controller
-angular.module('users').controller('UsersController', ['$scope', '$routeParams', '$location', '$upload', 'Authentication', 'Users', 'Dialogs', 'Brands',
-    function($scope, $routeParams, $location, $upload, Authentication, Users, Dialogs, Brands) {
+angular.module('users').controller('UsersController', ['$scope', '$routeParams', '$location', 'Authentication', 'Users', 'Dialogs',
+    function($scope, $routeParams, $location, Authentication, Users, Dialogs) {
     	// Expose the Authentication service
         $scope.authentication = Authentication;
 
@@ -60,14 +60,17 @@ angular.module('users').controller('UsersController', ['$scope', '$routeParams',
         // Create a new controller method for retrieving a list of users
         $scope.find = function() {
         	// Use the user 'query' method to send an appropriate GET request
-          //  $scope.users = Users.query();
-          var bgImagePath = "http://official-surveymark.rhcloud.com/content/user_images/";
+          /*
+            $scope.usersCount = Users.find({accountId: $scope.authentication.user.accountId}).exec(function(err, users){
+                console.log('Users Total: ' + users.length());
+            });
+*/
 
-          $scope.users = {
+          $scope.gridOptions = {
               dataSource: {
                   type: "json",
                   transport: {
-                      read: "/api/users"
+                      read: ""
                   },
                   pageSize: 5,
                   serverPaging: true,
@@ -79,15 +82,33 @@ angular.module('users').controller('UsersController', ['$scope', '$routeParams',
                   //field: "name",
                   title: "User Name",
                   width: "120px",
-                  template: "<a href='\\#\\!/users/{{dataItem._id}}'>{{dataItem.name}}</a>"
+                  template: "<a href='\\#\\!/users/{{dataItem._id}}'>{{dataItem.username}}</a>"
                   },{
-                  //field: "country",
-                  title: "Background Image",
-                  width: "120px",
-                  template: "<img src='{{bgImagePath + dataItem.bgImage}}' width='150px' height='250px' />"
+                  field: "firstName",
+                  title: "First Name",
+                  width: "120px"
+                  },{
+                  field: "lastName",
+                  title: "Last Name",
+                  width: "120px"
+                  },{
+                  field: "provider",
+                  title: "Provider",
+                  width: "120px"
+                  },{
+                  field: "role",
+                  title: "Role",
+                  width: "120px"
+                  },{
+                  field: "account.name",
+                  title: "Account Name",
+                  width: "120px"
                   }]
           };
 
+          $scope.gridOptions.dataSource.transport.read = "/api/users/usersByAccount/" + $scope.authentication.user.account._id;
+
+          $scope.users = $scope.gridOptions;
         };
 
         // Create a new controller method for retrieving a single user

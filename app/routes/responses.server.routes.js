@@ -14,6 +14,9 @@ module.exports = function(app) {
 app.route('/api/device/responses')
 		.post(responses.create);
 
+app.route('/api/responses/dataexport')
+		.post(responses.dataexport);
+
 	// Set up the 'responses' parameterized routes
 	app.route('/api/responses/:responseId')
 	   .get(responses.read)

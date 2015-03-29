@@ -13,6 +13,10 @@ module.exports = function(app) {
 	  res.json(content);
 	};
 
+//Users By Account Id
+app.route('/api/users/usersByAccount/:accountId')
+		.get(users.byAccount);
+
 	// Set up the 'signup' routes
 	app.route('/signup')
 	   .get(users.renderSignup)
