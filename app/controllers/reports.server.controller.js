@@ -493,7 +493,7 @@ exports.dynamicGenerateStuffReport = function(req, res) {
 
     // questionId :550009d453d5f66d42fc99e8  for visiting
 
-    console.log(req.body);
+    console.log(req.body+"      ");
     var objectParam  =  req.body ;
 
     /*objectParam = {brandId:"54f722f59a66644803c12897",
