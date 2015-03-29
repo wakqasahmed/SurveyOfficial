@@ -482,7 +482,7 @@ exports.testing = function(req, res) {
 //res.end(" is DOne");
 };
 
-exports.testing1 = function(req, res) {
+exports.dynamicGenerateStuffReport = function(req, res) {
 
 
     // this type of object should be sent in request
@@ -490,13 +490,27 @@ exports.testing1 = function(req, res) {
     // questionId :5502cd1d53d5f66d42fc99e9  for food quality
 
     // questionId :550009d453d5f66d42fc99e8  for visiting
-    var objectParam = {brandId:null,
-        questionId:"550009d453d5f66d42fc99e8",
-        //shifts:[{value:"breakfast",from:5,to:12},{value:"lunch",from:12,to:18},{value:"dinner",from:18,to:0},{value:"brunch",from:0,to:4}] ,
-         choices:[],
-        // days:["Sun","Mon","Tue","Wed","Thu"]
-       // type:"avg"
-    };
+
+    console.log(req.body);
+    var objectParam  =  req.body ;
+
+    /*objectParam = {brandId:"54f722f59a66644803c12897",
+     questionId: "550009d453d5f66d42fc99e8",
+     //shifts:[{value:"breakfast",from:5,to:12},{value:"lunch",from:12,to:18},{value:"dinner",from:18,to:23},{value:"brunch",from:0,to:4}] ,
+     choices:["first","second"]
+     //days:["Thu","Wed","Mon","Sun","Fri","Sat"]
+     // type:"avg"
+     };*/
+
+
+
+    var query ={};
+
+    if(objectParam.brandId)
+        query.brandId = {"$in":objectParam.brandId};
+    if(objectParam.questionId)
+        query["responses.data.questionId"] = objectParam.questionId;
+
 
     //  create map and reduce
     var object = new Object();
@@ -514,7 +528,7 @@ exports.testing1 = function(req, res) {
                     timeTaken:res[0].data[idx].timeTaken
 
                 };
-                if(this.brandId == questionObject.brandId || questionObject.brandId == null )
+               // if(this.brandId == questionObject.brandId || questionObject.brandId == null )
                     emit({"locationId":this.locationId,"staffId":res[0].prompt[0].value}, value);
             }
         }
@@ -522,7 +536,7 @@ exports.testing1 = function(req, res) {
     };
     object.map = mapper(objectParam) ;
 
-    //object.query  = {brandId:objectParam.brandId};
+    object.query  = query;
 
     object.scope={questionObject:objectParam};
 
