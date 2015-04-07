@@ -28,20 +28,21 @@ angular.module('accounts').controller('AccountsController', ['$scope', 'filterFi
         // Create a new controller method for retrieving a list of accounts
         $scope.find = function() {
         	// Use the account 'query' method to send an appropriate GET request
-          //  $scope.accounts = Accounts.query();
+            $scope.accountsCount = Accounts.query();
+            console.log($scope.accountsCount);
 
             $scope.accounts = {
                 dataSource: {
                     type: "json",
                     transport: {
                         read: "/api/accounts"
-                    },
+                    }/*,
                     pageSize: 5,
                     serverPaging: true,
-                    serverSorting: true
+                    serverSorting: true*/
                 },
                 sortable: true,
-                pageable: true,
+                //pageable: true,
                 columns: [{
                     //field: "name",
                     title: "Account Name",
@@ -59,79 +60,74 @@ angular.module('accounts').controller('AccountsController', ['$scope', 'filterFi
         // Generate a new controller method for generating treelist of accounts on the basis of brands as their parent
         // http://kendo-labs.github.io/angular-kendo/#/TreeView
         $scope.generateTree = function() {
-          // Use the account 'query' method to send an appropriate GET request
-          //   $scope.accounts = Accounts.query();
 
-var config = {
-    method: "GET",
-    url: "api/accounts/" + $scope.authentication.user.account._id + "/treeview"
-};
+            var config = {
+                method: "GET",
+                url: "api/accounts/" + $scope.authentication.user.account._id + "/treeview"
+            };
 
-$http(config).success(function(data, status, headers, config) {
-    $scope.treeData1 = data;
+            $http(config).success(function(data, status, headers, config) {
+                $scope.treeData1 = data;
 
-             $scope.treeData = new kendo.data.HierarchicalDataSource({ data: [
-   { text: $scope.authentication.user.account.name, items: $scope.treeData1/*[
+                         $scope.treeData = new kendo.data.HierarchicalDataSource({ data: [
+               { text: $scope.authentication.user.account.name, items: $scope.treeData1/*[
 
-                  { text: "Café Fahaheel" },
-                  { text: "Centrepoint Café" },
-                  { text: "Café Awqaf" },
-                  { text: "Casa Havana" },
-                  { text: "Pie Face", items: [
-                    { text: "Pie face Marina" }
-                  ] },
-                  { text: "Carluccio", items: [
-                  { text: "Carluccios Deira city centre" },
-                  { text: "Carluccios DXB Airport" },
-                  { text: "Carluccios Abu Dhabi" },
-                  { text: "Carluccios Mangroves" },
-                  { text: "Carluccios Yas Mall" },
-                  { text: "Carluccios JBR" },
-                  { text: "Carluccios Dubai Marina Mall" },
-                  { text: "Carluccios Mirdif Citi Centre Dubai" },
-                  { text: "Carluccios Dubai Mall" },
-                  { text: "Carluccios Kuwait " },
-                  { text: "Carluccios Doha Qatar" }
-                  ] },
-                  { text: "Zafran", items: [
-                    { text: "Zafran Mirdif Citi Centre Dubai" },
-                    { text: "Zafran Dubai Marina Mall" },
-                    { text: "Zafran Kuwait" }
-                  ] },
-                  { text: "Max", items: [
-                    { text: "Max's Abu Dhabi" },
-                    { text: "Max's Karama Dubai" },
-                    { text: "Max's City Centre Sharjah" }
-                  ] },
-                  { text: "Mango", items: [
-                    { text: "Mango" }
-                  ] },
-                  { text: "Wild", items: [
-                    { text: "Wild" }
-                  ] },
-                  { text: "Balance", items: [
-                    { text: "Balance" }
-                  ] },
-                  { text: "Chizen", items: [
-                    { text: "Chizen" }
-                  ] },
-                  { text: "Ushna", items: [
-                    { text: "Ushna" }
-                  ] }
-   ]*/ }
-              ]});
+                              { text: "Café Fahaheel" },
+                              { text: "Centrepoint Café" },
+                              { text: "Café Awqaf" },
+                              { text: "Casa Havana" },
+                              { text: "Pie Face", items: [
+                                { text: "Pie face Marina" }
+                              ] },
+                              { text: "Carluccio", items: [
+                              { text: "Carluccios Deira city centre" },
+                              { text: "Carluccios DXB Airport" },
+                              { text: "Carluccios Abu Dhabi" },
+                              { text: "Carluccios Mangroves" },
+                              { text: "Carluccios Yas Mall" },
+                              { text: "Carluccios JBR" },
+                              { text: "Carluccios Dubai Marina Mall" },
+                              { text: "Carluccios Mirdif Citi Centre Dubai" },
+                              { text: "Carluccios Dubai Mall" },
+                              { text: "Carluccios Kuwait " },
+                              { text: "Carluccios Doha Qatar" }
+                              ] },
+                              { text: "Zafran", items: [
+                                { text: "Zafran Mirdif Citi Centre Dubai" },
+                                { text: "Zafran Dubai Marina Mall" },
+                                { text: "Zafran Kuwait" }
+                              ] },
+                              { text: "Max", items: [
+                                { text: "Max's Abu Dhabi" },
+                                { text: "Max's Karama Dubai" },
+                                { text: "Max's City Centre Sharjah" }
+                              ] },
+                              { text: "Mango", items: [
+                                { text: "Mango" }
+                              ] },
+                              { text: "Wild", items: [
+                                { text: "Wild" }
+                              ] },
+                              { text: "Balance", items: [
+                                { text: "Balance" }
+                              ] },
+                              { text: "Chizen", items: [
+                                { text: "Chizen" }
+                              ] },
+                              { text: "Ushna", items: [
+                                { text: "Ushna" }
+                              ] }
+               ]*/ }
+                          ]});
 
-              //$scope.itemTemplate = "{{dataItem.text}} <button ng-click='click(dataItem)'>Click</button>";
+                          //$scope.itemTemplate = "{{dataItem.text}} <button ng-click='click(dataItem)'>Click</button>";
 
-}).
-error(function(data, status, headers, config) {
-  // called asynchronously if an error occurs
-  // or server returns response with an error status.
-  console.log('data from error: ' + data);
-});
-
-
-
+            }).
+            error(function(data, status, headers, config) {
+              // called asynchronously if an error occurs
+              // or server returns response with an error status.
+              console.log('data from error: ' + data);
+            });
 
         };
 

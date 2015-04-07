@@ -45,8 +45,13 @@ exports.create = function(req, res) {
 
 // Create a new controller method that retrieves a list of accounts
 exports.list = function(req, res) {
+    var query = {};
+
+    if(req.user.role !== "admin" || req.user.role !== "manager")
+        query = {"_id": req.user.account._id};
+
 	// Use the model 'find' method to get a list of accounts
-	Account.find().sort('-createdOn').exec(function(err, accounts) {
+	Account.find(query).sort('-createdOn').exec(function(err, accounts) {
 		if (err) {
 			// If an error occurs send the error message
 			return res.status(400).send({
