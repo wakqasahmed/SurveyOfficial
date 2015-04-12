@@ -1,33 +1,118 @@
-<!-- The survey view -->
-<section data-ng-controller="SurveysController" data-ng-init="findOne()">
-	<h1 data-ng-bind="survey.title"></h1>
-	<!-- Show the editing buttons to the survey creator -->
-	<div data-ng-show="authentication.user._id == survey.creator._id">
-		<a href="/#!/surveys/{{survey._id}}/edit">edit</a>
-		<a href="/#!/" data-ng-click="delete();">delete</a>
-	</div>
-	<small>
-		<em>Posted on</em>
-		<em data-ng-bind="survey.created | date:'mediumDate'"></em>
-		<em>by</em>
-		<em data-ng-bind="survey.creator.fullName"></em>
-	</small>
-	<p data-ng-bind="survey.content"></p>
-</section>
+<div ng-include="'../../layout/topnav.html'"></div>
+<div ng-include="'surveys/views/partials/survey.client.header.html'"></div>
 
-<br><br>
+<style>
+    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+        border: 1px solid #dddddd;
+    }
 
-<section data-ng-controller="SurveysController" data-ng-init="findOne()">
-<form-directive form="form"></form-directive><hr>
+</style>
 
-<div class="text-center">
-	<a class="btn btn-small btn-primary" ng-show="!showJson" ng-click="showJson = true">Show form json object</a>
-	<a class="btn btn-small btn-inverse" ng-show="showJson" ng-click="showJson = false">Hide form json object</a><br><br>
+<div class="container">
+
+    <div class="row row-offcanvas row-offcanvas-right">
+
+        <section name="sidebar" ng-include="'surveys/views/partials/survey.client.sidebar.html'">
+        </section>
+
+        <div class="col-xs-12 col-sm-9">
+            <p class="pull-right visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            </p>
+
+            <div class="row">
+
+                <!-- The survey view -->
+                <section data-ng-controller="SurveysController" data-ng-init="findOne()">
+                    <div class="container">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <h3 class="dark-grey">Survey Data</h3>
+                                <h5 class="dark-grey">Survey Name: <span>{{survey.name}}</span></h5>
+
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+
+                                <h4 ng-show="survey.questions[0].prompt">Prompt Questions</h4>
+                                <table class="table table-condensed table-hover table-striped" ng-hide="loading">
+                                    <!-- Header-->
+                                    <tr class="panel-title">
+                                        <!-- Content columns-->
+                                        <th style="vertical-align:middle">GUI</th>
+                                        <th style="vertical-align:middle">Title</th>
+                                        <th style="vertical-align:middle">Order</th>
+                                        <th style="vertical-align:middle">Disabled</th>
+                                        <th style="vertical-align:middle">Required</th>
+
+                                    </tr>
+
+                                    <!--Row with the new item-->
+                                    <tr ng-repeat="item in survey.questions[0].prompt">
+                                        <!-- Content columns-->
+                                        <td>{{item.type}}</td>
+                                        <td>{{item.title}}</td>
+                                        <td>{{item.order}}</td>
+                                        <td>{{item.disabled}}</td>
+                                        <td>{{item.required}}</td>
+                                    </tr>
+
+                                </table>
+
+                                <!--AngularJS SPA CRUD table-->
+                                <table class="table table-condensed table-hover table-striped" ng-hide="loading">
+                                    <!-- Header-->
+                                    <tr class="panel-title">
+                                        <!-- Content columns-->
+                                        <th style="vertical-align:middle">GUI</th>
+                                        <th style="vertical-align:middle">Title</th>
+                                        <th style="vertical-align:middle">Order</th>
+                                        <th style="vertical-align:middle">Disabled</th>
+                                        <th style="vertical-align:middle">Required</th>
+                                        <th style="vertical-align:middle">Choices</th>
+                                    </tr>
+
+                                    <!--Row with the new item-->
+
+                                    <tr ng-repeat="item in survey.questions[0].survey">
+                                        <!-- Content columns-->
+                                        <td>{{item.type}}</td>
+                                        <td>{{item.titleEN}}<br>{{item.titleAR}}</td>
+                                        <td>{{item.order}}</td>
+                                        <td>{{item.disabled}}</td>
+                                        <td>{{item.required}}</td>
+                                        <td><span ng-repeat="choice in item.choices">
+                                            <p>EN: {{choice.textEN}}</p>
+                                            <p>AR: {{choice.textAR}}</p>
+                                            <p>Generate SMS: {{choice.notify}}</p>
+                                            <p ng-show="choice.goto">Goto: {{choice.goto}}</p>
+                                            <hr>
+                                        </span></td>
+                                    </tr>
+                                </table>
+
+                                <!--Loading indicator-->
+                                <img src="../images/loading.gif" ng-show="loading" class="center-block" title="Loading..." />
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </section>
+
+            </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+    </div><!--/row-->
+
+    <div ng-include="'../../layout/footer.html'"></div>
+
 </div>
 
-<div ng-show="showJson">
-	<h4>Form object:</h4>
-	<pre>{{ form | json }}</pre>
-</div>
 
 </section>
+

@@ -35,8 +35,8 @@
                 </li>
               </ul> -->
               <!-- If there are no accounts in the list, suggest the user's create a new account -->
-              <div data-ng-hide="!accounts || accounts.length">
-                No accounts yet<span data-ng-show="{{authentication.user.role == 'superadmin'}}">, why don't you <a href="/#!/accounts/create">create one</a>?</span>
+              <div data-ng-hide="!accountsCount || accountsCount.length">
+                No accounts yet<span data-ng-show="{{authentication.user.role == 'owner'}}">, why don't you <a href="/#!/accounts/create">create one</a>?</span>
               </div>
             </section>
 

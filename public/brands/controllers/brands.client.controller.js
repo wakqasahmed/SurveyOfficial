@@ -106,7 +106,7 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
         $scope.find = function() {
         	// Use the brand 'query' method to send an appropriate GET request
           //  $scope.brands = Brands.query();
-          var bgImagePath = "http://official-surveymark.rhcloud.com/content/brand_images/";
+          var bgImagePath = "/content/brand_images/";
 
           $scope.brands = {
               dataSource: {
@@ -129,7 +129,7 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
                   //field: "country",
                   title: "Background Image",
                   width: "120px",
-                  template: "<img src='{{bgImagePath + dataItem.bgImage}}' width='150px' height='250px' />"
+                  template: "<img src='/content/brand_images/{{dataItem.bgImage}}' width='150px' height='250px' />"
                   }]
           };
 
@@ -141,10 +141,12 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
             $scope.brand = Brands.get({
                 brandId: $routeParams.brandId
             });
-
-            $scope.brand.account = [{ "sales_order_no": "0", "name": "Foodmark", "country":"United Arab Emirates" }];
+/*
+            $scope.brand.account = [{ "sales_order_no": "0", "name": $scope.authentication.user.account.name, "country":"United Arab Emirates" }];
 
             console.log($scope.brand.account[0].country);
+            console.log($scope.authentication.user.account.name);
+            */
         };
 
         // Create a new controller method for updating a single brand
