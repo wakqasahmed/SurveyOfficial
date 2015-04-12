@@ -25,8 +25,14 @@ module.exports = function(app) {
     app.route('/api/reports/monthly/testing')// test report by question ( avg , count)
 				   .get(reports.testing);
 
-    app.route('/api/reports/monthly/testing1') // test report by stuff
-        .get(reports.testing1);
+    app.route('/api/reports/dynamicstuff') // test report by stuff
+        .get(reports.dynamicGenerateStuffReport)
+        .post(reports.dynamicGenerateStuffReport);
+
+    app.route('/api/reports/guestchecks') //  report guest checks stuff
+        .post(reports.totalGuestChecks)
+        .get(reports.totalGuestChecks)
+        ;
 
     app.route('/api/reports/monthly/testing2') // test report delivery by questions (avg)
         .get(reports.testing2);

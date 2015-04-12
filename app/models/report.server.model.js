@@ -21,4 +21,15 @@ var ReportMonthlyParticipationRateSchema = new Schema({
 // Create the 'Article' model out of the 'ArticleSchema'
 mongoose.model('Report', ReportSchema);
 mongoose.model('ReportMonthlyParticipationRate', ReportMonthlyParticipationRateSchema);
+
+
+
+var QuestChecksSchema = new Schema({
+
+    locationId: {type: Schema.ObjectId, ref: 'Location'},
+    checks:{type:Number}
+}, { collection : 'guestchecks' });
+
+// Create the 'QuestChecks' model out of the 'ResponseSchema'
+mongoose.model('QuestChecks', QuestChecksSchema);
 //mongoose.model('ReportMonthlyParticipationPercentage', ReportMonthlyParticipationPercentageSchema);

@@ -4,48 +4,65 @@
 <section name="sidebar" ng-include="'reports/views/partials/reports.client.sidebar.html'" >
         </section>
 
-        <section  ng-controller="reportsController">
+        <section  ng-controller="reportsController" data-ng-init="guestChecksGenerateReport()">
           <div class="container">
           <div class="row">
 
           <div class="col-md-6">
                <h3>Guest Check V Guest Surverys</h3>
+              <div class="row">
+                  <h5 class="dark-grey">Date Range</h5>
+                  <div class="form-group col-lg-6">
+                      <label for="start">Start date:</label>
+                      <input id="start" style="width: 200px"
+                             ng-model="date_range_start_str"
+                             k-ng-model="date_range_end_obj"
+                              />
+                  </div>
+                  <div class="form-group col-lg-6">
+                      <label for="end">End date:</label>
+                      <input id="end" style="width: 200px"
+                             ng-model="date_range_end_str"
+                             k-ng-model="date_range_end_obj"
+                              />
+                  </div>
 
-            <multiselect2 data-ng-init="brandName()" class="input-xlarge" multiple="true"
-                ng-model="selectedBrand"
-                options="c.name for c in brand "
-                change="selected()" uncheckAll="alert('got');"></multiselect2>
-                <div class="well well-small">
-                    {{selectedBrand.name}}
-                </div>
-
-
-              
-
-
-
-
-
-
-
-
-
-
-                <div>
-                  <form data-ng-submit="creating()" >
-
-                    <ul>Locations in Brand
-                        <li ng-repeat="x  in locationByBrand" ng-hide="!selectedBrand.length">
-                              {{ x.name }}
-                        </li>
-                    </ul>
-                    <input type="" data-ng-model="checks" id="checks" value="checks" />
-                    <input type="submit">
-                  </form>
-                </div>
               </div>
 
+
+              <button class="btn btn-danger pull-right" type="button" ng-click="guestChecksGenerateReport()"><i class="icon-trash icon-white"></i>Generate</button>
+
+
+
+
+          </div>
+
             </div>
+
+
+
+
+              <div class="row charts-container"  >
+
+                   <div id="chart1"></div>
+                  <div id="chart2"></div>
+                  <hr>
+                  <br>
+                  <div id="chart3"></div>
+
+                  <hr>
+                  <br>
+                  <div id="chart4"></div>
+
+              </div>
+
+
+              <div class="box-col">
+                  <button class='export-pdf k-button'  >Export as PDF</button>
+              </div>
+
+
+
           </div>
 
 
