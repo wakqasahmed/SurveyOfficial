@@ -11,15 +11,15 @@ module.exports = function(app) {
 	// Set up the 'brands' base routes
 	app.route('/api/brands')
 		.get(brands.list)
-		.post(brands.create);
-//		.post(users.requiresLogin, brands.create);
+//		.post(brands.create);
+		.post(users.requiresLogin, brands.create);
 
 app.route('/api/brands/active')
 	.get(brands.listActiveBrands);
 
 app.route('/api/brands/upload')
-//    .post(users.requiresLogin, brands.postImage);
-		.post(brands.postImage);
+    .post(users.requiresLogin, brands.postImage);
+//		.post(brands.postImage);
 
 	// Set up the 'brands' parameterized routes
 	app.route('/api/brands/:brandId')
