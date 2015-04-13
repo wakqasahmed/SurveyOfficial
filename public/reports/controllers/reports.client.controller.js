@@ -1025,7 +1025,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                     $scope.locationNames.push(data[k].name);
                     $scope.locationiD.push(data[k]._id);
-                        $scope.locationColors.push(data[k].color);
+                        $scope.locationColors.push(data[k].brand.color);
 
                   }
                     console.log("locationIDs :" + $scope.locationiD);
@@ -1125,7 +1125,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                         $scope.locationNames.push(data[k].name);
                         $scope.locationiD.push(data[k]._id);
-                        $scope.locationColors.push(data[k].color)
+                        $scope.locationColors.push(data[k].brand.color)
 
                     }
 
