@@ -9,7 +9,79 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
     function($scope, $routeParams, $location, $http, Forms, Dialogs, Authentication,filterFilter) {
         // Expose the Authentication service
 
+        var now = new Date();
+        var n = now.getFullYear();
+        var m = now.getMonth() ;
+        var startD = new Date(n, m, 1);
+        var endD = new Date(n, m, 1);
+        endD.setMonth(endD.getMonth()+1);
 
+        $scope.time_range_from = startD;
+        $scope.time_range_to = endD;
+         // date selector
+
+        console.log(" now   "+now.toLocaleString())
+        console.log(" startD   "+startD.toLocaleString())
+        console.log(" endD   "+endD.toLocaleString())
+
+        $scope.startChange = function() {
+
+            var startDate = start.value(),
+                endDate = end.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate());
+                end.min(startDate);
+            } else if (endDate) {
+                start.max(new Date(endDate));
+            } else {
+                endDate = new Date();
+                start.max(endDate);
+                end.min(endDate);
+            }
+
+        }
+
+        $scope.endChange = function() {
+
+            var endDate = end.value(),
+                startDate = start.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                start.max(endDate);
+            } else if (startDate) {
+                end.min(new Date(startDate));
+            } else {
+                endDate = new Date();
+                start.max(endDate);
+                end.min(endDate);
+            }
+        }
+
+
+        var start = angular.element(document.querySelector( '#start' )).kendoDatePicker({
+            change: $scope.startChange,
+            value:startD
+        }).data("kendoDatePicker");
+
+        var end = angular.element(document.querySelector( '#end' )).kendoDatePicker({
+            change: $scope.endChange,
+            value :endD
+        }).data("kendoDatePicker");
+
+        if(start && end ){
+
+            start.max(end.value());
+            end.min(start.value());
+
+        }
+
+
+        ////////////////////////////////////////
+        /////////// ///          /// //////////
 
 
               // Days to be selected for the reports.
@@ -63,7 +135,10 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
           });
         }, true);
         // Function for getting the brandnames
+
         $scope.brandName = function() {
+
+            console.log(" -------> brandName")
 
 
 
@@ -278,7 +353,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
             });
         };
 
-
+      //  $scope.brandName();
 
         //Adding new Question Field
         $scope.addNewField = function(){
@@ -403,7 +478,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                 }
 
             }
-          //  console.log(report.TotalCheck);
+         // load the data
 
             $http.post('/api/reports/dynamic', data).
                       success(function(docs, status, headers, config) {
@@ -558,13 +633,13 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
             });*/
         };
         $(".export-pdf").click(function() {
-            $scope.exportPDF();
+           // $scope.exportPDF();
         });
-        $scope.offline=true;
+
         $scope.exportPDF = function() {
             // Convert the DOM element to a drawing using kendo.drawing.drawDOM
-            console.log(" exportPDF  "+$scope.offline);
-            $scope.offline=false;
+            console.log(" exportPDF  ");
+
             kendo.drawing.drawDOM($(".charts-container"))
                 .then(function(group) {
                     // Render the result as a PDF file
@@ -577,11 +652,261 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                     // Save the PDF file
                     kendo.saveAs({
                         dataURI: data,
-                        fileName: "HR-Dashboard.pdf",
+                        fileName: "reports_name.pdf",
                         proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
                     });
                 });
         }
+
+
+        $scope.dynamicGenerateStuffReport = function(field) {
+            /*  console.log($scope.locByBrand);*/
+            console.log(" dynamicGenerateStuffReport field:"+JSON.stringify(field));
+
+
+
+            var choices_name= [];
+            var choices_id= [];
+
+            if(field.selectedChoices){
+                console.log( "selectedChoices "+field.selectedChoices.length )
+                for ( var i=0 ; i< field.selectedChoices.length ; i++){
+                    choices_id.push(field.selectedChoices[i].value+"");
+                    choices_name.push(field.selectedChoices[i].textEN);
+                }
+            }
+            // Use the form fields to create a new article $resource object
+            var data ={
+                //TotalCheck: this.checks
+                'brandId': $scope.selectedBrandIds,//field.field_brandID,
+                'questionId': field.field_selectedQuestionID
+                //,shifts:[{value:"breakfast",from:5,to:12},{value:"lunch",from:12,to:18},{value:"dinner",from:18,to:23},{value:"brunch",from:0,to:4}] ,
+
+                //days:["Thu","Wed","Mon","Sun","Fri","Sat"]
+                // , type:"avg"
+                //content: this.content
+            };
+            if(field.entry.client =="avg"){
+                data.type = "avg"
+            }else
+            if(field.entry.client == "choices"){
+                data.choices = choices_id
+            }else if(field.entry.client == "shifts"){
+                data.shifts =   $scope.selectedShifts() ;//[{value:"breakfast",from:5,to:12},{value:"lunch",from:12,to:18},{value:"dinner",from:18,to:23},{value:"brunch",from:0,to:4}] ,
+//                     ;
+                choices_name =[];
+                for ( var i=0 ; i< data.shifts.length ; i++){
+
+                    choices_name.push(data.shifts[i].name);
+                }
+
+            }else if(field.entry.client == "days"){
+                data.days =[];
+                for ( var i=0 ; i< $scope.selectedDays().length ; i++){
+                    data.days.push($scope.selectedDays()[i].value)
+                    choices_name.push($scope.selectedDays()[i].name);
+                }
+
+            }
+            //  console.log(report.TotalCheck);
+
+            $http.post('/api/reports/dynamicstuff', data).
+                success(function(docs, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    //  console.log($scope.brands);
+                    console.log(" data from success: " + JSON.stringify(docs));
+                    $scope.categories = [];
+                    $scope.values = [];
+                    $scope.locbydata = [];
+                    var series = [] ;
+
+                    var mygroup ={};
+                    var locationGroup={}
+                    var staffIs={}
+
+                    var colors = ["#FFCC00","#ff88cc","#00ccff","#CC0022","#bb6666"];
+
+                    $scope.showLocations =[];
+
+                    for(var k=0;k < docs.length ;k++){
+                        //  console.log(" ID location "+docs[k])
+                        // console.log(" Value : "+k.value)
+
+
+                        if(field.entry.client=="avg"){
+
+                            if(series[0])
+                                series[0].data.push( docs[k].value.sum / docs[k].value.count);
+                            else
+                                series[0] = {name:"AVG",data:[docs[k].value.sum / docs[k].value.count],color:function(point) {
+                                    if (point.value > 11) {
+                                        return "#006600";
+                                    }else{
+                                        return "#660000";
+                                    }
+
+                                    // use the default series theme color
+                                }};
+
+                        }else {
+                            $scope.categories.push(docs[k].value.valuesNrate[0]);
+                            $scope.values.push(docs[k].value.valuesNrate[1]);
+                            $scope.locbydata.push(docs[k]._id);
+
+
+                            // var divider = field.entry.valueType=="percentage" ? Number(docs[k].value.count) :1 ;
+
+                            if(!locationGroup[docs[k]._id.locationId]){
+                                locationGroup[docs[k]._id.locationId]={}
+
+
+                                  // categories label reorder .
+                                var index =$scope.locationiD.indexOf(docs[k]._id.locationId)
+                                console.log(docs[k]._id.locationId+" index location "+ index)
+                                if( index> -1){
+                                    $scope.showLocations.push(  $scope.locationNames[index]);
+                                }
+                                /////////
+
+
+                            }
+                            locationGroup[docs[k]._id.locationId][docs[k]._id.staffId] = docs[k].value.valuesNrate ;
+
+
+                            staffIs[docs[k]._id.staffId]=true;
+
+
+
+
+                        }
+
+                        series =[]
+
+
+                        // console.log($scope.locbydata);
+                    }
+                    console.log("locationGroup "+ JSON.stringify( locationGroup));
+                    console.log("staffIs "+ JSON.stringify( staffIs));
+                    console.log(" Series "+series)
+
+                    for (var staff in staffIs){
+                        for ( var l in locationGroup){
+                            if(!locationGroup[l][staff])
+                                locationGroup[l][staff] = [docs[0].value.valuesNrate[0],[0,0,0]]
+                        }
+                    }
+                    var ser={}
+                    for ( var l in locationGroup){
+
+                        for (var staff in locationGroup[l]){
+                         //  if(!ser[l])ser[l]={series:[]};
+                           // ser[l].series.push()
+                           for ( var i in locationGroup[l][staff][0]){
+                               if(!ser[staff+"-"+choices_name[i]]) ser[staff+"-"+choices_name[i]] =   {stack:{group:staff },name :choices_name[i] , data :[ locationGroup[l][staff][1][i]] ,color :colors[i]} ;
+                                else
+                                   ser[staff+"-"+choices_name[i]].data.push(locationGroup[l][staff][1][i])
+
+                           }
+                        }
+
+                    }
+                    for ( var o in ser){
+
+                        series.push(ser[o]);
+                    }
+                  //  console.log("new ser "+ JSON.stringify( ser));
+                  //  console.log("new locationGroup "+ JSON.stringify( locationGroup));
+                    var restOflocations = $scope.locationNames.filter(function(i) {return $scope.showLocations.indexOf(i) < 0;});
+                    //console.log(" locationNames  "+$scope.locationNames);
+                    //console.log(" showLocations "+$scope.showLocations);
+
+                    $scope.showLocations = $scope.showLocations.concat(restOflocations);
+
+
+
+
+
+                    var chartOptions = {
+                        pdf: {
+                            fileName: "Kendo UI Chart Export.pdf",
+                            proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
+                        },
+                        title: {
+                            text: field.chartName
+                        },
+                        legend: {
+                            visible: false,
+                            text:"how do find this ?"
+                        },
+                        seriesDefaults: {
+                            type: "bar",
+                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true )
+
+                        },
+                        valueAxis: {
+                            line: {
+                                visible: false
+                            },
+                            minorGridLines: {
+                                visible: true
+                            }
+                        },
+                        majorGridLines: {
+                            visible: false
+                        },
+                        tooltip: {
+                            visible: true,
+                            template: "Staff :#= series.stack.group #, #= series.name # : #= value # "
+                        },
+                        categoryAxis: {
+                            field: "category"
+                        }
+                    };
+                    chartOptions.categoryAxis = {
+                        categories:   $scope.showLocations
+                    };
+                    chartOptions.series = series;
+
+                    $(".export-pdf").click(function() {
+                        // $("#chart").getKendoChart().saveAsPDF();
+                    });
+
+                    function createChart() {
+
+                        console.log(field.field_id+" createChart  :"+JSON.stringify(chartOptions))
+                        $("#Chart"+field.field_id).kendoChart(
+                            $.extend(true, {},chartOptions)
+                        );
+                    }
+
+                    field.chartOptions = chartOptions;
+
+
+                    $(document).ready(createChart);
+                    $(document).bind("kendo:skinChange", createChart);
+
+                    //Creatting the Chart
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
+
+            // Use the article '$save' method to send an appropriate POST request
+            /*  report.$save(function(response) {
+             // If an article was created successfully, redirect the user to the article's page
+             //  $location.path('reports/' + response._id);
+             //  console.log(response);
+             }, function(errorResponse) {
+             // Otherwise, present the user with the error message
+             $scope.error = errorResponse.data.message;
+             });*/
+        };
+        $(".export-pdf").click(function() {
+            $scope.exportPDF();
+        });
+
 
 
         $scope.generateCombinedChart = function () {
@@ -692,6 +1017,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                     //console.log(data[0].name)
               //      console.log(data);
               $scope.locationNames= []
+              $scope.locationColors= [];
               $scope.locationiD = [];
 
                     $scope.locationByBrand = data;
@@ -699,6 +1025,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                     $scope.locationNames.push(data[k].name);
                     $scope.locationiD.push(data[k]._id);
+                        $scope.locationColors.push(data[k].color);
 
                   }
                     console.log("locationIDs :" + $scope.locationiD);
@@ -721,7 +1048,8 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
 
 
-
+        $scope.example1model = [];
+        $scope.example1data = [ {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
 
         // Create a new controller method for retrieving a list of reports
         $scope.find = function() {
@@ -769,6 +1097,368 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                 });
             }
         };
+
+
+
+        // generate guest checks vs guest survey //   //
+        ////////////////////////////////////////////////
+
+        $scope.guestChecksGenerateReport = function() {
+            /*  console.log($scope.locByBrand);*/
+
+
+            var choices_name= [];
+            var choices_id= [];
+
+
+
+
+            $http.get('/api/locations/active/' )
+                .success(function(data, status, headers, config) {
+
+                    $scope.locationNames= []
+                    $scope.locationiD = [];
+                    $scope.locationColors= [];
+
+                    $scope.locationByBrand = data;
+                    for(var k in data){
+
+                        $scope.locationNames.push(data[k].name);
+                        $scope.locationiD.push(data[k]._id);
+                        $scope.locationColors.push(data[k].color)
+
+                    }
+
+                    // after loading locations
+                    $scope.loadGuestchecks();
+                    $scope.loadGuestSurveys();
+                    setTimeout(function(){
+
+                    if($scope.chartOptions1 && $scope.chartOptions2){
+                        $scope.createGuestCheckVsGuestSurveyPercent();
+
+                    }
+
+                    },1000);
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
+
+
+
+
+        };
+                // load  guest checks //
+        $scope.loadGuestchecks = function (){
+
+
+
+            var data ={
+                //TotalCheck: this.checks
+                'startDate': start.value(),//field.field_brandID,
+                'endDate': end.value()
+                //,shifts:[{value:"breakfast",from:5,to:12},{value:"lunch",from:12,to:18},{value:"dinner",from:18,to:23},{value:"brunch",from:0,to:4}] ,
+
+                //days:["Thu","Wed","Mon","Sun","Fri","Sat"]
+                // , type:"avg"
+                //content: this.content
+            };
+
+            $http.post('/api/reports/guestchecks',data).
+                success(function(docs, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    //  console.log($scope.brands);
+                    console.log("data from success: " + JSON.stringify(docs));
+                    $scope.categories = [];
+                    $scope.values = [];
+                    $scope.locbydata = [];
+                    var series = [] ;
+
+                    var colors = ["#FFCC00","#ff88cc","#00ccff","#CC0022","#bb6666"];
+
+                    $scope.showLocations =[];
+
+                    for(var k=0;k < docs.length ;k++){
+
+                        console.log("location ids "+ $scope.locationiD)
+                        var index =$scope.locationiD.indexOf(docs[k]._id)
+                        console.log(docs[k]._id+" index location "+ index)
+                        if( index> -1){
+                            $scope.categories.push(docs[k]._id);
+                            $scope.values.push(docs[k].value);
+                            $scope.locbydata.push(docs[k]._id);
+                            $scope.showLocations.push(  $scope.locationNames[index]);
+                        }
+
+
+
+                        // console.log($scope.locbydata);
+                    }
+                    series = [{name :"Guest checks" , data :$scope.values ,color :function(point) { console.log("  point "+point.index);
+
+                    return $scope.locationColors[point.index];
+
+                    }}];
+                    console.log(" Series "+series)
+                    var restOflocations = $scope.locationNames.filter(function(i) {return $scope.showLocations.indexOf(i) < 0;});
+
+
+                    $scope.showLocations = $scope.showLocations.concat(restOflocations);
+
+                    var chartOptions = {
+                        pdf: {
+                            fileName: "Kendo UI Chart Export.pdf",
+                            proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
+                        },
+                        title: {
+                            text: "Guest Checks vs  Guest Survey "
+                        },
+                        chartArea:{height:300},
+                        legend: {
+                            visible: false,
+                            text:"how do find this ?"
+                        },
+                        seriesDefaults: {
+                            type: "column"
+
+                        },
+                        valueAxis: {
+                            line: {
+                                visible: false
+                            },
+                            minorGridLines: {
+                                visible: true
+                            },
+                            title: {
+                                text: "Survey presented"
+                            }
+                        },
+                        majorGridLines: {
+                            visible: false
+                        },
+                        tooltip: {
+                            visible: true,
+                            template: "#= series.name #: #= value #"
+                        },
+                        categoryAxis: {
+                            visible :false,
+                            field: "category"
+                        }
+                    };
+                    chartOptions.categoryAxis = {
+                        categories:   $scope.showLocations ,
+                        visible :false
+                    };
+                    chartOptions.series = series;
+
+
+                    $scope.chartOptions2 = chartOptions;
+
+                    $(".export-pdf").click(function() {
+                        // $("#chart").getKendoChart().saveAsPDF();
+                    });
+
+                    function createChart() {
+
+                        //  console.log(field.field_id+" createChart  :"+JSON.stringify(chartOptions))
+                        $("#chart1").kendoChart(
+                            $.extend(true, {},chartOptions)
+                        );
+                    }
+
+                    // field.chartOptions = chartOptions;
+
+
+                    $(document).ready(createChart);
+                    $(document).bind("kendo:skinChange", createChart);
+
+                    //Creatting the Chart
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
+        }
+
+        $scope.loadGuestSurveys = function (){
+
+            $http.get('/api/reports/monthly/participationRate').
+                success(function(docs, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    //  console.log($scope.brands);
+                  //  console.log("data from success: " + JSON.stringify(docs));
+                    var categories = [];
+                    var values = [];
+                    var locbydata = [];
+                    var series = [] ;
+
+                    var colors = ["#FFCC00","#ff88cc","#00ccff","#CC0022","#bb6666"];
+
+                    $scope.showLocations =[];
+
+                    for(var k=0;k < docs.length ;k++){
+
+                        //console.log("location ids "+ $scope.locationiD)
+                        var index =$scope.locationiD.indexOf(docs[k]._id)
+                        console.log(docs[k]._id+" index location "+ index)
+                        if( index> -1){
+                            categories.push(docs[k]._id);
+                            values.push(docs[k].value);
+                            locbydata.push(docs[k]._id);
+                            $scope.showLocations.push(  $scope.locationNames[index]);
+                        }
+
+                    }
+                    series = [{name :"Guest Survey" , data :values ,color :function(point) {
+
+                        return $scope.locationColors[point.index];
+
+                    }}];
+                    console.log(" Series "+series)
+                    var restOflocations = $scope.locationNames.filter(function(i) {return $scope.showLocations.indexOf(i) < 0;});
+
+
+                    $scope.showLocations = $scope.showLocations.concat(restOflocations);
+
+                    var chartOptions = {
+                        pdf: {
+                            fileName: "Kendo UI Chart Export.pdf",
+                            proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
+                        },
+                        title: {
+                            text: ""
+                        },
+                        chartArea:{height:300},
+                        legend: {
+                            visible: false,
+                            text:"how do find this ?"
+                        },
+                        seriesDefaults: {
+                            type: "column"
+
+                        },
+                        valueAxis: {
+                            line: {
+                                visible: false
+                            },
+                            minorGridLines: {
+                                visible: true
+                            },
+                            title: {
+                                text: "Total checks"
+                            }
+                        },
+                        majorGridLines: {
+                            visible: false
+                        },
+                        tooltip: {
+                            visible: true,
+                            template: "#= series.name #: #= value #"
+                        },
+                        categoryAxis: {
+                            field: "category"
+                        }
+                    };
+                    chartOptions.categoryAxis = {
+                        categories:   $scope.showLocations
+
+                    };
+                    chartOptions.series = series;
+
+
+                    $scope.chartOptions1 = chartOptions;
+
+                    $(".export-pdf").click(function() {
+                        // $("#chart").getKendoChart().saveAsPDF();
+                    });
+
+                    function createChart() {
+
+                        //  console.log(field.field_id+" createChart  :"+JSON.stringify(chartOptions))
+                        $("#chart2").kendoChart(
+                            $.extend(true, {},chartOptions)
+                        );
+                    }
+
+                    // field.chartOptions = chartOptions;
+
+
+                    $(document).ready(createChart);
+                    $(document).bind("kendo:skinChange", createChart);
+
+                    //Creatting the Chart
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                });
+        }
+
+        $scope.createGuestCheckVsGuestSurveyPercent = function(){
+
+
+          var calculData = [];
+            for ( var i=0 ; i < $scope.chartOptions1.series[0].data.length ; i++ ){
+                console.log("   i  ="+$scope.chartOptions2.series[0].data[i])
+
+                calculData[i] = $scope.chartOptions1.series[0].data[i]/$scope.chartOptions2.series[0].data[i] ;
+            }
+
+            $scope.chartOptions2.series.push($scope.chartOptions1.series[0]);
+            $scope.chartOptions2.seriesDefaults.type = "bar";
+            $scope.chartOptions2.categoryAxis.visible = true;
+            $scope.chartOptions2.title= "Guest check vs Guest survey 2";
+
+           // $scope.chartOptions2.series[0].data = calculData ;
+
+
+
+
+            function createChart() {
+
+                //  console.log(field.field_id+" createChart  :"+JSON.stringify(chartOptions))
+                $("#chart4").kendoChart(
+                    $.extend(true, {}, $scope.chartOptions2)
+                );
+
+
+               // $scope.chartOptions2.series.push($scope.chartOptions1.series[0]);
+                $scope.chartOptions2.seriesDefaults.type = "column";
+                $scope.chartOptions2.categoryAxis.visible = true;
+
+                 $scope.chartOptions2.series[0].data = calculData ;
+                $scope.chartOptions2.series[1]= null
+                $scope.chartOptions2.title= "Guest check vs Guest survey %";
+
+
+
+                $("#chart3").kendoChart(
+                    $.extend(true, {}, $scope.chartOptions2)
+                );
+
+
+
+            }
+
+            // field.chartOptions = chartOptions;
+
+
+            $(document).ready(createChart);
+            $(document).bind("kendo:skinChange", createChart);
+
+
+
+
+        }
+
+////////////////////////////////////////////////
+        ///////////////////////////////////////////////
+
 
 
 

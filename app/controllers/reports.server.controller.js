@@ -7,9 +7,16 @@ var mongoose = require('mongoose'),
 	report = mongoose.model('Report'),
 	Location = mongoose.model('Location'),
 	Response = mongoose.model('Response'),
+
 	ReportMonthlyParticipationRate = mongoose.model('ReportMonthlyParticipationRate');
 	//Name = mongoose.model('ReportMonthlyParticipationRate');
 	//ReportMonthlyParticipationPercentage = mongoose.model('ReportMonthlyParticipationPercentage');
+
+
+
+
+
+var Guestchecks =  mongoose.model('QuestChecks');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -24,6 +31,13 @@ var getErrorMessage = function(err) {
 
 exports.generateMonthlyParticipationRate = function(req, res){
 
+    var objectParam  =  req.body ;
+
+    var query ={};
+
+    if(objectParam.brandId)
+        query.brandId = {"$in":objectParam.brandId};
+
 var o = {};
 o.map = function () { emit(this.locationId, 1); }
 o.reduce = function (locationId, count) { return Array.sum(count); }
@@ -32,6 +46,7 @@ o.verbose = true;
 Response.mapReduce(o, function (err, model, stats) {
 	model.find().exec(function(err, docs){
 		console.log(docs);
+        res.send(docs);
 	});
 	console.log('map reduce took %d ms', stats.processtime);
 });
@@ -489,9 +504,7 @@ exports.dynamicGenerateStuffReport = function(req, res) {
 
     // this type of object should be sent in request
 
-    // questionId :5502cd1d53d5f66d42fc99e9  for food quality
 
-    // questionId :550009d453d5f66d42fc99e8  for visiting
 
     console.log(req.body+"      ");
     var objectParam  =  req.body ;
@@ -620,6 +633,73 @@ exports.dynamicGenerateStuffReport = function(req, res) {
             console.log('receive model chakir ');
             model.find().exec(function (err, docs) {
                 console.log(docs);
+                res.send(docs);
+            });
+            console.log('map reduce took %d ms', stats.processtime);
+        }
+    );
+
+
+//res.end(" is DOne");
+};
+
+exports.totalGuestChecks = function(req, res) {
+
+
+    // this type of object should be sent in request
+
+
+
+    console.log(JSON.stringify(req.body)+ "  totalGuestChecks body     ");
+    var objectParam  =  req.body ;
+
+    if((objectParam.startDate) && (objectParam.endDate) ) {
+        objectParam.startDate = new Date(objectParam.startDate);
+        objectParam.endDate = new Date(objectParam.endDate);
+    }
+    console.log(objectParam.endDate) ;
+    var query ={};
+
+    if(objectParam.brandId)
+        query.brandId = {"$in":objectParam.brandId};
+    if(objectParam.endDate )
+        query.day = {"$lte":objectParam.endDate,"$gte":objectParam.startDate}
+
+
+
+   // query.status = true ;
+
+
+    //  create map and reduce
+    var object = new Object();
+    var mapper = function(n) {
+        function map() {
+
+                emit(this.locationId, this.checks);
+
+        }
+        return map;
+    };
+    object.map = mapper(objectParam) ;
+
+    object.query  = query;
+
+    object.scope={questionObject:objectParam};
+
+    object.reduce = function(key,checks){
+
+
+         return Array.sum(checks);
+
+    }
+
+    object.out = { replace: 'report_gen_rate' }
+    object.verbose = true;
+
+    Guestchecks.mapReduce(object, function (err, model, stats) {
+            console.log(' Guestchecks receive model chakir ');
+            model.find().exec(function (err, docs) {
+                console.log("  "+docs);
                 res.send(docs);
             });
             console.log('map reduce took %d ms', stats.processtime);
