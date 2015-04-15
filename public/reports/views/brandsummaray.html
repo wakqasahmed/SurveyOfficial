@@ -17,6 +17,10 @@
            <div class="col-md-4">
 
 
+
+
+
+
             <h5>Brands</h5>
             <multiselect2 data-ng-init="brandName()" class="input-xlarge" multiple="true" ng-model="selectedBrand" options="c.name for c in brand " change="selected()"></multiselect2>
 
@@ -32,9 +36,11 @@
 
           </div>
 
-          <div class="col-md-2">       <h5>Month</h5>
-            <input id="dateInput" type="month" name="input_date" ng-model="value" placeholder="yyyy-MM" min="2015-01" max="2015-12" value="2015-03" required />
-
+          <div class="col-md-2">       <h5>Date</h5>
+              <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  <span></span> <b class="caret"></b>
+              </div>
 
           </div>
 
