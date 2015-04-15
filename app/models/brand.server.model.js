@@ -24,6 +24,7 @@ var brandSchema = new Schema({
   state: String,
   phoneManager: String,
   contactPerson: [contactPersonSchema],
+  color: {type: String, default: '#000000'},
   createdOn: {type: Date},
   modifiedOn: {type: Date, default: moment.tz(Date.now(), 'Asia/Dubai')},
   createdBy: { type: Schema.ObjectId, ref: 'User' }
