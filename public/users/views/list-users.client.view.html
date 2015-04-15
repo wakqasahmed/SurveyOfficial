@@ -35,7 +35,7 @@
 								</li>
 							</ul> -->
 							<!-- If there are no users in the list, suggest the user's create a new user -->
-							<div data-ng-hide="!users || users.length">
+							<div data-ng-hide="usersCount > 0">
 								No users yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/users/create">create one</a>?</span>
 							</div>
 						</section>
