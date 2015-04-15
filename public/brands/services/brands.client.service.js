@@ -10,5 +10,6 @@ angular.module('brands').factory('Brands', ['$resource', function($resource) {
         update: {
             method: 'PUT'
         }
-    });
+    }
+    );
 }]);

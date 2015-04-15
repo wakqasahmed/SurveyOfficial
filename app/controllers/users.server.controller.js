@@ -38,11 +38,38 @@ var getErrorMessage = function(err) {
 
 exports.byAccount = function(req, res){
 
-		var accountId = mongoose.Types.ObjectId(req.params.accountId);
+	var accountId = mongoose.Types.ObjectId(req.params.accountId);
 
-		User.find({'account._id': accountId}, function(err, users){
-					res.json(users);
-		});
+	var totalRecords;
+	User.count({}, function(err, count){
+		if (err) {
+			// If an error occurs send the error message
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			totalRecords = count;
+		}
+	});
+
+	var page = parseInt(req.query.page),
+		size = parseInt(req.query.pageSize),
+		skip = parseInt(req.query.skip),
+		take = parseInt(req.query.take);
+//		skip = page > 0 ? ((page - 1) * size) : 0;
+
+	// Use the model 'find' method to get a list of users by account
+	User.find({'account._id': accountId}).limit(size).skip(skip).exec(function(err, users) {
+		if (err) {
+			// If an error occurs send the error message
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			// Send a JSON representation of the brand
+			res.json({users: users, totalRecords: totalRecords});
+		}
+	});
 
 }
 

@@ -504,7 +504,13 @@ $scope.$location = $location;
                   },
                   pageSize: 5,
                   serverPaging: true,
-                  serverSorting: true
+                  serverSorting: true,
+                  schema: {
+                      data: function (data) { return data.surveys; },
+                      total: function (data) {
+                          $scope.surveysCount = data.totalRecords;
+                          return data.totalRecords; }
+                  }
               },
               sortable: true,
               pageable: true,
