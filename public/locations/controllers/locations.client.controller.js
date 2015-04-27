@@ -86,13 +86,19 @@ angular.module('locations').controller('LocationsController', ['$scope', '$route
                     type: "json",
                     transport: {
                         read: "/api/locations"
-                    }/*,
+                    },
                     pageSize: 5,
                     serverPaging: true,
-                    serverSorting: true*/
+                    serverSorting: true,
+                    schema: {
+                        data: function (data) { return data.locations; },
+                        total: function (data) {
+                            $scope.locationsCount = data.totalRecords;
+                            return data.totalRecords; }
+                    }
                 },
                 sortable: true,
-                //pageable: true,
+                pageable: true,
                 columns: [{
                     //field: "name",
                     title: "Location Name",

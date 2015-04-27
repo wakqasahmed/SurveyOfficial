@@ -47,9 +47,27 @@ exports.create = function(req, res) {
 
 // Create a new controller method that retrieves a list of locations
 exports.list = function(req, res) {
+
+	var totalRecords;
+	Location.count({}, function(err, count){
+		if (err) {
+			// If an error occurs send the error message
+			return res.status(400).send({
+				message: getErrorMessage(err)
+			});
+		} else {
+			totalRecords = count;
+		}
+	});
+
+	var page = parseInt(req.query.page),
+		size = parseInt(req.query.pageSize),
+		skip = parseInt(req.query.skip),
+		take = parseInt(req.query.take);
+//		skip = page > 0 ? ((page - 1) * size) : 0;
+
 	// Use the model 'find' method to get a list of locations
-	Location.find().exec(function(err, locations) {
-//	Location.find().sort('-created').populate('createdBy', 'firstName lastName fullName').exec(function(err, locations) {
+	Location.find().limit(size).skip(skip).exec(function(err, locations) {
 		if (err) {
 			// If an error occurs send the error message
 			return res.status(400).send({
@@ -57,7 +75,8 @@ exports.list = function(req, res) {
 			});
 		} else {
 			// Send a JSON representation of the location
-			res.json(locations);
+			res.json({locations: locations, totalRecords: totalRecords});
+			//res.json(locations);
 		}
 	});
 };
@@ -65,7 +84,7 @@ exports.list = function(req, res) {
 // Create a new controller method that retrieves a list of locations with status 'active'
 exports.listActiveLocations = function(req, res) {
 	// Use the model 'find' method to get a list of brands
-	Location.where('status').equals('active').populate('brand', 'bgImage').exec(function(err, locations) {
+	Location.where('status').equals('active').populate('brand', 'bgImage color').exec(function(err, locations) {
 		if (err) {
 			// If an error occurs send the error message
 			return res.status(400).send({
