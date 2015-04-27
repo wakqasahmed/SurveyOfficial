@@ -35,7 +35,7 @@
 								</li>
 							</ul> -->
 							<!-- If there are no surveys in the list, suggest the user's create a new survey -->
-							<div data-ng-hide="surveysCount > 0">
+							<div data-ng-hide="!surveys || surveys.length">
 								No surveys yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/surveys/create">create one</a>?</span>
 							</div>
 						</section>

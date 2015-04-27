@@ -74,13 +74,7 @@ angular.module('users').controller('UsersController', ['$scope', '$routeParams',
                   },
                   pageSize: 5,
                   serverPaging: true,
-                  serverSorting: true,
-                  schema: {
-                      data: function (data) { return data.users; },
-                      total: function (data) {
-                          $scope.usersCount = data.totalRecords;
-                          return data.totalRecords; }
-                  }
+                  serverSorting: true
               },
               sortable: true,
               pageable: true,

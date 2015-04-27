@@ -86,7 +86,6 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
                   phoneOffice: this.contactPerson_phoneOffice,
                   phoneCell: this.contactPerson_phoneCell
                 }],
-                color: this.color,
                 createdOn: moment.tz(Date.now(), 'Asia/Dubai'),
                 createdBy: $scope.authentication.user._id
             });
@@ -106,8 +105,7 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
         // Create a new controller method for retrieving a list of brands
         $scope.find = function() {
         	// Use the brand 'query' method to send an appropriate GET request
-            //$scope.brandsCount = Brands.query();
-
+          //  $scope.brands = Brands.query();
           var bgImagePath = "/content/brand_images/";
 
           $scope.brands = {
@@ -116,15 +114,9 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
                   transport: {
                       read: "/api/brands"
                   },
-                  pageSize: 2,
+                  pageSize: 5,
                   serverPaging: true,
-                  serverSorting: true,
-                  schema: {
-                      data: function (data) { return data.brands; },
-                      total: function (data) {
-                          $scope.brandsCount = data.totalRecords;
-                          return data.totalRecords; }
-                  }
+                  serverSorting: true
               },
               sortable: true,
               pageable: true,

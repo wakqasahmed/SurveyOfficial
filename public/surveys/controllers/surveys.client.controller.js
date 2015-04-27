@@ -385,7 +385,7 @@ $scope.$location = $location;
 
         // decides whether field options block will be shown (true for dropdown and radio fields)
         $scope.showAddOptions = function (field){
-            if(field.field_type == "radio" || field.field_type == "dropdown" || field.field_type == "textfield")
+            if(field.field_type == "radio" || field.field_type == "dropdown")
                 return true;
             else
                 return false;
@@ -447,7 +447,7 @@ $scope.$location = $location;
                       'textAR': options.option_titleAR,
                       'value': options.option_value,
                       'goto': options.option_goto,
-                      'notify': options.option_notify
+                      'notify': options.option_notify,
                     };
 
                     choices.push(choice);
@@ -504,13 +504,7 @@ $scope.$location = $location;
                   },
                   pageSize: 5,
                   serverPaging: true,
-                  serverSorting: true,
-                  schema: {
-                      data: function (data) { return data.surveys; },
-                      total: function (data) {
-                          $scope.surveysCount = data.totalRecords;
-                          return data.totalRecords; }
-                  }
+                  serverSorting: true
               },
               sortable: true,
               pageable: true,
@@ -549,23 +543,22 @@ $scope.$location = $location;
 
         // Create a new controller method for retrieving a single survey
         $scope.findOne = function() {
-
+          /*
         	// Use the survey 'get' method to send an appropriate GET request
             $scope.survey = Surveys.get({
                 surveyId: $routeParams.surveyId
             });
 
-            //console.log($scope.survey);
+            */
 
             //----------------View Controller --------------//
-/*
+
               $scope.form = {};
               // read form with given id
               Forms.form($routeParams.surveyId).then(function(form) {
                 $scope.form = form;
                 console.log($scope.form);
               });
-              */
         };
 
         // Create a new controller method for updating a single survey

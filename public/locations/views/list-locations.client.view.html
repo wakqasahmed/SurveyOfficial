@@ -35,7 +35,7 @@
                 </li>
               </ul> -->
               <!-- If there are no locations in the list, suggest the user's create a new location -->
-              <div data-ng-hide="locationsCount > 0">
+              <div data-ng-hide="!locations || locations.length">
                 No locations yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/locations/create">create one</a>?</span>
               </div>
             </section>

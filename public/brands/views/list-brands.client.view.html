@@ -35,7 +35,7 @@
 								</li>
 							</ul> -->
 							<!-- If there are no brands in the list, suggest the user's create a new brand -->
-							<div data-ng-hide="brandsCount > 0">
+							<div data-ng-hide="!brands || brands.length">
 								No brands yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/brands/create">create one</a>?</span>
 							</div>
 						</section>
