@@ -28,8 +28,7 @@ angular.module('validations').controller('ValidationsController', ['$scope', '$r
         $scope.create = function() {
         	// Use the form fields to create a new validation $resource object
           var validation = new Validations({
-              name: this.name,
-              bgImage: 'asdfasdf'//this.bgImage,
+              name: this.name
           });
 
             // Use the validation '$save' method to send an appropriate POST request
@@ -48,7 +47,7 @@ angular.module('validations').controller('ValidationsController', ['$scope', '$r
         }
 
         // Create a new controller method for retrieving a list of validations
-        $scope.find = function(data) {
+        $scope.find = function() {
         	// Use the validation 'query' method to send an appropriate GET request
           //  $scope.validations = Validations.query();
 
@@ -56,24 +55,26 @@ angular.module('validations').controller('ValidationsController', ['$scope', '$r
               dataSource: {
                   type: "json",
                   transport: {
-                      read: "/api/locations/"
+                      read: "/api/validations"
                   },
                   pageSize: 5,
-                  filter: { field: "validations.name", operator: "eq", value: data },
+                  //filter: { field: "validations.name", operator: "eq", value: data },
                   serverPaging: true,
-                  serverSorting: true
+                  serverSorting: true,
+                  schema: {
+                      data: function (data) { return data.validations; },
+                      total: function (data) {
+                          $scope.validationsCount = data.totalRecords;
+                          return data.totalRecords; }
+                  }
               },
               sortable: true,
               pageable: true,
               columns: [{
-                  field: "_id",
-                  title: "Validation Table ID",
-                  width: "120px"},
-                  {
                   //field: "name",
-                  title: "Validation Table Name",
+                  title: "Table Name",
                   width: "120px",
-                  template: "<a href='\\#\\!/validations/{{dataItem.validations._id}}'>{{dataItem.validations.name}}</a>"
+                  template: "<a href='\\#\\!/validations/{{dataItem._id}}'>{{dataItem.name}}</a>"
                   }]
           };
 

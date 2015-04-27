@@ -195,8 +195,7 @@ exports.locationByID = function(req, res, next, id) {
 exports.byBrands = function(req, res){
 
 		var brands = req.params.brandIds.split(',');
-          brands.pop();
-		console.log(brands);
+        //  brands.pop();
 
 		for (var b in brands){
 			console.log(mongoose.Types.ObjectId.isValid(brands[b]));

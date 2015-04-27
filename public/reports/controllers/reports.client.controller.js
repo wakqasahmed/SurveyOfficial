@@ -1125,11 +1125,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                         $scope.locationNames.push(data[k].name);
                         $scope.locationiD.push(data[k]._id);
-<<<<<<< HEAD
                         $scope.locationColors.push(data[k].brand.color)
-=======
-                        $scope.locationColors.push(data[k].brand.color);
->>>>>>> 1f05740a77ee905dd4daa4bf8c96abb7eea0c347
 
                     }
 

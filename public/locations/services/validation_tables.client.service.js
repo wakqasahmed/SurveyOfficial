@@ -18,7 +18,7 @@ angular.module('locations').factory('Notifications', function () {
                 text = '';
             }
             toastr.error("Error. " + text);
-        },
+        }
     };
 });
 
