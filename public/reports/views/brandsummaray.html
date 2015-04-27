@@ -7,49 +7,32 @@
 <section ng-controller="reportsController">
 
 
-   <div class="container" border="1">
+   <div class="container col-md-offset-3">
       <h3>Brands Summaray </h3>
       <br>
       <div class="row">
-
-         <div class="col-md-8">
-
-           <div class="col-md-4">
-
-
-
-
-
-
+          <div class="col-md-8">
+           <div class="col-md-3">
             <h5>Brands</h5>
             <multiselect2 data-ng-init="brandName()" class="input-xlarge" multiple="true" ng-model="selectedBrand" options="c.name for c in brand " change="selected()"></multiselect2>
-
-
-
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-3">
               <h5>Locations</h5>
               <multiselect2  class="input-xlarge" multiple="true" ng-model="locationByBrand" options="c.name for c in locationByBrand " change="selected()"></multiselect2>
-
-
-
           </div>
 
-          <div class="col-md-2">       <h5>Date</h5>
-              <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+          <div class="col-md-6 pull-left">
+              <h5>Date</h5>
+              <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                   <span></span> <b class="caret"></b>
               </div>
-
           </div>
-
-
-
-
-
         </div>
+</div>
 
+       <div class="row">
         <div class="col-md-8">
           <div class="col-md-4">       <h5>Questions</h5>
             <multiselect2 data-ng-init="Questions()" class="input-xlarge" multiple="true" ng-model="selectedQuestion" options="c.titleEN for c in questions " change="selected()"></multiselect2>
@@ -70,7 +53,9 @@
 
 
 
-      </div> <br>
+      </div> </div><br>
+
+    <div class="container">
 
 
 
@@ -103,7 +88,7 @@
 
                         <div class="clear" ng-hide="true"><hr></div>
 
-                        <div class="row" ng-model="offline" ng-show="offline">
+                        <div class="row" >
                             <div class="col-md-2">Chart Title :</div>
                             <div class="col-md-4"><input type="textarea" ng-model="field.chartName"  value="{{field.chartName}}"></div>
                         </div>
@@ -119,7 +104,7 @@
                         </div>
                         <hr ng-hide="true">
 
-                        <div class="row" ng-show="offline">
+                        <div class="row" >
                             <div class="col-md-6">
                             <div class="col-md-2">Options:</div>
                             <input type="radio" id="client_days" name="client" ng-model="field.entry.client" ng-required="true" value="days" />
@@ -149,7 +134,7 @@
 
 
 
-                        <div class="row" ng-show="offline">
+                        <div class="row">
 
 
                             <div class="col-md-2" ng-hide="field.entry.client!='choices'" ng-show="entry.client=='all'">
