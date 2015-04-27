@@ -22,6 +22,9 @@ module.exports = function(app) {
     app.route('/api/surveys/questions')
         .get(surveys.questions);
 
+//to use in Delete function of individual locations to get Surveys By Location Id (array comma separated)
+    app.route('/api/surveys/surveysByLocations/:locationIds')
+        .get(surveys.byLocations);
 
     // Set up the 'surveys' parameterized routes
     app.route('/api/surveys/:surveyId')

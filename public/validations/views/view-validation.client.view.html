@@ -20,90 +20,27 @@
 							<div class="container">
 									<div class="col-md-9">
 											<div class="row">
-													<h3 class="dark-grey">Main Validation Data</h3>
-													<h5 class="dark-grey">Validation Status: <span>{{validation.status}}</span></h5>
+													<h3 class="dark-grey">Validation Table</h3>
 
 													<!-- Show the editing buttons to the article creator -->
 													<!--<div data-ng-show="authentication.user._id == article.creator._id">-->
 													<div>
-														<a class="btn btn-primary" href="/#!/validations/{{validation._id}}/edit">Edit</a>
-														<a class="btn btn-danger" href="/#!/validations/{{validation._id}}" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?')">Delete</a>
+														<a class="btn btn-primary" href="/#!/validations/{{validation._id}}/edit" disabled>Edit</a>
+														<a class="btn btn-danger" disabled data-ng-click="showDialog('Delete Confirmation', 'Delete the record?')">Delete</a>
 													</div>
 
 													<hr>
-
-													<h3 class="dark-grey">Name and Contact</h3>
-													<h5 class="dark-grey">Validation</h5>
 											</div>
 
 											<div class="row">
 												<div class="form-group col-lg-12">
-													<label>Validation ID</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation._id}}">
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Account Name</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.account[0].name}}">
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Validation Name</label>
+													<label>Table Name</label>
 													<input type="" name="" class="form-control" id="" disabled value="{{validation.name}}">
 												</div>
-
-												<div class="form-group col-lg-12">
-													<label>Background Image</label>
-													<img src="{{validation.bgImage}}" />
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Country</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.country}}">
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Emirate</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.state}}">
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Sales Order No</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.account[0].sales_order_no}}">
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Manager Phone Number</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.phoneManager}}">
-												</div>
-
 											</div>
 
 											<hr>
 
-											<div class="row">
-												<h5 class="dark-grey">Contact Person</h5>
-
-												<div class="form-group col-lg-6">
-													<label>Name</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.contactPerson[0].name}}">
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Email</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.contactPerson[0].email}}">
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Office phone</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.contactPerson[0].phoneOffice}}">
-												</div>
-
-												<div class="form-group col-lg-6">
-													<label>Mobile phone</label>
-													<input type="" name="" class="form-control" id="" disabled value="{{validation.contactPerson[0].phoneCell}}">
-												</div>
-											</div>
 										</div>
 
 									</div>

@@ -5,19 +5,12 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var keyValSchema = new Schema({
-  text: String,
-  value: String,
-  status: String
-});
-
 // Define a new 'validationSchema'
 var validationSchema = new Schema({  
   name: String,
-  data: [keyValSchema],
   createdOn: {type: Date},
-  modifiedOn: {type: Date, "default": Date.now},
-  createdBy: { type: Schema.ObjectId, ref: 'User' }
+  createdBy: { type: Schema.ObjectId, ref: 'User' },
+  createdWithin: {type: Schema.ObjectId, ref: 'Account' }
 }, { collection : 'validations' });
 
 // Create the 'Validation' model out of the 'validationSchema'

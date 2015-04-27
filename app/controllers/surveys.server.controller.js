@@ -243,6 +243,23 @@ exports.surveyByID = function(req, res, next, id) {
     });
 };
 
+exports.byLocations = function(req, res){
+
+    var locations = req.params.locationIds.split(',');
+
+    for (var l in locations){
+        console.log(mongoose.Types.ObjectId.isValid(locations[l]));
+        locations[l] = locations[l];
+    }
+
+    Survey.find({
+        'locationIds': { $in: locations}}, 'name', function(err, docs){
+        console.log(docs);
+        res.json(docs);
+    });
+
+}
+
 // Create a new controller middleware that is used to authorize an survey operation
 exports.hasAuthorization = function(req, res, next) {
     // If the current user is not the creator of the survey or current user is not 'admin' role send the appropriate error message

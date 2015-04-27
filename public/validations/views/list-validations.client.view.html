@@ -14,7 +14,7 @@
 
 					<div class="row">
 						<!-- The list validations view -->
-						<section data-ng-controller="ValidationsController" data-ng-init="find('StaffID')">
+						<section data-ng-controller="ValidationsController" data-ng-init="find()">
 
 							<h3 class="dark-grey">Validations List</h3>
 
@@ -35,8 +35,8 @@
 								</li>
 							</ul> -->
 							<!-- If there are no validations in the list, suggest the user's create a new validation -->
-							<div data-ng-hide="!validations || validations.length">
-								No validations yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/validations/create">create one</a>?</span>
+							<div data-ng-hide="validationsCount > 0">
+								No validation tables yet<span data-ng-show="{{authentication.user.role == 'admin'}}">, why don't you <a href="/#!/validations/create">create one</a>?</span>
 							</div>
 						</section>
 

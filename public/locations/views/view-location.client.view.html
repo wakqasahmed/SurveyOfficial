@@ -27,7 +27,16 @@
                           <!--<div data-ng-show="authentication.user._id == article.creator._id">-->
                           <div>
                             <a class="btn btn-primary" href="/#!/locations/{{location._id}}/edit">Edit</a>
-                            <a class="btn btn-danger" href="/#!/locations/{{location._id}}" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?')">Delete</a>
+                            <a class="btn btn-danger" data-ng-click="showDialog('Delete Confirmation', 'Delete the record?')">Delete</a>
+                          </div>
+
+                          <div>
+                              <!-- The error message element -->
+                              <div data-ng-show="error">
+                                  <br><strong>
+                                  <div error-directive compile="error"></div>
+                              </strong>
+                              </div>
                           </div>
 
                           <hr>
