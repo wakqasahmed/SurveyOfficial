@@ -32,10 +32,12 @@
 
                 </div>
 
-                <div class="col-md-2">       <h5>Month</h5>
-                    <input id="dateInput" type="month" name="input_date" ng-model="value" placeholder="yyyy-MM" min="2015-01" max="2015-12" value="2015-03" required />
-
-
+                <div class="col-md-6 pull-left">
+                    <h5>Date</h5>
+                    <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        <span></span> <b class="caret"></b>
+                    </div>
                 </div>
 
 
@@ -51,11 +53,7 @@
 
                 </div>
 
-                <div class="col-md-2">       <h5>SurveyTypes</h5>
-                    <multiselect2 data-ng-init="SurveyTypes()" class="input-xlarge" multiple="true" ng-model="SurveyTypes" options="item.name for item in surveyTypes " change="Questions()"></multiselect2>
 
-
-                </div>
 
 
 
@@ -97,7 +95,7 @@
 
                         <div class="clear" ng-hide="true"><hr></div>
 
-                        <div class="row" ng-model="offline" ng-show="offline">
+                        <div class="row"  ng-show="true">
                             <div class="col-md-2">Chart Title :</div>
                             <div class="col-md-4"><input type="textarea" ng-model="field.chartName"  value="{{field.chartName}}"></div>
                         </div>
@@ -113,7 +111,7 @@
                         </div>
                         <hr ng-hide="true">
 
-                        <div class="row" ng-show="offline">
+                        <div class="row" ng-show="true">
                             <div class="col-md-6">
                                 <div class="col-md-2">Options:</div>
                                 <input type="radio" id="client_days" name="client" ng-model="field.entry.client" ng-required="true" value="days" />
@@ -143,7 +141,7 @@
 
 
 
-                        <div class="row" ng-show="offline">
+                        <div class="row" ng-show="true">
 
 
                             <div class="col-md-2" ng-hide="field.entry.client!='choices'" ng-show="entry.client=='all'">

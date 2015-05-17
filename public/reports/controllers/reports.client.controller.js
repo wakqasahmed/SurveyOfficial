@@ -24,60 +24,10 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
         console.log(" startD   "+startD.toLocaleString())
         console.log(" endD   "+endD.toLocaleString())
 
-        $scope.startChange = function() {
-
-            var startDate = start.value(),
-                endDate = end.value();
-
-            if (startDate) {
-                startDate = new Date(startDate);
-                startDate.setDate(startDate.getDate());
-                end.min(startDate);
-            } else if (endDate) {
-                start.max(new Date(endDate));
-            } else {
-                endDate = new Date();
-                start.max(endDate);
-                end.min(endDate);
-            }
-
-        }
-
-        $scope.endChange = function() {
-
-            var endDate = end.value(),
-                startDate = start.value();
-
-            if (endDate) {
-                endDate = new Date(endDate);
-                endDate.setDate(endDate.getDate());
-                start.max(endDate);
-            } else if (startDate) {
-                end.min(new Date(startDate));
-            } else {
-                endDate = new Date();
-                start.max(endDate);
-                end.min(endDate);
-            }
-        }
 
 
-        var start = angular.element(document.querySelector( '#start' )).kendoDatePicker({
-            change: $scope.startChange,
-            value:startD
-        }).data("kendoDatePicker");
 
-        var end = angular.element(document.querySelector( '#end' )).kendoDatePicker({
-            change: $scope.endChange,
-            value :endD
-        }).data("kendoDatePicker");
 
-        if(start && end ){
-
-            start.max(end.value());
-            end.min(start.value());
-
-        }
 
 
         ////////////////////////////////////////
@@ -621,7 +571,11 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                         },
                         seriesDefaults: {
                             type: "bar",
-                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true )
+                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true ),
+                            labels: {
+                                visible: true,
+                                background: "transparent"
+                            }
 
                         },
                         valueAxis: {
@@ -689,7 +643,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
         $scope.exportPDF = function() {
             // Convert the DOM element to a drawing using kendo.drawing.drawDOM
-            console.log(" exportPDF  ");
+            console.log("-- exportPDF  ");
 
             kendo.drawing.drawDOM($(".charts-container"))
                 .then(function(group) {
@@ -894,7 +848,11 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                         },
                         seriesDefaults: {
                             type: "bar",
-                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true )
+                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true ),
+                            labels: {
+                                visible: true,
+                                background: "transparent"
+                            }
 
                         },
                         valueAxis: {
@@ -1280,7 +1238,11 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                             text:"how do find this ?"
                         },
                         seriesDefaults: {
-                            type: "column"
+                            type: "column",
+                            labels: {
+                                visible: true,
+                                background: "transparent"
+                            }
 
                         },
                         valueAxis: {
@@ -1402,7 +1364,11 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                             text:"how do find this ?"
                         },
                         seriesDefaults: {
-                            type: "column"
+                            type: "column",
+                            labels: {
+                                visible: true,
+                                background: "transparent"
+                            }
 
                         },
                         valueAxis: {
