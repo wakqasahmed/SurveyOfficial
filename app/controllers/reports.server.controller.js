@@ -525,7 +525,7 @@ exports.dynamicGenerateStuffReport = function(req, res) {
 
 
 
-    console.log(req.body+"      ");
+    console.log(" dynamicGenerateStuffReport Body  : "+ JSON.stringify(req.body)+"      ");
     var objectParam  =  req.body ;
 
     /*objectParam = {brandId:"54f722f59a66644803c12897",
@@ -548,8 +548,8 @@ exports.dynamicGenerateStuffReport = function(req, res) {
         query.brandId = {"$in":objectParam.brandId};
     if(objectParam.questionId)
         query["responses.data.questionId"] = objectParam.questionId;
-    if(objectParam.endDate && objectParam.startDate)
-        query.createdOn = {"$lte":objectParam.endDate,"$gte":objectParam.startDate}
+    //if(objectParam.endDate && objectParam.startDate)
+      //  query.createdOn = {"$lte":objectParam.endDate,"$gte":objectParam.startDate}
 
 
     //  create map and reduce

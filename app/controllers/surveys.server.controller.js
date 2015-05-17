@@ -66,58 +66,93 @@ exports.create = function(req, res) {
 // Create a new controller method that retrieves a list of surveys
 exports.list = function(req, res) {
 
-    var totalRecords;
-    Survey.count({}, function(err, count){
-        if (err) {
-            // If an error occurs send the error message
-            return res.status(400).send({
-                message: getErrorMessage(err)
-            });
-        } else {
-            totalRecords = count;
-        }
-    });
+    if(req.query.skip && req.query.take) {
+        var totalRecords;
+        Survey.count({}, function (err, count) {
+            if (err) {
+                // If an error occurs send the error message
+                return res.status(400).send({
+                    message: getErrorMessage(err)
+                });
+            } else {
+                totalRecords = count;
+            }
+        });
 
-    var page = parseInt(req.query.page),
-        size = parseInt(req.query.pageSize),
-        skip = parseInt(req.query.skip),
-        take = parseInt(req.query.take);
-//		skip = page > 0 ? ((page - 1) * size) : 0;
+        var page = parseInt(req.query.page),
+            size = parseInt(req.query.pageSize),
+            skip = parseInt(req.query.skip),
+            take = parseInt(req.query.take);
+    //		skip = page > 0 ? ((page - 1) * size) : 0;
 
-    // Use the model 'find' method to get a list of surveys
-	Survey.find().limit(size).skip(skip).sort('-createdOn').exec(function(err, surveys) {
-        if (err) {
-            // If an error occurs send the error message
-            return res.status(400).send({
-                message: getErrorMessage(err)
-            });
-        } else {
+        // Use the model 'find' method to get a list of surveys
+        Survey.find().limit(size).skip(skip).sort('-createdOn').exec(function (err, surveys) {
+            if (err) {
+                // If an error occurs send the error message
+                return res.status(400).send({
+                    message: getErrorMessage(err)
+                });
+            } else {
 
-			var opts = [];
-			opts.push({
-					path: 'locationIds.locationId',
-					select: 'name'
-			});
+                var opts = [];
+                opts.push({
+                    path: 'locationIds.locationId',
+                    select: 'name'
+                });
 
-			for (var j = 0; j < surveys.length; j++) {
-						for (var i = 0; i < surveys[j].locationIds.length; i++) {
-							surveys[j].locationIds[i] = {"locationId": surveys[j].locationIds[i]};
-						}
-			}
+                for (var j = 0; j < surveys.length; j++) {
+                    for (var i = 0; i < surveys[j].locationIds.length; i++) {
+                        surveys[j].locationIds[i] = {"locationId": surveys[j].locationIds[i]};
+                    }
+                }
 
-			Location.populate(surveys, opts, function(err, docs1) {
-					if(err) console.log(err);
-					else{
+                Location.populate(surveys, opts, function (err, docs1) {
+                    if (err) console.log(err);
+                    else {
                         // Send a JSON representation of the survey
                         res.json({surveys: docs1, totalRecords: totalRecords});
-					}
+                    }
 
-			});
+                });
 
-            // Send a JSON representation of the survey
-            //res.json(surveys);
-        }
-    });
+                // Send a JSON representation of the survey
+                //res.json(surveys);
+            }
+        });
+    } else {
+        // Use the model 'find' method to get a list of surveys
+        Survey.find().exec(function (err, surveys) {
+            if (err) {
+                // If an error occurs send the error message
+                return res.status(400).send({
+                    message: getErrorMessage(err)
+                });
+            } else {
+
+                var opts = [];
+                opts.push({
+                    path: 'locationIds.locationId',
+                    select: 'name'
+                });
+
+                for (var j = 0; j < surveys.length; j++) {
+                    for (var i = 0; i < surveys[j].locationIds.length; i++) {
+                        surveys[j].locationIds[i] = {"locationId": surveys[j].locationIds[i]};
+                    }
+                }
+
+                Location.populate(surveys, opts, function (err, docs1) {
+                    if (err) console.log(err);
+                    else {
+                        // Send a JSON representation of the survey
+                        res.json(surveys);
+                    }
+
+                });
+
+            }
+        });
+    }
 };
 
 // Create a new controller method that retrieves a list of survey types

@@ -28,11 +28,12 @@ module.exports = function() {
 		global.brandImagePath = "http://backend-ifeed.rhcloud.com/content/brand_images/";
 	}
 
+    app.use(cors());
 	// Use the 'body-parser' and 'method-override' middleware functions
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
-	app.use(bodyParser.json());
+	app.use(bodyParser.json({limit: '50mb'}));
 	app.use(methodOverride());
 
 	// Configure the 'session' middleware
