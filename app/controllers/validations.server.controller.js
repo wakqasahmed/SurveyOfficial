@@ -4,7 +4,8 @@
 // Load the module dependencies
 var mongoose = require('mongoose'),
 	Validation = mongoose.model('Validation'),
-	Location = mongoose.model('Location');
+	Location = mongoose.model('Location'),
+    moment = require('moment-timezone');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -19,6 +20,7 @@ var getErrorMessage = function(err) {
 
 // Create a new controller method that creates new validations
 exports.create = function(req, res) {
+
 	// Create a new validation object
 	var validation = new Validation(req.body);
 
@@ -26,8 +28,11 @@ exports.create = function(req, res) {
 	validation.createdBy = req.user;
 
 	// Set the validation's 'createdOn' property
-	validation.createdOn = Date.now;
+	validation.createdOn = moment.tz(Date.now(), 'Asia/Dubai');
 
+	validation.createdWithin = req.user.account._id;
+
+	console.log(validation);
 	// Try saving the validation
 	validation.save(function(err) {
 		if (err) {
@@ -44,8 +49,28 @@ exports.create = function(req, res) {
 
 // Create a new controller method that retrieves a list of validations
 exports.list = function(req, res) {
+
+    var totalRecords;
+    Validation.count({"createdWithin": req.user.account._id}, function(err, count){
+        console.log(count);
+        if (err) {
+            // If an error occurs send the error message
+            return res.status(400).send({
+                message: getErrorMessage(err)
+            });
+        } else {
+            totalRecords = count;
+        }
+    });
+
+    var page = parseInt(req.query.page),
+        size = parseInt(req.query.pageSize),
+        skip = parseInt(req.query.skip),
+        take = parseInt(req.query.take);
+//		skip = page > 0 ? ((page - 1) * size) : 0;
+
 	// Use the model 'find' method to get a list of validations
-	Validation.find().exec(function(err, validations) {
+	Validation.find({"createdWithin": req.user.account._id}).limit(size).skip(skip).exec(function(err, validations) {
 		if (err) {
 			// If an error occurs send the error message
 			return res.status(400).send({
@@ -53,7 +78,8 @@ exports.list = function(req, res) {
 			});
 		} else {
 			// Send a JSON representation of the validation
-			res.json(validations);
+            res.json({validations: validations, totalRecords: totalRecords});
+			//res.json(validations);
 		}
 	});
 };
@@ -152,7 +178,7 @@ exports.delete = function(req, res) {
 // Create a new controller middleware that retrieves a single existing validation
 exports.validationByID = function(req, res, next, id) {
 	// Use the model 'findById' method to find a single validation
-	Validation.findById(id).populate('createdBy', 'firstName lastName fullName').exec(function(err, validation) {
+	Validation.findById(id).exec(function(err, validation) {
 		if (err) return next(err);
 		if (!validation) return next(new Error('Failed to load validation ' + id));
 

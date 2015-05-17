@@ -2,8 +2,8 @@
 'use strict';
 
 // Create the 'brands' controller
-angular.module('brands').controller('BrandsController', ['$scope', '$routeParams', '$location', '$upload', 'Authentication', 'Brands', 'Dialogs', 'Locations',
-    function($scope, $routeParams, $location, $upload, Authentication, Brands, Dialogs, Locations) {
+angular.module('brands').controller('BrandsController', ['$scope', '$routeParams', '$location', '$upload', '$http', '$sce', 'Authentication', 'Brands', 'Dialogs', 'Locations',
+    function($scope, $routeParams, $location, $upload, $http, $sce, Authentication, Brands, Dialogs, Locations) {
     	// Expose the Authentication service
         $scope.authentication = Authentication;
 
@@ -16,8 +16,8 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
           Dialogs.showDialog(title, message).then(
             function() {
               //alert('Yes clicked');
-              $scope.delete();
-              $location.path('/#!/brands/');
+              $scope.delete($scope.brand);
+              //$location.path('/#!/brands/');
             },
             function() {
               //alert('No clicked');
@@ -86,6 +86,7 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
                   phoneOffice: this.contactPerson_phoneOffice,
                   phoneCell: this.contactPerson_phoneCell
                 }],
+                color: this.color,
                 createdOn: moment.tz(Date.now(), 'Asia/Dubai'),
                 createdBy: $scope.authentication.user._id
             });
@@ -105,7 +106,8 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
         // Create a new controller method for retrieving a list of brands
         $scope.find = function() {
         	// Use the brand 'query' method to send an appropriate GET request
-          //  $scope.brands = Brands.query();
+            //$scope.brandsCount = Brands.query();
+
           var bgImagePath = "/content/brand_images/";
 
           $scope.brands = {
@@ -114,9 +116,15 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
                   transport: {
                       read: "/api/brands"
                   },
-                  pageSize: 5,
+                  pageSize: 2,
                   serverPaging: true,
-                  serverSorting: true
+                  serverSorting: true,
+                  schema: {
+                      data: function (data) { return data.brands; },
+                      total: function (data) {
+                          $scope.brandsCount = data.totalRecords;
+                          return data.totalRecords; }
+                  }
               },
               sortable: true,
               pageable: true,
@@ -164,29 +172,48 @@ angular.module('brands').controller('BrandsController', ['$scope', '$routeParams
         // Create a new controller method for deleting a single brand
         $scope.delete = function(brand) {
 
-            $scope.associatedLocations = Locations.query({"brand": brand._id});
+            $http({method: 'GET', url: '/api/locations/locationsByBrands/' + brand._id}).
+                success(function(data, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    $scope.associatedLocations = data;
 
-          if($scope.associatedLocations) {
-            return 'Brand cannot be deleted, because it is already linked with the following locations:' + $scope.associatedLocations;
-          }
+                    console.log(data);
 
-        	// If an brand was sent to the method, delete it
-            if (brand) {
-            	// Use the brand '$remove' method to delete the brand
-                brand.$remove(function() {
-                	// Remove the brand from the brands list
-                    for (var i in $scope.brands) {
-                        if ($scope.brands[i] === brand) {
-                            $scope.brands.splice(i, 1);
-                        }
+                    if($scope.associatedLocations.length) {
+                        // Otherwise, present the user with the error message
+                        $scope.error = "Brand cannot be deleted, because it is already linked with the following locations:<br><div ng-repeat='loc in associatedLocations'>{{loc.name}}</div>";
                     }
+                    // If a brand was sent to the method, delete it
+                    else if(brand) {
+                         // Use the brand '$remove' method to delete the brand
+                         brand.$remove(function() {
+                             // Remove the brand from the brands list
+                             for (var i in $scope.brands) {
+                                if ($scope.brands[i] === brand) {
+                                    $scope.brands.splice(i, 1);
+                                }
+                             }
+
+                             $location.path('brands/');
+                         });
+                    } else {
+                        // Otherwise, use the brand '$remove' method to delete the brand
+                        $scope.brand.$remove(function() {
+                            $location.path('brands/');
+                        });
+                    }
+
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+
+                    // Otherwise, present the user with the error message
+                    $scope.error = errorResponse.data.message;
                 });
-            } else {
-            	// Otherwise, use the brand '$remove' method to delete the brand
-                $scope.brand.$remove(function() {
-                    $location.path('brands');
-                });
-            }
+
         };
     }
 ]);

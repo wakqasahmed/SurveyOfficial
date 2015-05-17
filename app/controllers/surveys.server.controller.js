@@ -65,8 +65,27 @@ exports.create = function(req, res) {
 
 // Create a new controller method that retrieves a list of surveys
 exports.list = function(req, res) {
+
+    var totalRecords;
+    Survey.count({}, function(err, count){
+        if (err) {
+            // If an error occurs send the error message
+            return res.status(400).send({
+                message: getErrorMessage(err)
+            });
+        } else {
+            totalRecords = count;
+        }
+    });
+
+    var page = parseInt(req.query.page),
+        size = parseInt(req.query.pageSize),
+        skip = parseInt(req.query.skip),
+        take = parseInt(req.query.take);
+//		skip = page > 0 ? ((page - 1) * size) : 0;
+
     // Use the model 'find' method to get a list of surveys
-	Survey.find().sort('-createdOn').exec(function(err, surveys) {
+	Survey.find().limit(size).skip(skip).sort('-createdOn').exec(function(err, surveys) {
         if (err) {
             // If an error occurs send the error message
             return res.status(400).send({
@@ -86,11 +105,11 @@ exports.list = function(req, res) {
 						}
 			}
 
-			Location.populate(surveys,opts,function(err, docs1) {
+			Location.populate(surveys, opts, function(err, docs1) {
 					if(err) console.log(err);
 					else{
-						//console.log("DOCS1: " + docs1);
-						res.json(docs1);
+                        // Send a JSON representation of the survey
+                        res.json({surveys: docs1, totalRecords: totalRecords});
 					}
 
 			});
@@ -242,6 +261,23 @@ exports.surveyByID = function(req, res, next, id) {
         next();
     });
 };
+
+exports.byLocations = function(req, res){
+
+    var locations = req.params.locationIds.split(',');
+
+    for (var l in locations){
+        console.log(mongoose.Types.ObjectId.isValid(locations[l]));
+        locations[l] = locations[l];
+    }
+
+    Survey.find({
+        'locationIds': { $in: locations}}, 'name', function(err, docs){
+        console.log(docs);
+        res.json(docs);
+    });
+
+}
 
 // Create a new controller middleware that is used to authorize an survey operation
 exports.hasAuthorization = function(req, res, next) {

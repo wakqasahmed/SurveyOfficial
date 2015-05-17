@@ -11,7 +11,8 @@ var config = require('./config'),
 	session = require('express-session'),
 	flash = require('connect-flash'),
 	passport = require('passport'),
-	path = require('path');
+	path = require('path'),
+	cors = require('cors');
 
 // Define the Express configuration method
 module.exports = function() {
@@ -24,7 +25,7 @@ module.exports = function() {
 		global.brandImagePath = "http://localhost:3000/content/brand_images/";
 	} else if (process.env.NODE_ENV === 'production') {
 		app.use(compress());
-		global.brandImagePath = "http://official-surveymark.rhcloud.com/content/brand_images/";
+		global.brandImagePath = "http://backend-ifeed.rhcloud.com/content/brand_images/";
 	}
 
 	// Use the 'body-parser' and 'method-override' middleware functions

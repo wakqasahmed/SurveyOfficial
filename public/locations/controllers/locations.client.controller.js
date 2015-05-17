@@ -16,8 +16,7 @@ angular.module('locations').controller('LocationsController', ['$scope', '$route
           Dialogs.showDialog(title, message).then(
             function() {
               //alert('Yes clicked');
-              $scope.delete();
-              $location.path('/#!/locations/');
+              $scope.delete($scope.location);
             },
             function() {
               //alert('No clicked');
@@ -87,13 +86,19 @@ angular.module('locations').controller('LocationsController', ['$scope', '$route
                     type: "json",
                     transport: {
                         read: "/api/locations"
-                    }/*,
+                    },
                     pageSize: 5,
                     serverPaging: true,
-                    serverSorting: true*/
+                    serverSorting: true,
+                    schema: {
+                        data: function (data) { return data.locations; },
+                        total: function (data) {
+                            $scope.locationsCount = data.totalRecords;
+                            return data.totalRecords; }
+                    }
                 },
                 sortable: true,
-                //pageable: true,
+                pageable: true,
                 columns: [{
                     //field: "name",
                     title: "Location Name",
@@ -250,23 +255,49 @@ angular.module('locations').controller('LocationsController', ['$scope', '$route
 
         // Create a new controller method for deleting a single location
         $scope.delete = function(location) {
-        	// If an location was sent to the method, delete it
-            if (location) {
-            	// Use the location '$remove' method to delete the location
-                location.$remove(function() {
-                	// Remove the location from the locations list
-                    for (var i in $scope.locations) {
-                        if ($scope.locations[i] === location) {
-                            $scope.locations.splice(i, 1);
-                        }
+
+            $http({method: 'GET', url: '/api/surveys/surveysByLocations/' + location._id}).
+                success(function(data, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    $scope.associatedSurveys = data;
+
+                    console.log(data);
+
+                    if($scope.associatedSurveys.length) {
+                        // Otherwise, present the user with the error message
+                        $scope.error = "Location cannot be deleted, because it is already linked with the following surveys:<br><div ng-repeat='survey in associatedSurveys'>{{survey.name}}</div>";
                     }
+                    // If a location was sent to the method, delete it
+                    else if(location) {
+
+                        // Use the location '$remove' method to delete the location
+                        location.$remove(function() {
+                            // Remove the location from the locations list
+                            for (var i in $scope.locations) {
+                                if ($scope.locations[i] === location) {
+                                    $scope.locations.splice(i, 1);
+                                }
+                            }
+
+                            $location.path('locations/');
+                        });
+                    } else {
+                        // Otherwise, use the location '$remove' method to delete the location
+                        $scope.location.$remove(function() {
+                            $location.path('locations/');
+                        });
+                    }
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+
+                    // Otherwise, present the user with the error message
+                    $scope.error = errorResponse.data.message;
                 });
-            } else {
-            	// Otherwise, use the location '$remove' method to delete the location
-                $scope.location.$remove(function() {
-                    $location.path('locations');
-                });
-            }
+
         };
     }
 ]);
