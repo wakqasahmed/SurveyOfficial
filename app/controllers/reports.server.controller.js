@@ -587,7 +587,7 @@ exports.dynamicGenerateStuffReport = function(req, res) {
 
 
 
-        for ( var i=0 ; i < questions.length ; i++){
+        for (var i=0 ; i < questions.length ; i++){
 
             if(questions[i].questionId == questionObject.questionId){ // only on selected question
 

@@ -643,7 +643,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
         $scope.exportPDF = function() {
             // Convert the DOM element to a drawing using kendo.drawing.drawDOM
-            console.log("-- exportPDF  ");
+            console.log("-- exportPDF ");
 
             kendo.drawing.drawDOM($(".charts-container"))
                 .then(function(group) {
