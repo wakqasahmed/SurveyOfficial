@@ -203,7 +203,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                 success: function(data) {
 
-
+                    console.log(data);
                      window.locations = []; // saving the locations
                     // window.idt = []
 
