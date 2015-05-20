@@ -9,6 +9,9 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
     function($scope, $routeParams, $location, $http, Forms, Dialogs, Authentication,filterFilter) {
         // Expose the Authentication service
 
+        // report file name
+        var report_filename = "report"
+
         var now = new Date();
         var n = now.getFullYear();
         var m = now.getMonth() ;
@@ -135,7 +138,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
         }, true);
         // Function for getting the brandnames
 
-        $scope.brandName = function() {
+        $scope.brandName = function(selectAll) {
 
             console.log(" -------> brandName")
 
@@ -160,6 +163,9 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                     $scope.brand = data;
                     $scope.selectedBrand = []; // saving the selected brand
+
+                    if(selectAll)
+                    $scope.selectedBrand = data ;
                 //    $scope.selectedBrandId = data[0]._id;
                   /*  for (var k in data){
 
@@ -480,6 +486,10 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
             }
          // load the data
+            console.log(" ---- startD   "+startD.toLocaleString());
+            var dd=moment(startD).format('l') ;
+            var ed = moment(endD).format('l') ;
+            report_filename = "brands_report_"+dd+"_"+ed ;
 
             $http.post('/api/reports/dynamic', data).
                       success(function(docs, status, headers, config) {
@@ -644,6 +654,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
         $scope.exportPDF = function() {
             // Convert the DOM element to a drawing using kendo.drawing.drawDOM
             console.log("-- exportPDF ");
+            $("#fieldsContainer").css("visibility","visible");
 
             kendo.drawing.drawDOM($(".charts-container"))
                 .then(function(group) {
@@ -657,7 +668,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                     // Save the PDF file
                     kendo.saveAs({
                         dataURI: data,
-                        fileName: "reports_name.pdf",
+                        fileName: report_filename+".pdf",
                         proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
                     });
                 });
@@ -716,6 +727,10 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
             }
             //  console.log(report.TotalCheck);
+            var dd=moment(startD).format('l') ;
+            var ed = moment(endD).format('l') ;
+
+            report_filename = "brands_staff_report_"+dd +"_"+ed ;
 
             $http.post('/api/reports/dynamicstuff', data).
                 success(function(docs, status, headers, config) {
@@ -915,14 +930,29 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
              });*/
         };
         $(".export-pdf").click(function() {
+            $scope.generateChartPDFContainer();
             $scope.exportPDF();
         });
 
 
+        $scope.generateChartPDFContainer = function(){
+            console.log("-- generateChartPDFContainer")
+            var seriesData=[];
 
+
+           // $(".charts-container").prependTo("<div id='fieldsContainer'></div>")
+            for ( var f = 0 ; f < $scope.form.form_fields.length ; f++){
+                var optionsChart =  $scope.form.form_fields[f].chartOptions ;
+                $("#fieldsContainer").append("<div id='c"+f+"'></div>");
+                $("#c"+f).kendoChart(
+                    $.extend(true, {},optionsChart)
+                );;
+                $("#fieldsContainer").append("<div> <hr></div>");
+            }
+        }
         $scope.generateCombinedChart = function () {
 
-            var seriesData=[];
+           /* var seriesData=[];
             for ( var f = 0 ; f < $scope.form.form_fields.length ; f++){
                 var optionsChart =  $scope.form.form_fields[f].chartOptions ;
                 $(".charts-container").append("<div id='c"+f+"'></div>");
@@ -931,11 +961,14 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                 );;
                 $(".charts-container").append("<div> <hr></div>");
             }
+           */
 
+            $("#fieldsContainer").css("visibility","hidden");
+            var seriesData=[];
 
             for ( var field = 0 ;field < $scope.chartsToCombine.length ; field++){
                // console.log( " --  "+JSON.stringify($scope.chartsToCombine[field].chartOptions ));
-              var options =  $scope.chartsToCombine[field].chartOptions ;
+              var options = jQuery.extend(true, {},  $scope.chartsToCombine[field].chartOptions );;
                 options.seriesDefaults.type = "column" ;
                 options.chartArea={height : 200} ;
                 if(field != $scope.chartsToCombine.length-1)
@@ -1116,6 +1149,9 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
         $scope.guestChecksGenerateReport = function() {
             /*  console.log($scope.locByBrand);*/
+            var dd=moment(startD).format('l') ;
+            var ed = moment(endD).format('l') ;
+            report_filename = "GuestChecks_VS_GuestSurvey_report_"+dd+"_"+ed ;
 
 
             var choices_name= [];
@@ -1141,7 +1177,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                         $scope.locationColors.push(data[k].brand.color);
 
-
+                          console.log(" data["+k+"].brand.color   "+data[k].brand.color);
                     }
 
                     // after loading locations
