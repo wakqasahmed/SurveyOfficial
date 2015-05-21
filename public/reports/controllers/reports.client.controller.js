@@ -1347,7 +1347,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
             };
 
-            $http.get('/api/reports/monthly/participationRate',data).
+            $http.post('/api/reports/monthly/participationRate', data).
                 success(function(docs, status, headers, config) {
                     // this callback will be called asynchronously
                     // when the response is available

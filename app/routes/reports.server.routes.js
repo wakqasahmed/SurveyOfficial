@@ -13,6 +13,7 @@ module.exports = function(app) {
 
 
 	app.route('/api/reports/monthly/participationRate')
+           .post(reports.generateMonthlyParticipationRate)
 		   .get(reports.generateMonthlyParticipationRate);
 
 

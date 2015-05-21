@@ -33,6 +33,8 @@ exports.generateMonthlyParticipationRate = function(req, res){
 
     var objectParam  =  req.body ;
 
+    console.log(" generateMonthlyParticipationRate  objectParam :"+JSON.stringify(objectParam));
+
     var query ={};
 
     if(objectParam.brandId)
@@ -48,6 +50,7 @@ exports.generateMonthlyParticipationRate = function(req, res){
 
 var o = {};
 o.map = function () { emit(this.locationId, 1); }
+o.query  = query ;
 o.reduce = function (locationId, count) { return Array.sum(count); }
 o.out = { replace: 'report_participation_rate' }
 o.verbose = true;
