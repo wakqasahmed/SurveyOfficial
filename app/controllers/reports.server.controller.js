@@ -33,13 +33,24 @@ exports.generateMonthlyParticipationRate = function(req, res){
 
     var objectParam  =  req.body ;
 
+    console.log(" generateMonthlyParticipationRate  objectParam :"+JSON.stringify(objectParam));
+
     var query ={};
 
     if(objectParam.brandId)
         query.brandId = {"$in":objectParam.brandId};
+    if((objectParam.startDate) && (objectParam.endDate) ) {
+        objectParam.startDate =new Date(objectParam.startDate).toISOString()// new Date(2012,2,2).toISOString();// ;
+        objectParam.endDate =new Date(objectParam.endDate).toISOString();// new Date(2015,4,30).toISOString();//
+    }
+
+
+    if(objectParam.endDate && objectParam.startDate)
+        query.createdOn = {"$lte":objectParam.endDate,"$gte":objectParam.startDate};
 
 var o = {};
 o.map = function () { emit(this.locationId, 1); }
+o.query  = query ;
 o.reduce = function (locationId, count) { return Array.sum(count); }
 o.out = { replace: 'report_participation_rate' }
 o.verbose = true;
@@ -217,7 +228,7 @@ exports.dynamicGenerateReport = function(req, res) {
     // questionId :5502cd1d53d5f66d42fc99e9  for food quality
 
     // questionId :550009d453d5f66d42fc99e8  for visiting
-    console.log(req.body);
+    console.log( JSON.stringify(req.body) + "  dynamicGenerateReport BODY ");
     var objectParam  =  req.body ;
 
     /*objectParam = {brandId:"54f722f59a66644803c12897",
@@ -229,6 +240,12 @@ exports.dynamicGenerateReport = function(req, res) {
      };*/
 
 
+    if((objectParam.startDate) && (objectParam.endDate) ) {
+        objectParam.startDate =new Date(objectParam.startDate).toISOString()// new Date(2012,2,2).toISOString();// ;
+        objectParam.endDate =new Date(objectParam.endDate).toISOString();// new Date(2015,4,30).toISOString();//
+    }
+
+    console.log("objectParam  "+ JSON.stringify(objectParam) ) ;
 
     var query ={};
 
@@ -236,6 +253,11 @@ exports.dynamicGenerateReport = function(req, res) {
         query.brandId = {"$in":objectParam.brandId};
     if(objectParam.questionId)
         query["responses.data.questionId"] = objectParam.questionId;
+    if(objectParam.endDate && objectParam.startDate)
+        query.createdOn = {"$lte":objectParam.endDate,"$gte":objectParam.startDate};
+
+
+    console.log("query  "+ JSON.stringify(query) ) ;
 
     //  create map and reduce
     var object = new Object();
@@ -506,7 +528,7 @@ exports.dynamicGenerateStuffReport = function(req, res) {
 
 
 
-    console.log(req.body+"      ");
+    console.log(" dynamicGenerateStuffReport Body  : "+ JSON.stringify(req.body)+"      ");
     var objectParam  =  req.body ;
 
     /*objectParam = {brandId:"54f722f59a66644803c12897",
@@ -516,6 +538,10 @@ exports.dynamicGenerateStuffReport = function(req, res) {
      //days:["Thu","Wed","Mon","Sun","Fri","Sat"]
      // type:"avg"
      };*/
+    if((objectParam.startDate) && (objectParam.endDate) ) {
+        objectParam.startDate = new Date(objectParam.startDate);
+        objectParam.endDate = new Date(objectParam.endDate);
+    }
 
 
 
@@ -525,6 +551,8 @@ exports.dynamicGenerateStuffReport = function(req, res) {
         query.brandId = {"$in":objectParam.brandId};
     if(objectParam.questionId)
         query["responses.data.questionId"] = objectParam.questionId;
+    //if(objectParam.endDate && objectParam.startDate)
+      //  query.createdOn = {"$lte":objectParam.endDate,"$gte":objectParam.startDate}
 
 
     //  create map and reduce
@@ -562,7 +590,7 @@ exports.dynamicGenerateStuffReport = function(req, res) {
 
 
 
-        for ( var i=0 ; i < questions.length ; i++){
+        for (var i=0 ; i < questions.length ; i++){
 
             if(questions[i].questionId == questionObject.questionId){ // only on selected question
 
@@ -660,10 +688,10 @@ exports.totalGuestChecks = function(req, res) {
     console.log(objectParam.endDate) ;
     var query ={};
 
-    if(objectParam.brandId)
-        query.brandId = {"$in":objectParam.brandId};
-    if(objectParam.endDate )
-        query.day = {"$lte":objectParam.endDate,"$gte":objectParam.startDate}
+    //if(objectParam.brandId)
+      //  query.brandId = {"$in":objectParam.brandId};
+   if(objectParam.endDate )
+        query.day =  {"$lte":objectParam.endDate,"$gte":objectParam.startDate}
 
 
 
@@ -699,7 +727,7 @@ exports.totalGuestChecks = function(req, res) {
     Guestchecks.mapReduce(object, function (err, model, stats) {
             console.log(' Guestchecks receive model chakir ');
             model.find().exec(function (err, docs) {
-                console.log("  "+docs);
+                console.log(" Guestchecks : "+docs);
                 res.send(docs);
             });
             console.log('map reduce took %d ms', stats.processtime);

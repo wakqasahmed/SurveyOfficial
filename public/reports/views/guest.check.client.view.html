@@ -12,19 +12,9 @@
                <h3>Guest Check V Guest Surverys</h3>
               <div class="row">
                   <h5 class="dark-grey">Date Range</h5>
-                  <div class="form-group col-lg-6">
-                      <label for="start">Start date:</label>
-                      <input id="start" style="width: 200px"
-                             ng-model="date_range_start_str"
-                             k-ng-model="date_range_end_obj"
-                              />
-                  </div>
-                  <div class="form-group col-lg-6">
-                      <label for="end">End date:</label>
-                      <input id="end" style="width: 200px"
-                             ng-model="date_range_end_str"
-                             k-ng-model="date_range_end_obj"
-                              />
+                  <div id="reportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                      <span></span> <b class="caret"></b>
                   </div>
 
               </div>
@@ -62,7 +52,11 @@
               </div>
 
 
+              <div>
 
+                  <br>
+                  <br>
+              </div>
           </div>
 
 

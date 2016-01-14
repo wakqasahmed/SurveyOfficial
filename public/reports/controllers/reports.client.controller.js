@@ -9,6 +9,9 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
     function($scope, $routeParams, $location, $http, Forms, Dialogs, Authentication,filterFilter) {
         // Expose the Authentication service
 
+        // report file name
+        var report_filename = "report"
+
         var now = new Date();
         var n = now.getFullYear();
         var m = now.getMonth() ;
@@ -24,63 +27,62 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
         console.log(" startD   "+startD.toLocaleString())
         console.log(" endD   "+endD.toLocaleString())
 
-        $scope.startChange = function() {
-
-            var startDate = start.value(),
-                endDate = end.value();
-
-            if (startDate) {
-                startDate = new Date(startDate);
-                startDate.setDate(startDate.getDate());
-                end.min(startDate);
-            } else if (endDate) {
-                start.max(new Date(endDate));
-            } else {
-                endDate = new Date();
-                start.max(endDate);
-                end.min(endDate);
-            }
-
-        }
-
-        $scope.endChange = function() {
-
-            var endDate = end.value(),
-                startDate = start.value();
-
-            if (endDate) {
-                endDate = new Date(endDate);
-                endDate.setDate(endDate.getDate());
-                start.max(endDate);
-            } else if (startDate) {
-                end.min(new Date(startDate));
-            } else {
-                endDate = new Date();
-                start.max(endDate);
-                end.min(endDate);
-            }
-        }
 
 
-        var start = angular.element(document.querySelector( '#start' )).kendoDatePicker({
-            change: $scope.startChange,
-            value:startD
-        }).data("kendoDatePicker");
 
-        var end = angular.element(document.querySelector( '#end' )).kendoDatePicker({
-            change: $scope.endChange,
-            value :endD
-        }).data("kendoDatePicker");
 
-        if(start && end ){
-
-            start.max(end.value());
-            end.min(start.value());
-
-        }
 
 
         ////////////////////////////////////////
+
+
+
+        $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+        $('#reportrange').daterangepicker({
+            format: 'MM/DD/YYYY',
+            startDate: moment().subtract(29, 'days'),
+            endDate: moment(),
+            minDate: '01/01/2012',
+            maxDate: '12/31/2015',
+            dateLimit: { days: 60 },
+            showDropdowns: true,
+            showWeekNumbers: true,
+            timePicker: false,
+            timePickerIncrement: 1,
+            timePicker12Hour: true,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            opens: 'left',
+            drops: 'down',
+            buttonClasses: ['btn', 'btn-sm'],
+            applyClass: 'btn-primary',
+            cancelClass: 'btn-default',
+            separator: ' to ',
+            locale: {
+                applyLabel: 'Submit',
+                cancelLabel: 'Cancel',
+                fromLabel: 'From',
+                toLabel: 'To',
+                customRangeLabel: 'Custom',
+                daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                firstDay: 1
+            }
+        }, function(start, end, label) {
+            console.log(start.toISOString(), end.toISOString(), label);
+
+            startD = start.toISOString() ;
+            endD = end.toISOString() ;
+
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        });
         /////////// ///          /// //////////
 
 
@@ -136,7 +138,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
         }, true);
         // Function for getting the brandnames
 
-        $scope.brandName = function() {
+        $scope.brandName = function(selectAll) {
 
             console.log(" -------> brandName")
 
@@ -161,6 +163,9 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                     $scope.brand = data;
                     $scope.selectedBrand = []; // saving the selected brand
+
+                    if(selectAll)
+                    $scope.selectedBrand = data ;
                 //    $scope.selectedBrandId = data[0]._id;
                   /*  for (var k in data){
 
@@ -448,6 +453,8 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
             // Use the form fields to create a new article $resource object
             var data ={
                 //TotalCheck: this.checks
+                'startDate': startD,//field.field_brandID,
+                'endDate': endD,
                 'brandId': $scope.selectedBrandIds,//field.field_brandID,
               'questionId': field.field_selectedQuestionID
                                   //,shifts:[{value:"breakfast",from:5,to:12},{value:"lunch",from:12,to:18},{value:"dinner",from:18,to:23},{value:"brunch",from:0,to:4}] ,
@@ -479,6 +486,10 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
             }
          // load the data
+            console.log(" ---- startD   "+startD.toLocaleString());
+            var dd=moment(startD).format('l') ;
+            var ed = moment(endD).format('l') ;
+            report_filename = "brands_report_"+dd+"_"+ed ;
 
             $http.post('/api/reports/dynamic', data).
                       success(function(docs, status, headers, config) {
@@ -570,7 +581,11 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                         },
                         seriesDefaults: {
                             type: "bar",
-                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true )
+                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true ),
+                            labels: {
+                                visible: true,
+                                background: "transparent"
+                            }
 
                         },
                         valueAxis: {
@@ -638,7 +653,8 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
         $scope.exportPDF = function() {
             // Convert the DOM element to a drawing using kendo.drawing.drawDOM
-            console.log(" exportPDF  ");
+            console.log("-- exportPDF ");
+            $("#fieldsContainer").css("visibility","visible");
 
             kendo.drawing.drawDOM($(".charts-container"))
                 .then(function(group) {
@@ -652,7 +668,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                     // Save the PDF file
                     kendo.saveAs({
                         dataURI: data,
-                        fileName: "reports_name.pdf",
+                        fileName: report_filename+".pdf",
                         proxyURL: "http://demos.telerik.com/kendo-ui/service/export"
                     });
                 });
@@ -678,6 +694,8 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
             // Use the form fields to create a new article $resource object
             var data ={
                 //TotalCheck: this.checks
+                'startDate': startD,//field.field_brandID,
+                'endDate': endD,
                 'brandId': $scope.selectedBrandIds,//field.field_brandID,
                 'questionId': field.field_selectedQuestionID
                 //,shifts:[{value:"breakfast",from:5,to:12},{value:"lunch",from:12,to:18},{value:"dinner",from:18,to:23},{value:"brunch",from:0,to:4}] ,
@@ -709,6 +727,10 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
             }
             //  console.log(report.TotalCheck);
+            var dd=moment(startD).format('l') ;
+            var ed = moment(endD).format('l') ;
+
+            report_filename = "brands_staff_report_"+dd +"_"+ed ;
 
             $http.post('/api/reports/dynamicstuff', data).
                 success(function(docs, status, headers, config) {
@@ -841,7 +863,11 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                         },
                         seriesDefaults: {
                             type: "bar",
-                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true )
+                            stack: (field.entry.valueType=="percentage" ?{type:"100%"}:true ),
+                            labels: {
+                                visible: true,
+                                background: "transparent"
+                            }
 
                         },
                         valueAxis: {
@@ -904,14 +930,29 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
              });*/
         };
         $(".export-pdf").click(function() {
+            $scope.generateChartPDFContainer();
             $scope.exportPDF();
         });
 
 
+        $scope.generateChartPDFContainer = function(){
+            console.log("-- generateChartPDFContainer")
+            var seriesData=[];
 
+
+           // $(".charts-container").prependTo("<div id='fieldsContainer'></div>")
+            for ( var f = 0 ; f < $scope.form.form_fields.length ; f++){
+                var optionsChart =  $scope.form.form_fields[f].chartOptions ;
+                $("#fieldsContainer").append("<div id='c"+f+"'></div>");
+                $("#c"+f).kendoChart(
+                    $.extend(true, {},optionsChart)
+                );;
+                $("#fieldsContainer").append("<div> <hr></div>");
+            }
+        }
         $scope.generateCombinedChart = function () {
 
-            var seriesData=[];
+           /* var seriesData=[];
             for ( var f = 0 ; f < $scope.form.form_fields.length ; f++){
                 var optionsChart =  $scope.form.form_fields[f].chartOptions ;
                 $(".charts-container").append("<div id='c"+f+"'></div>");
@@ -920,11 +961,14 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                 );;
                 $(".charts-container").append("<div> <hr></div>");
             }
+           */
 
+            $("#fieldsContainer").css("visibility","hidden");
+            var seriesData=[];
 
             for ( var field = 0 ;field < $scope.chartsToCombine.length ; field++){
                // console.log( " --  "+JSON.stringify($scope.chartsToCombine[field].chartOptions ));
-              var options =  $scope.chartsToCombine[field].chartOptions ;
+              var options = jQuery.extend(true, {},  $scope.chartsToCombine[field].chartOptions );;
                 options.seriesDefaults.type = "column" ;
                 options.chartArea={height : 200} ;
                 if(field != $scope.chartsToCombine.length-1)
@@ -1025,7 +1069,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                     $scope.locationNames.push(data[k].name);
                     $scope.locationiD.push(data[k]._id);
-                        $scope.locationColors.push(data[k].color);
+                        $scope.locationColors.push(data[k].brand.color);
 
                   }
                     console.log("locationIDs :" + $scope.locationiD);
@@ -1105,6 +1149,9 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
         $scope.guestChecksGenerateReport = function() {
             /*  console.log($scope.locByBrand);*/
+            var dd=moment(startD).format('l') ;
+            var ed = moment(endD).format('l') ;
+            report_filename = "GuestChecks_VS_GuestSurvey_report_"+dd+"_"+ed ;
 
 
             var choices_name= [];
@@ -1125,8 +1172,12 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
                         $scope.locationNames.push(data[k].name);
                         $scope.locationiD.push(data[k]._id);
+
+
+
                         $scope.locationColors.push(data[k].brand.color);
 
+                          console.log(" data["+k+"].brand.color   "+data[k].brand.color);
                     }
 
                     // after loading locations
@@ -1158,8 +1209,8 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
 
             var data ={
                 //TotalCheck: this.checks
-                'startDate': start.value(),//field.field_brandID,
-                'endDate': end.value()
+                'startDate': startD,//field.field_brandID,
+                'endDate': endD
                 //,shifts:[{value:"breakfast",from:5,to:12},{value:"lunch",from:12,to:18},{value:"dinner",from:18,to:23},{value:"brunch",from:0,to:4}] ,
 
                 //days:["Thu","Wed","Mon","Sun","Fri","Sat"]
@@ -1223,7 +1274,11 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                             text:"how do find this ?"
                         },
                         seriesDefaults: {
-                            type: "column"
+                            type: "column",
+                            labels: {
+                                visible: true,
+                                background: "transparent"
+                            }
 
                         },
                         valueAxis: {
@@ -1234,7 +1289,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                                 visible: true
                             },
                             title: {
-                                text: "Survey presented"
+                                text: "Guest checked"
                             }
                         },
                         majorGridLines: {
@@ -1285,8 +1340,14 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
         }
 
         $scope.loadGuestSurveys = function (){
+            var data ={
 
-            $http.get('/api/reports/monthly/participationRate').
+                'startDate': startD,//field.field_brandID,
+                'endDate': endD
+
+            };
+
+            $http.post('/api/reports/monthly/participationRate', data).
                 success(function(docs, status, headers, config) {
                     // this callback will be called asynchronously
                     // when the response is available
@@ -1339,7 +1400,11 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                             text:"how do find this ?"
                         },
                         seriesDefaults: {
-                            type: "column"
+                            type: "column",
+                            labels: {
+                                visible: true,
+                                background: "transparent"
+                            }
 
                         },
                         valueAxis: {
@@ -1350,7 +1415,7 @@ angular.module('reports').controller('reportsController', ['$scope', '$routePara
                                 visible: true
                             },
                             title: {
-                                text: "Total checks"
+                                text: "Guest Surveys"
                             }
                         },
                         majorGridLines: {

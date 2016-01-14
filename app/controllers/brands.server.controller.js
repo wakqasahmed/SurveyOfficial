@@ -100,36 +100,55 @@ exports.listActiveBrands = function(req, res) {
 // Create a new controller method that retrieves a list of brands
 exports.list = function(req, res) {
 
-	var totalRecords;
-	Brand.count({}, function(err, count){
-		if (err) {
-			// If an error occurs send the error message
-			return res.status(400).send({
-				message: getErrorMessage(err)
-			});
-		} else {
-			totalRecords = count;
-		}
-	});
+	if(req.query.skip && req.query.take) {
 
-	var page = parseInt(req.query.page),
-		size = parseInt(req.query.pageSize),
-		skip = parseInt(req.query.skip),
-		take = parseInt(req.query.take);
+		var totalRecords;
+
+		var page = parseInt(req.query.page),
+			size = parseInt(req.query.pageSize),
+			skip = parseInt(req.query.skip),
+			take = parseInt(req.query.take);
 //		skip = page > 0 ? ((page - 1) * size) : 0;
 
-	// Use the model 'find' method to get a list of brands
-	Brand.find().limit(size).skip(skip).exec(function(err, brands) {
-		if (err) {
-			// If an error occurs send the error message
-			return res.status(400).send({
-				message: getErrorMessage(err)
-			});
-		} else {
-			// Send a JSON representation of the brand
-			res.json({brands: brands, totalRecords: totalRecords});
-		}
-	});
+		Brand.count({}, function(err, count){
+			if (err) {
+				// If an error occurs send the error message
+				return res.status(400).send({
+					message: getErrorMessage(err)
+				});
+			} else {
+				totalRecords = count;
+				// Use the model 'find' method to get a list of brands
+				Brand.find().limit(size).skip(skip).exec(function (err, brands) {
+					if (err) {
+						// If an error occurs send the error message
+						return res.status(400).send({
+							message: getErrorMessage(err)
+						});
+					} else {
+						// Send a JSON representation of the brand
+						res.json({brands: brands, totalRecords: totalRecords});
+					}
+				});
+			}
+		});
+
+	}
+	else {
+		// Use the model 'find' method to get a list of brands
+		Brand.find().exec(function (err, brands) {
+			if (err) {
+				// If an error occurs send the error message
+				return res.status(400).send({
+					message: getErrorMessage(err)
+				});
+			} else {
+				// Send a JSON representation of the brand
+				res.json(brands);
+			}
+		});
+	}
+
 };
 
 // Create a new controller method that returns an existing brand

@@ -16,7 +16,7 @@ module.exports = function(app) {
 app.route('/api/locations/active')
 	.get(locations.listActiveLocations);
 
-//to use in Reports to get Locations By Brand Ids (array comma separated)
+//to use in Reports and Delete function of individual brands to get Locations By Brand Ids (array comma separated)
 app.route('/api/locations/locationsByBrands/:brandIds')
 		.get(locations.byBrands);
 
